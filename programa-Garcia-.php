@@ -25,14 +25,27 @@ function cargarColeccionPalabras()
         "MUJER", "QUESO", "FUEGO", "CASAS", "RASGO",
         "GATOS", "GOTAS", "HUEVO", "TINTO", "NAVES",
         "VERDE", "MELON", "YUYOS", "PIANO", "PISOS"
-        /* Agregar 5 palabras más */
+        ,"NAVIO", "MORIR", "REDES", "CINCO", "BARCO"
     ];
 
     return ($coleccionPalabras);
 }
 
 /* ****COMPLETAR***** */
+/**
+ * Una funcion que ejecuta una partida de wordix con la palabra elegida
+ * @param array $jugarConPalabra
+ * @return   
+ */ 
 
+function partidaConPalabra($jugarConPalabra){
+    // string $nombrePalabraElegida, $numeroPalabraElegida
+    echo"Ingrese su nombre: ";
+    $nombrePalabraElegida = trim(fgets(STDIN));
+    echo "Numero de la palabra elegida: ";
+    $numeroPalabraElegida = trim(fgets(STDIN));
+
+}
 
 
 /**************************************/
