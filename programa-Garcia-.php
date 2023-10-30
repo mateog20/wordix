@@ -8,7 +8,7 @@ include_once("wordix.php");
 /**************************************/
 
 /* Apellido, Nombre. Legajo. Carrera. mail. Usuario Github */
-/* Garcia Mateo - FAI-4226 - Tecnicatura en Desarrollo Web - mateo.garcia@ - Github: mateog20*/
+/* ****COMPLETAR***** */
 
 
 /**************************************/
@@ -39,29 +39,24 @@ function cargarColeccionPalabras()
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
 
-/*Declaración de variables:
-    int $opciones
-*/
+//Declaración de variables:
+
 
 //Inicialización de variables:
+
 
 //Proceso:
 
 $partida = jugarWordix("MELON", strtolower("MaJo"));
 //print_r($partida);
 //imprimirResultado($partida);
+
+
+
+/*
 do {
-    $opcion = '
-    1) Jugar wordix con una palabra elegida
-    2) Jugar wordix con una palabra aleatoria
-    2) Mostrar una partida
-    3) Mostrar la primera partida ganadora 
-    5) Mostrar resumen de Jugador  
-    6) Mostrar listado de partidas ordenadas por jugador y por palabra
-    7) Agregar una palabra de 5 letras a wordix
-    8) Salir
-    ';
-    $opcion = trim(fgets(STDIN));
+    $opcion = ...;
+
     
     switch ($opcion) {
         case 1: 
@@ -79,5 +74,15 @@ do {
         
             //...
     }
-} while ($opcion != 8);
+} while ($opcion != X);
+*/
+/**
+ * 
+ * @param string $nombreUsuario
+ * @param array $coleccionPalabras
+ */
+function palabraAleatoria($nombreUsuario, $coleccionPalabrascole){
 
+
+    rand(int 0, int count($coleccionPalabrascole)): int;
+}
