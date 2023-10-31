@@ -60,29 +60,7 @@ function palabraAlazar ($listaPalabras){
     return ($palabraAlazar);
 }
 
-/**
- * Muestra el menu por pantalla y da a elegir el modo de juego
- * @return int
- */
-function seleccionarOpcion (){
-    // int $modoDeJuego
-   do {
-   
-    echo "Elija un modo de juego\n\n1) Jugar wordix con una palabra elegida\n
-    2) Jugar wordix con una palabra aleatoria\n
-    3) Mostrar una partida\n
-    4) Mostrar la primera partida ganadora\n 
-    5) Mostrar resumen de Jugador  \n
-    6) Mostrar listado de partidas ordenadas por jugador y por palabra\n
-    7) Agregar una palabra de 5 letras a wordix\n
-    8) Salir";
-    $modoDeJuego = trim(fgets(STDIN));
-    if($modoDeJuego>8 || $modoDeJuego<1){
-echo"El numero ingresado no es valido, ingrese un numero nuevamente";
-    }
-} while ($modoDeJuego>8 || $modoDeJuego<1);
-return $modoDeJuego;
-}
+
 
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
