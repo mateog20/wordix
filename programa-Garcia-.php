@@ -40,8 +40,7 @@ function cargarColeccionPalabras()
 
 function partidaConPalabra($jugarConPalabra){
     // string $nombrePalabraElegida, $numeroPalabraElegida
-    echo"Ingrese su nombre: ";
-    $nombrePalabraElegida = trim(fgets(STDIN));
+    print_r ($jugarConPalabra);
     echo "Numero de la palabra elegida: ";
     $numeroPalabraElegida = trim(fgets(STDIN));
     
@@ -74,25 +73,24 @@ function palabraAlazar ($listaPalabras){
 
 //Proceso:
 
-$partida = jugarWordix("MELON", strtolower("MaJo"));
+//$partida = jugarWordix("MELON", strtolower("MaJo"));
 //print_r($partida);
 //imprimirResultado($partida);
 do {
-    $opcion = '
-    1) Jugar wordix con una palabra elegida
-    2) Jugar wordix con una palabra aleatoria
-    2) Mostrar una partida
-    3) Mostrar la primera partida ganadora 
-    5) Mostrar resumen de Jugador  
-    6) Mostrar listado de partidas ordenadas por jugador y por palabra
-    7) Agregar una palabra de 5 letras a wordix
-    8) Salir
-    ';
-    $opcion = trim(fgets(STDIN));
-    
+    echo
+    '   1) Jugar wordix con una palabra elegida
+        2) Jugar wordix con una palabra aleatoria
+        2) Mostrar una partida
+        3) Mostrar la primera partida ganadora
+        5) Mostrar resumen de Jugador  
+        6) Mostrar listado de partidas ordenadas por jugador y por palabra
+        7) Agregar una palabra de 5 letras a wordix
+        8) Salir
+        Escriba el numero de la opcion: ';
+    $opcion=trim(fgets(STDIN));
     switch ($opcion) {
         case 1: 
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 1
+            echo partidaConPalabra(cargarColeccionPalabras());
 
             break;
         case 2: 
