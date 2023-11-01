@@ -115,7 +115,24 @@ function palabraAlazar ($listaPalabras){
     $palabraAlazar = $listaPalabras[$numAleatoreo];
     return ($palabraAlazar);
 }
+function leerPalabraCincoLetras(){
+    //STRING $palabra . $espacio ENTERO $cantLetras BOLEANO $tieneCinco . $noTieneEspacio
+    $noTieneCinco= false;
+    $tieneEspacio= false;
+    $espacio= " ";
+    do{
+        echo "ingrese una palabra de 5 letras: ";
+        $palabra=trim(fgets(STDIN));
+        $palabra=strtoupper($palabra);
+        $cantLetras=strlen($palabra);
+        $tieneEspacio=strpos($palabra,$espacio);
+        if($cantLetras<>5){
+            $noTieneCinco=true;
+        }
+    }while($noTieneCinco || $tieneEspacio);
 
+    return $palabra;
+}
 
 
 /**************************************/
@@ -178,4 +195,9 @@ do{
             echo "Has ingresado una opción invalida";
     }
 } while ($opcion != 8);
+/**
+ * solicitar al usuario una palabra de 5 letras
+ * @param 
+ * @return STRING 
+ */
 
