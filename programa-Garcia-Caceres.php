@@ -9,7 +9,7 @@ include_once("wordix.php");
 
 /* Apellido, Nombre. Legajo. Carrera. mail. Usuario Github */
 /* Garcia Mateo - FAI-4226 - Tecnicatura en Desarrollo Web - mateo.garcia@ - Github: mateog20*/
-
+/* Felipe Caceres Rapetti - FAI-4225 - Tecnicatura en Desarrollo Web felipe.caceres@ - Github: feli2636*/
 
 /**************************************/
 /***** DEFINICION DE FUNCIONES ********/
@@ -47,7 +47,29 @@ function partidaConPalabra($jugarConPalabra){
     
 
 }
+/**
+ * solicitar al usuario una palabra de 5 letras
+ * @param 
+ * @return STRING 
+ */
+function leerPalabraCincoLetras(){
+    //STRING $palabra . $espacio ENTERO $cantLetras BOLEANO $tieneCinco . $noTieneEspacio
+    $noTieneCinco= false;
+    $tieneEspacio= false;
+    $espacio= " ";
+    do{
+        echo "ingrese una palabra de 5 letras: ";
+        $palabra=trim(fgets(STDIN));
+        $palabra=strtoupper($palabra);
+        $cantLetras=strlen($palabra);
+        $tieneEspacio=strpos($palabra,$espacio);
+        if($cantLetras<>5){
+            $noTieneCinco=true;
+        }
+    }while($noTieneCinco || $tieneEspacio);
 
+    return $palabra;
+}
 
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
