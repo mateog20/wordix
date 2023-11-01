@@ -1,8 +1,5 @@
 <?php
 include_once("wordix.php");
-
-
-
 /**************************************/
 /***** DATOS DE LOS INTEGRANTES *******/
 /**************************************/
@@ -25,7 +22,7 @@ function cargarColeccionPalabras()
         "MUJER", "QUESO", "FUEGO", "CASAS", "RASGO",
         "GATOS", "GOTAS", "HUEVO", "TINTO", "NAVES",
         "VERDE", "MELON", "YUYOS", "PIANO", "PISOS"
-        ,"NAVIO", "MORIR", "REDES", "CINCO", "BARCO"
+        ,"NAVÍO", "MORIR", "REDES", "CINCO", "BARCO"
     ];
 
     return ($coleccionPalabras);
@@ -40,19 +37,31 @@ function cargarColeccionPalabras()
  */ 
 function elegirPalabra($listaPalabrasElegir){
     // string $nombrePalabraElegida, $numeroPalabraElegida
+    $palabrasUsadas=[];
    foreach ($listaPalabrasElegir as  $indice => $elemento){
         echo "La palabra $indice es $elemento \n";
    }
+do
+{
     echo "Escriba el numero de la palabra que quiere usar en su partida: ";
     $numeroPalabraElegida = trim(fgets(STDIN));
-    while($numeroPalabraElegida < 0 || $numeroPalabraElegida >= count($listaPalabrasElegir) || is_int($numeroPalabraElegida) )
-    // la funcion is_int comprueba que la variable contenga un valor entero
+   if( $numeroPalabraElegida >= 0 && $numeroPalabraElegida < count($listaPalabrasElegir))
+   {
+    $nombrePalabraElegida=$listaPalabrasElegir[$numeroPalabraElegida];
+    $palabrasUsadas[$numeroPalabraElegida]=$nombrePalabraElegida;
+   } 
+    elseif (in_array ($numeroPalabraElegida ,$palabrasUsadas) )
     {
-        echo "Has ingresado un numero invalido, ingresa otro: ";
-        $numeroPalabraElegida = trim(fgets(STDIN));
+        echo "La palabra que elegiste ya fue jugada.";
     }
+    else
+    {
+        echo "Numero elegido incorrecto, ingrese uno valido";
+    }
+}while($numeroPalabraElegida < 0 || $numeroPalabraElegida >= count($listaPalabrasElegir));
     return $listaPalabrasElegir[$numeroPalabraElegida];
 }
+
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra alazar
  * @param array $listaPalabras
@@ -99,11 +108,12 @@ do {
         8) Salir
         Escriba el numero de la opción: ';
     $opcion=trim(fgets(STDIN));
+
     switch ($opcion) {
         case 1: 
             echo "Antes de iniciar a jugar wordix indique su nombre: ";
-            $palabraElegida= elegirPalabra(cargarColeccionPalabras());
-            $partida = jugarWordix($palabraElegida, $nombreJugador);
+           $palabraElegida= elegirPalabra(cargarColeccionPalabras());
+           $partida = jugarWordix($palabraElegida, $nombreJugador);
             $partidasJugadas []= $partida;
             break;
         case 2: 
@@ -111,15 +121,15 @@ do {
 
             break;
         case 3: 
-            foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
-                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n".
-                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
-                     "Jugador: " . $partida["jugador"] . "\n" .
-                     "Puntaje: " . $partida["puntaje"] . "\n" .
-                     "Intentos: " . $partida["intentos"] . "\n" .
-                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
+            // foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
+            //     echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n".
+            //         "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
+            //          "Jugador: " . $partida["jugador"] . "\n" .
+            //          "Puntaje: " . $partida["puntaje"] . "\n" .
+            //          "Intentos: " . $partida["intentos"] . "\n" .
+            //         " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
            
-              }
+            //   }
 
             break;
         
