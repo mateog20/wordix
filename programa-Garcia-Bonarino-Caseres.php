@@ -34,23 +34,24 @@ function cargarColeccionPalabras()
 /* ****COMPLETAR***** */
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra elegida
+ * Recibe como parametro formal una lista de palabras
  * @param array $jugarConPalabra
  * @return array
  */ 
-
-function partidaConPalabra($jugarConPalabra){
+function elegirPalabra($listaPalabrasElegir){
     // string $nombrePalabraElegida, $numeroPalabraElegida
-   foreach ($jugarConPalabra as  $indice => $elemento){
+   foreach ($listaPalabrasElegir as  $indice => $elemento){
         echo "La palabra $indice es $elemento \n";
    }
     echo "Escriba el numero de la palabra que quiere usar en su partida: ";
     $numeroPalabraElegida = trim(fgets(STDIN));
-    while($numeroPalabraElegida < 0 || $numeroPalabraElegida >= count($jugarConPalabra))
+    while($numeroPalabraElegida < 0 || $numeroPalabraElegida >= count($listaPalabrasElegir) || is_int($numeroPalabraElegida) )
+    // la funcion is_int comprueba que la variable contenga un valor entero
     {
         echo "Has ingresado un numero invalido, ingresa otro: ";
         $numeroPalabraElegida = trim(fgets(STDIN));
     }
-    return $jugarConPalabra[$numeroPalabraElegida];
+    return $listaPalabrasElegir[$numeroPalabraElegida];
 }
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra alazar
@@ -73,7 +74,8 @@ function palabraAlazar ($listaPalabras){
 
 /*Declaración de variables:
     int $opcion
-    string $jugarConPalabra, $nombreJugador
+    string $palabraElegida, $nombreJugador
+    array $partida
 */
 
 //Inicialización de variables:
@@ -81,7 +83,6 @@ function palabraAlazar ($listaPalabras){
 //Proceso:
 
 //$partida = jugarWordix("MELON", strtolower("MaJo"));
-//print_r($partida);
 //imprimirResultado($partida);
 echo "Antes de iniciar a jugar wordix indique su nombre: ";
 $nombreJugador = trim(fgets(STDIN));
@@ -100,9 +101,9 @@ do {
     $opcion=trim(fgets(STDIN));
     switch ($opcion) {
         case 1: 
-            $jugarConPalabra= partidaConPalabra(cargarColeccionPalabras());
-            $partida = jugarWordix($jugarConPalabra, $nombreJugador);
-
+            $palabraElegida= elegirPalabra(cargarColeccionPalabras());
+            $partida = jugarWordix($palabraElegida, $nombreJugador);
+            print_r($partida);
             break;
         case 2: 
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 2
@@ -125,7 +126,7 @@ do {
         case 7: 
             //-----------------------
             break;
-        default:
+        default: //Esta opcion en el switch se ejecuta cuando ninguno de los case resulta verdadero
             echo "Has ingresado una opción invalida";
     }
 } while ($opcion != 8);
