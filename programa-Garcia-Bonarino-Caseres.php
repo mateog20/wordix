@@ -84,15 +84,15 @@ function palabraAlazar ($listaPalabras){
 
 //$partida = jugarWordix("MELON", strtolower("MaJo"));
 //imprimirResultado($partida);
-echo "Antes de iniciar a jugar wordix indique su nombre: ";
+$partidasJugadas=[];
 $nombreJugador = trim(fgets(STDIN));
 do {
     echo
     '   
         1) Jugar wordix con una palabra elegida
         2) Jugar wordix con una palabra aleatoria
-        2) Mostrar una partida
-        3) Mostrar la primera partida ganadora
+        3) Mostrar una partida
+        4) Mostrar la primera partida ganadora
         5) Mostrar resumen de Jugador  
         6) Mostrar listado de partidas ordenadas por jugador y por palabra
         7) Agregar una palabra de 5 letras a wordix
@@ -101,16 +101,25 @@ do {
     $opcion=trim(fgets(STDIN));
     switch ($opcion) {
         case 1: 
+            echo "Antes de iniciar a jugar wordix indique su nombre: ";
             $palabraElegida= elegirPalabra(cargarColeccionPalabras());
             $partida = jugarWordix($palabraElegida, $nombreJugador);
-            print_r($partida);
+            $partidasJugadas []= $partida;
             break;
         case 2: 
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 2
+       
 
             break;
         case 3: 
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 3
+            foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
+                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n".
+                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
+                     "Jugador: " . $partida["jugador"] . "\n" .
+                     "Puntaje: " . $partida["puntaje"] . "\n" .
+                     "Intentos: " . $partida["intentos"] . "\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
+           
+              }
 
             break;
         
@@ -125,6 +134,9 @@ do {
             break;
         case 7: 
             //-----------------------
+            break;
+        case 8:
+            echo "Saliendo....";
             break;
         default: //Esta opcion en el switch se ejecuta cuando ninguno de los case resulta verdadero
             echo "Has ingresado una opción invalida";
