@@ -27,24 +27,34 @@ function cargarColeccionPalabras()
 
     return ($coleccionPalabras);
 }
+
+/**
+if( ctype_alpha($nombre[0]) )
+        {
+        echo "El nombre debe comenzar con una letra";
+        !$NoContieneNumero;
+     }
+ */
+ 
 /**
  * Una funcion que solicita el nombre al jugador y comprueba que no comience con un numero
  * @return string
  */
 function solicitarJugador(){
-    $NoContieneNumero=false;
+    $NoContieneNumero=true;
    do
    {
     echo "Ingrese su nombre: ";
     $nombre = trim(fgets(STDIN));
-    if( ctype_alpha($nombre[0]) )
-        {
-        echo "El nombre debe comenzar con una letra";
-        !$NoContieneNumero;
-     }
+ if (ctype_alpha($nombre[0])){
+    $NoContieneNumero=false;
+}else{
+   echo "el nombre debe comenzar en una letra"; 
+}
     } while($NoContieneNumero);
     return $nombre;
 }
+
 /**
  * Una funcion que muestra un menu de opciones
  * @return int
