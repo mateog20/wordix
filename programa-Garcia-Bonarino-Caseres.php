@@ -27,7 +27,47 @@ function cargarColeccionPalabras()
 
     return ($coleccionPalabras);
 }
-
+/**
+ * Una funcion que solicita el nombre al jugador y comprueba que no comience con un numero
+ * @return string
+ */
+function solicitarJugador(){
+    $NoContieneNumero=false;
+   do
+   {
+    echo "Ingrese su nombre: ";
+    $nombre = trim(fgets(STDIN));
+    if( ctype_alpha($nombre[0]) )
+        {
+        echo "El nombre debe comenzar con una letra";
+        !$NoContieneNumero;
+     }
+    } while($NoContieneNumero);
+    return $nombre;
+}
+/**
+ * Una funcion que muestra un menu de opciones
+ * @return int
+ */
+function seleccionarOpcion(){
+    // int $seleccion
+    do{
+        echo
+    '   
+        1) Jugar wordix con una palabra elegida
+        2) Jugar wordix con una palabra aleatoria
+        3) Mostrar una partida
+        4) Mostrar la primera partida ganadora
+        5) Mostrar resumen de Jugador  
+        6) Mostrar listado de partidas ordenadas por jugador y por palabra
+        7) Agregar una palabra de 5 letras a wordix
+        8) Salir
+        Escriba el numero de la opción: ';
+        $seleccion = trim(fgets(STDIN));
+    }while($seleccion < 1 || $seleccion > 8);
+    return $seleccion;
+    
+}
 /* ****COMPLETAR***** */
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra elegida
@@ -43,20 +83,21 @@ function elegirPalabra($listaPalabrasElegir){
    }
 do
 {
-    echo "Escriba el numero de la palabra que quiere usar en su partida: ";
+    echo "Escriba el numero de la palabra que quiere usar en su partida: \n";
     $numeroPalabraElegida = trim(fgets(STDIN));
-   if( $numeroPalabraElegida >= 0 && $numeroPalabraElegida < count($listaPalabrasElegir))
-   {
-    $nombrePalabraElegida=$listaPalabrasElegir[$numeroPalabraElegida];
-    $palabrasUsadas[$numeroPalabraElegida]=$nombrePalabraElegida;
-   } 
-    elseif (in_array ($numeroPalabraElegida ,$palabrasUsadas) )
+    if (in_array ($numeroPalabraElegida ,$palabrasUsadas) )
     {
-        echo "La palabra que elegiste ya fue jugada.";
+        echo "La palabra que elegiste ya fue jugada \n";
     }
+    elseif( $numeroPalabraElegida >= 0 && $numeroPalabraElegida < count($listaPalabrasElegir))
+   {
+        $nombrePalabraElegida = $listaPalabrasElegir[$numeroPalabraElegida];
+        $palabrasUsadas[$numeroPalabraElegida] = $nombrePalabraElegida;
+   } 
+    
     else
     {
-        echo "Numero elegido incorrecto, ingrese uno valido";
+        echo "Numero elegido incorrecto, ingrese uno valido \n";
     }
 }while($numeroPalabraElegida < 0 || $numeroPalabraElegida >= count($listaPalabrasElegir));
     return $listaPalabrasElegir[$numeroPalabraElegida];
@@ -84,34 +125,19 @@ function palabraAlazar ($listaPalabras){
 /*Declaración de variables:
     int $opcion
     string $palabraElegida, $nombreJugador
-    array $partida
+    array $partida,$jugarWordix
 */
 
 //Inicialización de variables:
-
-//Proceso:
-
-//$partida = jugarWordix("MELON", strtolower("MaJo"));
-//imprimirResultado($partida);
+$nombreJugador="";
 $partidasJugadas=[];
-$nombreJugador = trim(fgets(STDIN));
-do {
-    echo
-    '   
-        1) Jugar wordix con una palabra elegida
-        2) Jugar wordix con una palabra aleatoria
-        3) Mostrar una partida
-        4) Mostrar la primera partida ganadora
-        5) Mostrar resumen de Jugador  
-        6) Mostrar listado de partidas ordenadas por jugador y por palabra
-        7) Agregar una palabra de 5 letras a wordix
-        8) Salir
-        Escriba el numero de la opción: ';
-    $opcion=trim(fgets(STDIN));
+//Proceso:
+$nombreJugador = solicitarJugador();
+do{
+    $opcion=seleccionarOpcion();
 
     switch ($opcion) {
         case 1: 
-            echo "Antes de iniciar a jugar wordix indique su nombre: ";
            $palabraElegida= elegirPalabra(cargarColeccionPalabras());
            $partida = jugarWordix($palabraElegida, $nombreJugador);
             $partidasJugadas []= $partida;
