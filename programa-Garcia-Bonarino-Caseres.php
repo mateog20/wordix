@@ -40,11 +40,17 @@ function cargarColeccionPalabras()
 
 function partidaConPalabra($jugarConPalabra){
     // string $nombrePalabraElegida, $numeroPalabraElegida
-    print_r ($jugarConPalabra);
-    echo "Numero de la palabra elegida: ";
+   foreach ($jugarConPalabra as  $indice => $elemento){
+        echo "La palabra $indice es $elemento \n";
+   }
+    echo "Escriba el numero de la palabra que quiere usar en su partida: ";
     $numeroPalabraElegida = trim(fgets(STDIN));
-    
-
+    while($numeroPalabraElegida < 0 || $numeroPalabraElegida >= count($jugarConPalabra))
+    {
+        echo "Has ingresado un numero invalido, ingresa otro: ";
+        $numeroPalabraElegida = trim(fgets(STDIN));
+    }
+    return $jugarConPalabra[$numeroPalabraElegida];
 }
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra alazar
@@ -66,7 +72,8 @@ function palabraAlazar ($listaPalabras){
 /**************************************/
 
 /*Declaración de variables:
-    int $opciones
+    int $opcion
+    string $jugarConPalabra, $nombreJugador
 */
 
 //Inicialización de variables:
@@ -76,9 +83,12 @@ function palabraAlazar ($listaPalabras){
 //$partida = jugarWordix("MELON", strtolower("MaJo"));
 //print_r($partida);
 //imprimirResultado($partida);
+echo "Antes de iniciar a jugar wordix indique su nombre: ";
+$nombreJugador = trim(fgets(STDIN));
 do {
     echo
-    '   1) Jugar wordix con una palabra elegida
+    '   
+        1) Jugar wordix con una palabra elegida
         2) Jugar wordix con una palabra aleatoria
         2) Mostrar una partida
         3) Mostrar la primera partida ganadora
@@ -86,11 +96,12 @@ do {
         6) Mostrar listado de partidas ordenadas por jugador y por palabra
         7) Agregar una palabra de 5 letras a wordix
         8) Salir
-        Escriba el numero de la opcion: ';
+        Escriba el numero de la opción: ';
     $opcion=trim(fgets(STDIN));
     switch ($opcion) {
         case 1: 
-            echo partidaConPalabra(cargarColeccionPalabras());
+            $jugarConPalabra= partidaConPalabra(cargarColeccionPalabras());
+            $partida = jugarWordix($jugarConPalabra, $nombreJugador);
 
             break;
         case 2: 
@@ -114,6 +125,8 @@ do {
         case 7: 
             //-----------------------
             break;
+        default:
+            echo "Has ingresado una opción invalida";
     }
 } while ($opcion != 8);
 
