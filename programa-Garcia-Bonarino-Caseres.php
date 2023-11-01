@@ -115,6 +115,19 @@ function palabraAlazar ($listaPalabras){
     $palabraAlazar = $listaPalabras[$numAleatoreo];
     return ($palabraAlazar);
 }
+
+/**
+ * Da a ingresar el nombre del usuario
+ * @return string
+ */
+function nombreJugador(){
+    //string $nombreUsuario
+    echo "Ingrese su nombre";
+    $nombreUsuario=trim(fgets(STDIN));
+    $nombreUsuario=strtolower($nombreUsuario);
+    return $nombreUsuario;
+}
+
 function leerPalabraCincoLetras(){
     //STRING $palabra . $espacio ENTERO $cantLetras BOLEANO $tieneCinco . $noTieneEspacio
     $noTieneCinco= false;
