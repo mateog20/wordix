@@ -106,9 +106,16 @@ function palabraAlazar($listaPalabras)
 {
     // int $numAleatoreo
     // string $palabraAlazar
-    $numAleatoreo = random_int(0, count($listaPalabras));
-    $palabraAlazar = $listaPalabras[$numAleatoreo];
-    return ($palabraAlazar);
+    $numAleatoreo = random_int(0, count($listaPalabras)-1);
+    $varPalabraAlazar = $listaPalabras[$numAleatoreo];
+
+    echo $varPalabraAlazar," ";
+    echo $numAleatoreo;
+   
+
+   return $varPalabraAlazar;
+  
+  
 }
 /**
  * solicita al usuario una palabra de 5 letras
@@ -160,7 +167,9 @@ do {
             $partidasJugadas[] = $partida;
             break;
         case 2:
-
+            $palabraAleat = palabraAlazar(cargarColeccionPalabras());
+            $partida = jugarWordix($palabraAleat, $nombreJugador);
+            $partidasJugadas[] = $partida;
 
             break;
         case 3:
@@ -195,3 +204,4 @@ do {
             echo "Has ingresado una opción invalida";
     }
 } while ($opcion != 8);
+  
