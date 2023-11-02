@@ -170,8 +170,8 @@ do {
                 echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n".
                     "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
                      "Jugador: " . $partida["jugador"] . "\n" .
-                     "Puntaje: " . $partida["puntaje"] . "\n" .
-                     "Intentos: " . $partida["intentos"] . "\n" .
+                     "Puntaje: " . $partidaElemento["puntaje"] . "\n" .
+                     "Intentos: " . $partidaElemento["intentos"] . "\n" .
                     " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
 
               }
