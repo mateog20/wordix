@@ -105,17 +105,10 @@ function elegirPalabra($listaPalabrasElegir)
 function palabraAlazar($listaPalabras)
 {
     // int $numAleatoreo
-    // string $palabraAlazar
+    // string $varPalabraAlazar
     $numAleatoreo = random_int(0, count($listaPalabras)-1);
     $varPalabraAlazar = $listaPalabras[$numAleatoreo];
-
-    echo $varPalabraAlazar," ";
-    echo $numAleatoreo;
-   
-
    return $varPalabraAlazar;
-  
-  
 }
 /**
  * solicita al usuario una palabra de 5 letras
