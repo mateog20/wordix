@@ -134,7 +134,6 @@ function leerPalabraCincoLetras()
     return  $palabraNueva;
 }
 
-
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
@@ -148,14 +147,16 @@ function leerPalabraCincoLetras()
 //Inicialización de variables:
 $nombreJugador = "";
 $partidasJugadas = [];
+$palabrasUsadas=[];
+$palabraElegida="";
 //Proceso:
 $nombreJugador = solicitarJugador();
 do {
     $opcion = seleccionarOpcion();
-
+    $palabrasUsadas[]=$palabraElegida;
     switch ($opcion) {
         case 1:
-            $palabraElegida = elegirPalabra(cargarColeccionPalabras());
+            $palabraElegida = elegirPalabra(cargarColeccionPalabras(), $palabrasUsadas);
             $partida = jugarWordix($palabraElegida, $nombreJugador);
             $partidasJugadas[] = $partida;
             break;
@@ -163,18 +164,17 @@ do {
             $palabraAleat = palabraAlazar(cargarColeccionPalabras());
             $partida = jugarWordix($palabraAleat, $nombreJugador);
             $partidasJugadas[] = $partida;
-
             break;
         case 3:
-            // foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
-            //     echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n".
-            //         "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
-            //          "Jugador: " . $partida["jugador"] . "\n" .
-            //          "Puntaje: " . $partida["puntaje"] . "\n" .
-            //          "Intentos: " . $partida["intentos"] . "\n" .
-            //         " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
+            foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
+                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n".
+                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
+                     "Jugador: " . $partida["jugador"] . "\n" .
+                     "Puntaje: " . $partida["puntaje"] . "\n" .
+                     "Intentos: " . $partida["intentos"] . "\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
 
-            //   }
+              }
 
             break;
 
