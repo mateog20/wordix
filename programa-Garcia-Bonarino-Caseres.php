@@ -57,7 +57,7 @@ function seleccionarOpcion()
         '   
         1) Jugar wordix con una palabra elegida
         2) Jugar wordix con una palabra aleatoria
-        3) Mostrar una partida
+        3) Mostrar una partidaActual
         4) Mostrar la primera partida ganadora
         5) Mostrar resumen de Jugador  
         6) Mostrar listado de partidas ordenadas por jugador y por palabra
@@ -72,7 +72,7 @@ function seleccionarOpcion()
 
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra elegida
- * Recibe como parametro formal una lista de palabras
+ * Recibe como parametro formal una lista de palabras y otra lista de las palabras que ya fueron usadas
  * @param array $jugarConPalabra
  * @return array
  */
@@ -81,7 +81,7 @@ function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
 {
     do {
         echo "Escriba el numero de la palabra que quiere usar en su partida: ";
-        $indicePalabraElegida = (int)trim(fgets(STDIN));
+        $indicePalabraElegida = trim(fgets(STDIN));
         /* Validamos que el dato ingresado sea un numero y que no sea mayor o menor a la longitud del arreglo
          is_numeric(dato a comprobar) es una funcion que comprueba que el dato sea un numero, devuelve true si encuentra un numero*/
         if (!is_numeric($indicePalabraElegida) || $indicePalabraElegida < 0 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
@@ -140,30 +140,32 @@ function leerPalabraCincoLetras()
 /*Declaración de variables:
     int $opcion
     string $palabraElegida, $nombreJugador
-    array $partida,$jugarWordix
+    array $partidaActual,$jugarWordix
 */
 
 //Inicialización de variables:
 $nombreJugador = "";
 $partidasJugadas = [];
-$palabrasUsadas = [];
+$listaPalabrasUsadas = [];
 $palabraElegida = "";
 //Proceso:
 $nombreJugador = solicitarJugador();
 do {
     $opcion = seleccionarOpcion();
-    $palabrasUsadas[] = $palabraElegida;
     switch ($opcion) {
         case 1:
-            $palabraElegida = elegirPalabra(cargarColeccionPalabras(), $palabrasUsadas);
-            $partida = jugarWordix($palabraElegida, $nombreJugador);
-            $partidasJugadas[] = $partida;
+               //$listaPalabrasUsadas es el arreglo que almacena las palabras que ya fueron jugadas
+            $listaPalabrasUsadas[] = $palabraElegida;
+            $palabraElegida = elegirPalabra(cargarColeccionPalabras(), $listaPalabrasUsadas);
+            // $partidaActual es una variable que almacena el array asociativo jugarWordix
+            $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
+            // $partidasJugadas es un arreglo indexado, este a su vez esta guardando $partidaActual que contiene un arreglo asociativo
+            $partidasJugadas[] = $partidaActual;
             break;
         case 2:
             $palabraAleat = palabraAlazar(cargarColeccionPalabras());
-            $partida = jugarWordix($palabraAleat, $nombreJugador);
-            $partidasJugadas[] = $partida;
-            // $partidasJugadas[] = $solicitarJugador();
+            $partidaActual = jugarWordix($palabraAleat, $nombreJugador);
+            $partidasJugadas[] = $partidaActual;
             break;
         case 3:
             foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
