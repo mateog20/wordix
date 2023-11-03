@@ -27,12 +27,15 @@ const ESTADO_LETRA_PERTENECE = "pertenece";
 /**************************************/
 
 /**
- *  ****COMPLETAR*****
+ *  Esta funcion se encarga de determinar si un numero ingresado por el usuario se encuentra entre un rango de numeros
+ * @param int $min
+ * @param int $max
+ * @return int
  */
 function solicitarNumeroEntre($min, $max)
 {
     //int $numero
-
+    echo"Ingrese el numero";
     $numero = trim(fgets(STDIN));
 
     if (is_numeric($numero)) { //determina si un string es un número. puede ser float como entero.
@@ -120,20 +123,23 @@ function escribirSegunEstado($texto, $estado)
 }
 
 /**
- * ****COMPLETAR*****
+ * Da un mensaje de bienvenida al jugador, funcion sin retorno
+ * @param string $usuario
  */
 function escribirMensajeBienvenida($usuario)
-{
-    echo "***************************************************\n";
+{    
+    echo "〰️〰️〰️〰️〰️〰️〰️〰️〰️👋〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️\n";
     echo "** Hola ";
     escribirAmarillo($usuario);
     echo " Juguemos una PARTIDA de WORDIX! **\n";
-    echo "***************************************************\n";
+    echo "〰️〰️〰️〰️〰️〰️〰️〰️〰️👋〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️\n";
 }
 
 
 /**
- * ****COMPLETAR*****
+ * Una funcion que se encarga de determinar si una cadena de caracteres contiene numeros
+ * @param string $cadena
+ * @return string
  */
 function esPalabra($cadena)
 {
@@ -149,7 +155,8 @@ function esPalabra($cadena)
 }
 
 /**
- *  ****COMPLETAR*****
+ *  Una funcion que permite al usuario agregar una palabra de 5 letras
+ * @return string
  */
 function leerPalabra5Letras()
 {
@@ -167,7 +174,7 @@ function leerPalabra5Letras()
 
 
 /**
- * Inicia una estructura de datos Teclado. La estructura es de tipo: ¿Indexado, asociativo o Multidimensional?
+ * Inicia una estructura de datos Teclado. La estructura es de tipo: asociativo
  *@return array
  */
 function iniciarTeclado()
@@ -329,12 +336,33 @@ function esIntentoGanado($estructuraPalabraIntento)
 
 /**
  * ****COMPLETAR***** documentación de la intefaz
+ * @param int $intentos
  */
-function obtenerPuntajeWordix()  /* ****COMPLETAR***** parámetros formales necesarios */
+function obtenerPuntajeWordix($intentos)  /* ****COMPLETAR***** parámetros formales necesarios */
 {
-
+    //int $puntos
+switch($intentos){
+    case 1:
+        $puntos=6;
+        break;
+    case 2:
+        $puntos=5;
+        break;
+    case 3:
+        $puntos=4;
+        break;
+    case 4:
+        $puntos=3;
+        break;
+    case 5:
+        $puntos=2;
+        break;
+    case 6:
+        $puntos=1;
+        break;
+}
     /* ****COMPLETAR***** cuerpo de la función*/
-    return 0;
+    return $puntos;
 }
 
 /**
@@ -369,7 +397,7 @@ function jugarWordix($palabraWordix, $nombreUsuario)
 
     if ($ganoElIntento) {
         $nroIntento--;
-        $puntaje = obtenerPuntajeWordix();
+        $puntaje = obtenerPuntajeWordix($nroIntento);
         echo "Adivinó la palabra Wordix en el intento " . $nroIntento . "!: " . $palabraIntento . " Obtuvo $puntaje puntos!";
     } else {
         $nroIntento = 0; //reset intento
