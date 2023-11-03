@@ -5,7 +5,12 @@ include_once("wordix.php");
 /**************************************/
 
 /* Apellido, Nombre. Legajo. Carrera. mail. Usuario Github */
-/* Garcia Mateo - FAI-4226 - Tecnicatura en Desarrollo Web - mateogarcia133@gmail.com Github: mateog20*/
+/* 
+    Garcia Mateo Luciano - legajo: FAI-4226 - Tecnicatura en Desarrollo Web - mateo.garcia@est.fi.uncoma.edu.ar - Github: mateog20
+    Caceres  Felipe Rapetti - Legajo: 4225 - Tecnicatura en Desarrollo Web - email: felipe.caceres@est.fi.uncoma.edu.ar - Github: feli2636
+    Bonorino Ignacio - legajo: 4863 - Tecnicatura en Desarrollo Web - email: ignacio.bonorino@est.fi.uncoma.edu.ar - Github: BonorinoIgnacio
+
+*/
 
 
 /**************************************/
@@ -154,7 +159,7 @@ do {
     $opcion = seleccionarOpcion();
     switch ($opcion) {
         case 1:
-               //$listaPalabrasUsadas es el arreglo que almacena las palabras que ya fueron jugadas
+            //$listaPalabrasUsadas es el arreglo que almacena las palabras que ya fueron jugadas
             $listaPalabrasUsadas[] = $palabraElegida;
             $palabraElegida = elegirPalabra(cargarColeccionPalabras(), $listaPalabrasUsadas);
             // $partidaActual es una variable que almacena el array asociativo jugarWordix
