@@ -62,10 +62,11 @@ function seleccionarOpcion()
         5) Mostrar resumen de Jugador  
         6) Mostrar listado de partidas ordenadas por jugador y por palabra
         7) Agregar una palabra de 5 letras a wordix
-        8) Salir
+        8) Cambiar de jugador
+        9) Salir
         Escriba el numero de la opción: ';
         $seleccion = trim(fgets(STDIN));
-    } while ($seleccion < 1 || $seleccion > 8);
+    } while ($seleccion < 1 || $seleccion > 9);
     return $seleccion;
 }
 
@@ -171,9 +172,9 @@ do {
                     "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
                      "Jugador: " . $partida["jugador"] . "\n" .
                      "Puntaje: " . $partidaElemento["puntaje"] . "\n" .
-                     "Intentos: " . $partidaElemento["intentos"] . "\n" .
+                     "Intentos: " . $partidaElemento ["intentos"] . "\n" .
                     " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
-
+  
               }
 
             break;
@@ -191,10 +192,13 @@ do {
             //-----------------------
             break;
         case 8:
+            $nombreJugador = solicitarJugador();
+            break;
+        case 9:
             echo "Saliendo....";
             break;
         default: //Esta opcion en el switch se ejecuta cuando ninguno de los case resulta verdadero
             echo "Has ingresado una opción invalida";
     }
-} while ($opcion != 8);
+} while ($opcion != 9);
   
