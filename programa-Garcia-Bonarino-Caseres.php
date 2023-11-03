@@ -164,17 +164,16 @@ do {
         case 2:
             $palabraAleat = palabraAlazar(cargarColeccionPalabras());
             $partida = jugarWordix($palabraAleat, $nombreJugador);
-            $partidasJugadas[] = $partida;
+            $partidasJugadas[] = $solicitarJugador();
             break;
         case 3:
             foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
                 echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n".
                     "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
-                     "Jugador: " . $partida["jugador"] . "\n" .
+                     "Jugador: " . $partidaElemento["jugador"] . "\n" .
                      "Puntaje: " . $partidaElemento["puntaje"] . "\n" .
                      "Intentos: " . $partidaElemento ["intentos"] . "\n" .
                     " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
-  
               }
 
             break;
