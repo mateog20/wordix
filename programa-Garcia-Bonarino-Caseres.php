@@ -26,7 +26,8 @@ function cargarColeccionPalabras()
     $coleccionPalabras = [
         "MUJER", "QUESO", "FUEGO", "PERRO", "RASGO",
         "ERROR", "PODER", "HUEVO", "TINTO", "CAMPO",
-        "VERDE", "MELON", "BUSCA", "PIANO", "HIELO", "INDIA", "ACTOR", "NADAR", "DADOS", "BARCO"
+        "VERDE", "MELON", "BUSCA", "PIANO", "HIELO",
+        "INDIA", "ACTOR", "NADAR", "DADOS", "BARCO"
     ];
 
     return ($coleccionPalabras);
@@ -54,15 +55,16 @@ function solicitarJugador()
  * Una funcion que muestra un menu de opciones
  * @return int
  */
-function seleccionarOpcion()
+function seleccionarOpcion($jugadorActual)
 {
     // int $seleccion
     do {
+        echo "\n" . "            🔺 Jugador actual: " . $jugadorActual . " 🔺";
         echo
         '   
         1) Jugar wordix con una palabra elegida
         2) Jugar wordix con una palabra aleatoria
-        3) Mostrar una partidaActual
+        3) Mostrar una partida
         4) Mostrar la primera partida ganadora
         5) Mostrar resumen de Jugador  
         6) Mostrar listado de partidas ordenadas por jugador y por palabra
@@ -137,6 +139,24 @@ function leerPalabraCincoLetras()
 
     return  $palabraNueva;
 }
+function ordenarLista($primerPalabra, $segundaPalabra)
+{
+    /*La funcion strcmp() sirve para comparar dos cadenas de caracteres
+        Si el primero es mayor al segundo, la funcion devuelve <0
+        En caso inverso devuelve >0
+        Y si los string que se estan comprando son iguales devuelve 0
+        https://www.php.net/manual/es/function.strcmp.php
+    */
+    $compararPalabra = strcmp($primerPalabra["jugador"], $segundaPalabra["jugador"]);
+    if ($compararPalabra == 0)
+    // Caso donde el usuario es el mismo y debemos ordenar por la palabra
+    {
+        strcmp($primerPalabra["palabraWordix"], $segundaPalabra["palabraWordix"]);
+    }
+
+    return $compararPalabra;
+}
+
 
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
@@ -156,7 +176,7 @@ $palabraElegida = "";
 //Proceso:
 $nombreJugador = solicitarJugador();
 do {
-    $opcion = seleccionarOpcion();
+    $opcion = seleccionarOpcion($nombreJugador);
     switch ($opcion) {
         case 1:
             //$listaPalabrasUsadas es el arreglo que almacena las palabras que ya fueron jugadas
@@ -173,12 +193,12 @@ do {
             $partidasJugadas[] = $partidaActual;
             break;
         case 3:
-            foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
+            foreach ($partidasJugadas as $indicePartidas => $partidaActualElemento) {
                 echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
-                    "Jugador: " . $partidaElemento["jugador"] . "\n" .
-                    "Puntaje: " . $partidaElemento["puntaje"] . "\n" .
-                    "Intentos: " . $partidaElemento["intentos"] . "\n" .
+                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaActualElemento["palabraWordix"] . "\n" .
+                    "Jugador: " . $partidaActualElemento["jugador"] . "\n" .
+                    "Puntaje: " . $partidaActualElemento["puntaje"] . "\n" .
+                    "Intentos: " . $partidaActualElemento["intentos"] . "\n" .
                     " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
             }
 
@@ -191,7 +211,14 @@ do {
             //-----------------------
             break;
         case 6:
-            //-----------------------
+            /* La funcion uasort sirve para ordenar un arreglo de tipo asociativo
+            Donde el programador puede usar una funcion personalizada para indicar el orden que desea en este caso ordenarLista
+            Se podria decir que su syntaxis es uasort($arrayAsociativo , "$funcion de comparacion")
+            https://www.php.net/manual/es/function.uasort.php
+            */
+            uasort($partidasJugadas, "ordenarLista");
+            // print_r(Arreglo) imprime por pantalla el contenido de un arreglo
+            print_r($partidasJugadas);
             break;
         case 7:
             //-----------------------
