@@ -76,28 +76,26 @@ function seleccionarOpcion()
  * @param array $jugarConPalabra
  * @return array
  */
-function elegirPalabra($listaPalabrasElegir)
+function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
+// int $indicePalabraElegida
 {
-    // string $nombrePalabraElegida, $numeroPalabraElegida
-    $palabrasUsadas = [];
-    foreach ($listaPalabrasElegir as  $indice => $elemento) {
-        echo "La palabra $indice es $elemento \n";
-    }
     do {
-        echo "Escriba el numero de la palabra que quiere usar en su partida: \n";
-        $numeroPalabraElegida = trim(fgets(STDIN));
-        if (in_array($numeroPalabraElegida, $palabrasUsadas)) {
-            echo "La palabra que elegiste ya fue jugada \n";
-        } elseif ($numeroPalabraElegida >= 0 && $numeroPalabraElegida < count($listaPalabrasElegir)) {
-            $nombrePalabraElegida = $listaPalabrasElegir[$numeroPalabraElegida];
-            $palabrasUsadas[$numeroPalabraElegida] = $nombrePalabraElegida;
-        } else {
+        echo "Escriba el numero de la palabra que quiere usar en su partida: ";
+        $indicePalabraElegida = (int)trim(fgets(STDIN));
+        /* Validamos que el dato ingresado sea un numero y que no sea mayor o menor a la longitud del arreglo
+         is_numeric(dato a comprobar) es una funcion que comprueba que el dato sea un numero, devuelve true si encuentra un numero*/
+        if (!is_numeric($indicePalabraElegida) || $indicePalabraElegida < 0 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
             echo "Numero elegido incorrecto, ingrese uno valido \n";
+            $indicePalabraElegida = -1;
+            /* in_array es una funcion que nos permite buscar un elemento dentro de un array, devuelve true si encuentra una coincidencia
+             En este caso es utilizada para determinar si el jugador volvio a elegir una palabra de la lista de palabras prohibidas */
+        } elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
+            echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
+            $indicePalabraElegida = -1;
         }
-    } while ($numeroPalabraElegida < 0 || $numeroPalabraElegida >= count($listaPalabrasElegir));
-    return $listaPalabrasElegir[$numeroPalabraElegida];
+    } while ($indicePalabraElegida == -1);
+    return $listaPalabrasElegir[$indicePalabraElegida];
 }
-
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra alazar
  * @param array $listaPalabras
@@ -107,9 +105,9 @@ function palabraAlazar($listaPalabras)
 {
     // int $numAleatoreo
     // string $varPalabraAlazar
-    $numAleatoreo = random_int(0, count($listaPalabras)-1);
+    $numAleatoreo = random_int(0, count($listaPalabras) - 1);
     $varPalabraAlazar = $listaPalabras[$numAleatoreo];
-   return $varPalabraAlazar;
+    return $varPalabraAlazar;
 }
 /**
  * solicita al usuario una palabra de 5 letras
@@ -148,13 +146,13 @@ function leerPalabraCincoLetras()
 //Inicialización de variables:
 $nombreJugador = "";
 $partidasJugadas = [];
-$palabrasUsadas=[];
-$palabraElegida="";
+$palabrasUsadas = [];
+$palabraElegida = "";
 //Proceso:
 $nombreJugador = solicitarJugador();
 do {
     $opcion = seleccionarOpcion();
-    $palabrasUsadas[]=$palabraElegida;
+    $palabrasUsadas[] = $palabraElegida;
     switch ($opcion) {
         case 1:
             $palabraElegida = elegirPalabra(cargarColeccionPalabras(), $palabrasUsadas);
@@ -165,17 +163,17 @@ do {
             $palabraAleat = palabraAlazar(cargarColeccionPalabras());
             $partida = jugarWordix($palabraAleat, $nombreJugador);
             $partidasJugadas[] = $partida;
-           // $partidasJugadas[] = $solicitarJugador();
+            // $partidasJugadas[] = $solicitarJugador();
             break;
         case 3:
             foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
-                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n".
+                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
                     "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
-                     "Jugador: " . $partidaElemento["jugador"] . "\n" .
-                     "Puntaje: " . $partidaElemento["puntaje"] . "\n" .
-                     "Intentos: " . $partidaElemento ["intentos"] . "\n" .
-                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖"."\n";
-              }
+                    "Jugador: " . $partidaElemento["jugador"] . "\n" .
+                    "Puntaje: " . $partidaElemento["puntaje"] . "\n" .
+                    "Intentos: " . $partidaElemento["intentos"] . "\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+            }
 
             break;
 
@@ -201,4 +199,3 @@ do {
             echo "Has ingresado una opción invalida";
     }
 } while ($opcion != 9);
-  
