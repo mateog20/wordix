@@ -53,28 +53,6 @@ function primeraPartidaGanada($partidaActual, $selectora){
                 }
                 return $datosPrimeraPartidaGanadora;
             }
-/**
- * Resumen de la primera partida ganada
- * @param array $partida
- */
-function primeraPart($partida){
-    // boolean $selectora
-   // $selectora=true;
-    
-    echo $partida["puntaje"] ;
-    }
-    //echo $gano;
-
-
-    //$partidaElemento["puntaje"];
-   
-   /** 
-    *  if($gano>=1 && $selectora){
-    *    echo $partidaActual;
-    *    $selectora= false;
-    
-        */
-
 
 /**
  * Una funcion que solicita el nombre al jugador y comprueba que no comience con un numero
@@ -96,7 +74,8 @@ function solicitarJugador()
 }
 
 /**
- * Una funcion que muestra un menu de opciones
+* Una función que muestra un menu de opciones con la que el usuario puede interactuar
+ * @param string $jugadorActual
  * @return int
  */
 function seleccionarOpcion($jugadorActual)
@@ -125,6 +104,7 @@ function seleccionarOpcion($jugadorActual)
  * Una funcion que ejecuta una partida de wordix con la palabra elegida
  * Recibe como parametro formal una lista de palabras y otra lista de las palabras que ya fueron usadas
  * @param array $jugarConPalabra
+ * @param array $palabraProhibida
  * @return array
  */
 function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
@@ -183,6 +163,14 @@ function leerPalabraCincoLetras()
 
     return  $palabraNueva;
 }
+/**
+ * Esta funcion muestra la lista de partidas jugadas ordenadas alfabéticamente por nombre o por palabra en ese orden de prioridad
+ * Contiene dos parámetros de entrada, a pesar de que su parámetro actual es uno solo ya que su parámetro actual es un arreglo multidimensional
+ * Donde indicamos que vamos a usar dos elementos de este, en este caso los elementos son los arreglos asociativos que contienen la información.
+ * @param array $primerJugador
+ * @param array $segundoJugador
+ * @return int
+ */
 function ordenarLista($primerPalabra, $segundaPalabra)
 {
     /*La funcion strcmp() sirve para comparar dos cadenas de caracteres
@@ -207,14 +195,12 @@ function ordenarLista($primerPalabra, $segundaPalabra)
 /**************************************/
 
 /*Declaración de variables:
-    int $opcion
-    string $palabraElegida, $nombreJugador
-    array $partidaActual,$jugarWordix
+     int $opcion
+    string $palabraElegida, $nombreJugador, $palabraAleatoria
+    array $partidaActual, $jugarWordix, $listaPalabrasUsadas, $partidasJugadas
 */
 
 //Inicialización de variables: 
-$cont=0; 
-$selectora=true;
 $nombreJugador = "";
 $partidasJugadas = [];
 $listaPalabrasUsadas = [];
@@ -222,11 +208,6 @@ $palabraElegida = "";
 //Proceso:
 $nombreJugador = solicitarJugador();
 do {
-    $cont=$cont +$partidaActual["puntaje"];
-    echo $cont;
-    if($cont<=1){
-        $selectora=false;
-    }
     $opcion = seleccionarOpcion($nombreJugador);
     switch ($opcion) {
         case 1:
@@ -274,7 +255,7 @@ do {
             /* La funcion uasort sirve para ordenar un arreglo de tipo asociativo
             Donde el programador puede usar una funcion personalizada para indicar el orden que desea en este caso ordenarLista
             Se podria decir que su syntaxis es uasort($arrayAsociativo , "$funcion de comparacion")
-            c:\Users\Administrator\Desktop\ProyectoFinal
+            https://www.php.net/manual/es/function.uasort.php
             */
             uasort($partidasJugadas, "ordenarLista");
             // print_r(Arreglo) imprime por pantalla el contenido de un arreglo
