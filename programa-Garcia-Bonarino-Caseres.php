@@ -32,7 +32,27 @@ function cargarColeccionPalabras()
 
     return ($coleccionPalabras);
 }
+/**
+ * Guarda los datos de la primera partida que se gano
+ * @param array $partidaActual
+ * @param boolean $selectora
+ * @return string
+ */
+function primeraPartidaGanada($partidaActual, $selectora){
+                //int $gano
 
+                  $gano = $partidaActual["puntaje"];
+                  if($gano>=1 && $selectora){
+                    $datosPrimeraPartidaGanadora =" ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                    "Partida WORDIX - palabra: " . $partidaActual["palabraWordix"] . "\n" .
+                    "Jugador: " . $partidaActual["jugador"] . "\n" .
+                    "Puntaje: " . $partidaActual["puntaje"] . "\n" .
+                    "Intentos: " . $partidaActual["intentos"] . "\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                 $selectora= false; 
+                }
+                return $datosPrimeraPartidaGanadora;
+            }
 /**
  * Resumen de la primera partida ganada
  * @param array $partida
@@ -192,7 +212,8 @@ function ordenarLista($primerPalabra, $segundaPalabra)
     array $partidaActual,$jugarWordix
 */
 
-//Inicialización de variables:  
+//Inicialización de variables: 
+$cont=0; 
 $selectora=true;
 $nombreJugador = "";
 $partidasJugadas = [];
@@ -201,6 +222,11 @@ $palabraElegida = "";
 //Proceso:
 $nombreJugador = solicitarJugador();
 do {
+    $cont=$cont +$partidaActual["puntaje"];
+    echo $cont;
+    if($cont<=1){
+        $selectora=false;
+    }
     $opcion = seleccionarOpcion($nombreJugador);
     switch ($opcion) {
         case 1:
@@ -211,11 +237,13 @@ do {
             $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
             // $partidasJugadas es un arreglo indexado, este a su vez esta guardando $partidaActual que contiene un arreglo asociativo
             $partidasJugadas[] = $partidaActual;
+           
             break;
         case 2:
             $palabraAleat = palabraAlazar(cargarColeccionPalabras());
             $partidaActual = jugarWordix($palabraAleat, $nombreJugador);
             $partidasJugadas[] = $partidaActual;
+           
             break;
         case 3:
             foreach ($partidasJugadas as $indicePartidas => $partidaActualElemento) {
@@ -235,29 +263,9 @@ do {
                 *   en case1 y case2, y poder retornarla en el case4*/
 
                
+            echo primeraPartidaGanada($partidaActual, $selectora);
 
-/**
- * Guarda los datos de la primera partida que se gano
- * @param array $partidaActual
- * @param boolean $selectora
- * @return string
- */
-function primeraPartidaGanada($partidaActual, $selectora){
-                //int $gano
-
-                  $gano = $partidaActual["puntaje"];
-                  if($gano>=1 && $selectora){
-                    $datosPrimeraPartidaGanadora =" ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                    "Partida WORDIX - palabra: " . $partidaActual["palabraWordix"] . "\n" .
-                    "Jugador: " . $partidaActual["jugador"] . "\n" .
-                    "Puntaje: " . $partidaActual["puntaje"] . "\n" .
-                    "Intentos: " . $partidaActual["intentos"] . "\n" .
-                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
-                 $selectora= false; 
-                }
-                echo $datosPrimeraPartidaGanadora;
-            }
-                 $primeraPartidaGanada($partidaActual, $selectora);
+                         
             break;
         case 5:
             //-----------------------
@@ -284,4 +292,6 @@ function primeraPartidaGanada($partidaActual, $selectora){
         default: //Esta opcion en el switch se ejecuta cuando ninguno de los case resulta verdadero
             echo "Has ingresado una opción invalida";
     }
+    
+
 } while ($opcion != 9);
