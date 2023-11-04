@@ -214,7 +214,7 @@ do {
             /* La funcion uasort sirve para ordenar un arreglo de tipo asociativo
             Donde el programador puede usar una funcion personalizada para indicar el orden que desea en este caso ordenarLista
             Se podria decir que su syntaxis es uasort($arrayAsociativo , "$funcion de comparacion")
-            https://www.php.net/manual/es/function.uasort.php
+            c:\Users\Administrator\Desktop\ProyectoFinal
             */
             uasort($partidasJugadas, "ordenarLista");
             // print_r(Arreglo) imprime por pantalla el contenido de un arreglo
