@@ -234,18 +234,30 @@ do {
                /**  POSIBLE SOLUCION----> lograr meterla en una funcion que NO retorne el resultado e invocarla
                 *   en case1 y case2, y poder retornarla en el case4*/
 
-                // ERROR ---------- $indicePartidas no inicializado?
+               
+
+/**
+ * Guarda los datos de la primera partida que se gano
+ * @param array $partidaActual
+ * @param boolean $selectora
+ * @return string
+ */
+function primeraPartidaGanada($partidaActual, $selectora){
+                //int $gano
+
                   $gano = $partidaActual["puntaje"];
-                  if($gano>=1 && $selectora==true){
-                    $guardar =" ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaActual["palabraWordix"] . "\n" .
+                  if($gano>=1 && $selectora){
+                    $datosPrimeraPartidaGanadora =" ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                    "Partida WORDIX - palabra: " . $partidaActual["palabraWordix"] . "\n" .
                     "Jugador: " . $partidaActual["jugador"] . "\n" .
                     "Puntaje: " . $partidaActual["puntaje"] . "\n" .
                     "Intentos: " . $partidaActual["intentos"] . "\n" .
                     " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
                  $selectora= false; 
                 }
-                echo $guardar;
+                echo $datosPrimeraPartidaGanadora;
+            }
+                 $primeraPartidaGanada($partidaActual, $selectora);
             break;
         case 5:
             //-----------------------
