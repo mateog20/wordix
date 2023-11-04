@@ -32,6 +32,30 @@ function cargarColeccionPalabras()
 
     return ($coleccionPalabras);
 }
+
+/**
+ * Resumen de la primera partida ganada
+ * @param array $partida
+ */
+function primeraPart($partida){
+    // boolean $selectora
+   // $selectora=true;
+    
+    echo $partida["puntaje"] ;
+    }
+    //echo $gano;
+
+
+    //$partidaElemento["puntaje"];
+   
+   /** 
+    *  if($gano>=1 && $selectora){
+    *    echo $partidaActual;
+    *    $selectora= false;
+    
+        */
+
+
 /**
  * Una funcion que solicita el nombre al jugador y comprueba que no comience con un numero
  * @return string
@@ -168,7 +192,8 @@ function ordenarLista($primerPalabra, $segundaPalabra)
     array $partidaActual,$jugarWordix
 */
 
-//Inicialización de variables:
+//Inicialización de variables:  
+$selectora=true;
 $nombreJugador = "";
 $partidasJugadas = [];
 $listaPalabrasUsadas = [];
@@ -205,7 +230,22 @@ do {
             break;
 
         case 4:
-            //-----------------------
+            //  ERROR -------------- solo guarda la partida previa a elegir la opcion 4
+               /**  POSIBLE SOLUCION----> lograr meterla en una funcion que NO retorne el resultado e invocarla
+                *   en case1 y case2, y poder retornarla en el case4*/
+
+                // ERROR ---------- $indicePartidas no inicializado?
+                  $gano = $partidaActual["puntaje"];
+                  if($gano>=1 && $selectora==true){
+                    $guardar =" ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaActual["palabraWordix"] . "\n" .
+                    "Jugador: " . $partidaActual["jugador"] . "\n" .
+                    "Puntaje: " . $partidaActual["puntaje"] . "\n" .
+                    "Intentos: " . $partidaActual["intentos"] . "\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                 $selectora= false; 
+                }
+                echo $guardar;
             break;
         case 5:
             //-----------------------
