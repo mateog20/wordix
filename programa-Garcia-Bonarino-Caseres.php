@@ -40,6 +40,7 @@ function cargarColeccionPalabras()
  */
 function primeraPartidaGanada($partidaActual, $selectora){
                 //int $gano
+                //string $datosPrimeraPartida
 
                   $gano = $partidaActual["puntaje"];
                   if($gano>=1 && $selectora){
@@ -51,7 +52,7 @@ function primeraPartidaGanada($partidaActual, $selectora){
                     " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
                  $selectora= false; 
                 }
-                return $datosPrimeraPartidaGanadora;
+                echo $datosPrimeraPartidaGanadora;
             }
 
 /**
@@ -201,6 +202,7 @@ function ordenarLista($primerPalabra, $segundaPalabra)
 */
 
 //Inicialización de variables: 
+$selectora=true;
 $nombreJugador = "";
 $partidasJugadas = [];
 $listaPalabrasUsadas = [];
@@ -244,7 +246,7 @@ do {
                 *   en case1 y case2, y poder retornarla en el case4*/
 
                
-            echo primeraPartidaGanada($partidaActual, $selectora);
+           primeraPartidaGanada($partidaActual, $selectora);
 
                          
             break;
