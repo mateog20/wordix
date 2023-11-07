@@ -142,28 +142,31 @@ function palabraAlazar($listaPalabras)
     return $varPalabraAlazar;
 }
 /**
- * solicita al usuario una palabra de 5 letras
+ *  solicita al usuario una palabra de 5 letras
  * @return STRING 
  */
-function leerPalabraCincoLetras()
-{
-    //STRING $palabra . $espacio ENTERO $cantLetras BOLEANO $tieneCinco . $noTieneEspacio
-    $noTieneCinco = false;
-    $tieneEspacio = false;
-    $espacio = " ";
-    do {
+function leerPalabraCincoLetras(){
+    // STRING $palabraNueva BOLEANO $palabraValida ENTERO $posicion
+    do{
         echo "ingrese una palabra de 5 letras: ";
         $palabraNueva = trim(fgets(STDIN));
-        $palabraNueva = strtoupper($palabraNueva);
-        $cantLetras = strlen($palabraNueva);
-        $tieneEspacio = strpos($palabraNueva, $espacio);
-        if ($cantLetras <> 5) {
-            $noTieneCinco = true;
+        $posicion = 0;
+        $palabraValida=false;
+        if(strlen($palabraNueva) == 5) {
+            $palabraValida = true;
+            $palabraNueva = strtoupper($palabraNueva);
         }
-    } while ($noTieneCinco || $tieneEspacio);
-
-    return  $palabraNueva;
+        while($palabraValida && $posicion < 5) {
+            if($palabraNueva[$posicion]>='A' && $palabraNueva[$posicion]<='Z') {  //orden lexico
+                $posicion++; 
+            } else {
+                $palabraValida = false;
+            }
+        }
+    }while($palabraValida==false); 
+    return $palabraNueva;
 }
+
 /**
  * Esta funcion muestra la lista de partidas jugadas ordenadas alfabéticamente por nombre o por palabra en ese orden de prioridad
  * Contiene dos parámetros de entrada, a pesar de que su parámetro actual es uno solo ya que su parámetro actual es un arreglo multidimensional
@@ -190,6 +193,25 @@ function ordenarLista($primerPalabra, $segundaPalabra)
     return $compararPalabra;
 }
 
+/**
+ * muestra una partida
+ * @param array $partidasJugadas
+ * @return array
+ */
+function mostrarUnaPartida($partidasJugadas){
+    //ENTERO $indice
+    $maximo=count($partidasJugadas);
+    $minimo=0;
+    echo "que partida quiere ver? \n";
+    echo solicitarNumeroEntre($minimo,$maximo);
+    $indice= solicitarNumeroEntre($minimo,$maximo);
+echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+    "Partida WORDIX " . $indice . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
+    "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
+    "Puntaje: " . $partidasJugadas[$indice]["puntaje"] . "\n" .
+    "Intentos: " . $partidasJugadas[$indice]["intentos"] . "\n" .
+    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+}
 
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
@@ -229,14 +251,7 @@ do {
            
             break;
         case 3:
-            foreach ($partidasJugadas as $indicePartidas => $partidaActualElemento) {
-                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaActualElemento["palabraWordix"] . "\n" .
-                    "Jugador: " . $partidaActualElemento["jugador"] . "\n" .
-                    "Puntaje: " . $partidaActualElemento["puntaje"] . "\n" .
-                    "Intentos: " . $partidaActualElemento["intentos"] . "\n" .
-                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
-            }
+            echo mostrarUnaPartida($partidasJugadas);
 
             break;
 
@@ -264,7 +279,8 @@ do {
             print_r($partidasJugadas);
             break;
         case 7:
-            //-----------------------
+            cargarColeccionPalabras();
+            echo $coleccionPalabras= leerPalabraCincoLetras();
             break;
         case 8:
             $nombreJugador = solicitarJugador();
@@ -278,3 +294,4 @@ do {
     
 
 } while ($opcion != 9);
+
