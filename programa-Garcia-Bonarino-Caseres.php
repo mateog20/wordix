@@ -38,21 +38,26 @@ function cargarColeccionPalabras()
  * @param boolean $selectora
  * @return string
  */
-function primeraPartidaGanada($partidaActual, $selectora){
+function primeraPartidaGanada($partidaActual)
+{
                 //int $gano
                 //string $datosPrimeraPartida
+                    $i=0;
+                    $gano = -1;
+                    while($i < count($partidaActual) )
+                    {
+                        $puntaje = $partidaActual[$i]["puntaje"];
+              
+                        if( $puntaje > $gano )
+                        {
+                            $gano = $puntaje;
+                        }
+                        $i++;
 
-                  $gano = $partidaActual["puntaje"];
-                  if($gano>=1 && $selectora){
-                    $datosPrimeraPartidaGanadora =" ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                    "Partida WORDIX - palabra: " . $partidaActual["palabraWordix"] . "\n" .
-                    "Jugador: " . $partidaActual["jugador"] . "\n" .
-                    "Puntaje: " . $partidaActual["puntaje"] . "\n" .
-                    "Intentos: " . $partidaActual["intentos"] . "\n" .
-                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
-                 $selectora= false; 
-                }
-                echo $datosPrimeraPartidaGanadora;
+                        
+                    }
+                    return $i;
+
             }
 
 /**
@@ -202,7 +207,6 @@ function ordenarLista($primerPalabra, $segundaPalabra)
 */
 
 //Inicialización de variables: 
-$selectora=true;
 $nombreJugador = "";
 $partidasJugadas = [];
 $listaPalabrasUsadas = [];
@@ -245,8 +249,8 @@ do {
                /**  POSIBLE SOLUCION----> lograr meterla en una funcion que NO retorne el resultado e invocarla
                 *   en case1 y case2, y poder retornarla en el case4*/
 
-               
-           primeraPartidaGanada($partidaActual, $selectora);
+
+           echo primeraPartidaGanada($partidasJugadas);
 
                          
             break;
