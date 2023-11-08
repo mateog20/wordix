@@ -281,18 +281,14 @@ do {
             break;
 
         case 4:
-            //  ERROR -------------- solo guarda la partida previa a elegir la opcion 4
-               /**  POSIBLE SOLUCION----> lograr meterla en una funcion que NO retorne el resultado e invocarla
-                *   en case1 y case2, y poder retornarla en el case4*/
-                
                 $jugador = $partidaActual["jugador"];
              $i = primeraPartidaGanada($jugador,$partidasJugadas);
-           echo $i;
-             echo  "JUGADOR: ",$partidasJugadas[$i]["jugador"].
-                   "\nPALABRA: ",$partidasJugadas[$i] ["palabraWordix"] .
-                   "\nPUNTAJE: ",$partidasJugadas[$i]["puntaje"].
-                    "\nINTENTOS:",$partidasJugadas[$i]["intentos"];
-                         
+            echo  " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+             "Partida WORDIX " . $i+1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
+             "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
+             "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
+             "Intentos: " . $partidasJugadas[$i]["intentos"] . "\n" .
+             " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
             break;
         case 5:
             //-----------------------
