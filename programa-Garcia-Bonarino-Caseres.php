@@ -38,27 +38,48 @@ function cargarColeccionPalabras()
  * @param boolean $selectora
  * @return string
  */
-function primeraPartidaGanada($partidaActual)
+/*function primeraPartidaGanada($partidaActual,$partidasJugadas)
 {
                 //int $gano
                 //string $datosPrimeraPartida
                     $i=0;
                     $gano = -1;
-                    while($i < count($partidaActual) )
+                    while($i < count($partidasJugadas) )
                     {
-                        $puntaje = $partidaActual[$i]["puntaje"];
+                        $puntaje = $partidaActual["puntaje"];
               
                         if( $puntaje > $gano )
                         {
-                            $gano = $puntaje;
-                        }
+                            $gano = 7; }
                         $i++;
 
                         
                     }
                     return $i;
 
-            }
+            }*/
+
+            function primeraPartidaGanada($jugador,$partidasJugadas)
+            {
+                            //int $gano
+                            //string $datosPrimeraPartida
+                                $i=0;
+                                $gano = -1;
+                                while($i < count($partidasJugadas) && $gano == -1 )
+                                {
+                                    
+                                    
+                                    if($partidasJugadas[$i]["jugador"]==$jugador && $partidasJugadas[$i]["puntaje"]>=1){
+                                        $gano= $i;
+                                       
+                                    }
+                                    
+                                    $i++;
+                                
+                                }
+                                return $gano;
+            
+                        }
 
 /**
  * Una funcion que solicita el nombre al jugador y comprueba que no comience con un numero
@@ -263,10 +284,14 @@ do {
             //  ERROR -------------- solo guarda la partida previa a elegir la opcion 4
                /**  POSIBLE SOLUCION----> lograr meterla en una funcion que NO retorne el resultado e invocarla
                 *   en case1 y case2, y poder retornarla en el case4*/
-
-
-           echo primeraPartidaGanada($partidasJugadas);
-
+                
+                $jugador = $partidaActual["jugador"];
+             $i = primeraPartidaGanada($jugador,$partidasJugadas);
+           echo $i;
+             echo  "JUGADOR: ",$partidasJugadas[$i]["jugador"].
+                   "\nPALABRA: ",$partidasJugadas[$i] ["palabraWordix"] .
+                   "\nPUNTAJE: ",$partidasJugadas[$i]["puntaje"].
+                    "\nINTENTOS:",$partidasJugadas[$i]["intentos"];
                          
             break;
         case 5:
