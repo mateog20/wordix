@@ -106,19 +106,21 @@ function cargarColeccionPalabras()
 function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
 {
     // int $indicePalabraElegida
+  
     do {
         echo "Puedes seleccionar entre: " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
         $indicePalabraElegida = trim(fgets(STDIN));
-        if (!ctype_digit($indicePalabraElegida) || $indicePalabraElegida < 1 || $indicePalabraElegida > count($listaPalabrasElegir)) {
+
+        if ($indicePalabraElegida < 1 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
             //ctype_digit comprueba caracteres numéricos
             echo "Numero elegido incorrecto, ingrese uno valido \n";
             $indicePalabraElegida = -1;
-        } elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
-            echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
-            $indicePalabraElegida = -1;
+         } elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
+             echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
+             $indicePalabraElegida = -1;
         }
-    } while ($indicePalabraElegida == -1);
-    return $listaPalabrasElegir[$indicePalabraElegida - 1];
+    } while ($indicePalabraElegida  == -1);
+    return $listaPalabrasElegir[$indicePalabraElegida];
 }
 
 /**
