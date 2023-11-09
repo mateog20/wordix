@@ -18,6 +18,24 @@ include_once("wordix.php");
 /**************************************/
 
 /**
+ * Una funcion que carga 10 partidas
+ */
+function cargarPartidas(){
+    $partidasCargadas = [
+        ["jugador" => "Juan", "palabraWordix" => "PODER", "intentos" => "5","puntaje" => "2"],
+        ["jugador" => "Ana", "palabraWordix" => "PERRO", "intentos" => "1","puntaje" => "6"],
+        ["jugador" => "Mateo", "palabraWordix" => "TINTO", "intentos" => "2","puntaje" => "5"],
+        ["jugador" => "Nacho", "palabraWordix" => "CAMPO", "intentos" => "3", "puntaje" => "4"],
+        ["jugador" => "Felipe", "palabraWordix" => "MUJER", "intentos" => "3", "puntaje" => "4"],
+        ["jugador" => "Ariel", "palabraWordix" => "ERROR", "intentos" => "4", "puntaje" => "3"],
+        ["jugador" => "Pedro", "palabraWordix" => "BUSCA", "intentos" => "0", "puntaje" => "0"],
+        ["jugador" => "Ana", "palabraWordix" => "BARCO", "intentos" => "2", "puntaje" => "5"],
+        ["jugador" => "Juan", "palabraWordix" => "HIELO", "intentos" => "0", "puntaje" => "0"],
+        ["jugador" => "Maria", "palabraWordix" => "FUEGO", "intentos" => "6", "puntaje" => "1"]
+    ];
+    return $partidasCargadas;
+}
+/**
  * Una función que muestra un menu de opciones con la que el usuario puede interactuar
  * @param string $jugadorActual
  * @return int
@@ -80,8 +98,7 @@ function cargarColeccionPalabras()
 }
 
 /**
- * Una funcion que ejecuta una partida de wordix con la palabra elegida
- * Recibe como parametro formal una lista de palabras y otra lista de las palabras que ya fueron usadas
+ * Una funcion que permite elegir un numero dentro de los indices de un arreglo
  * @param array $jugarConPalabra
  * @param array $palabraProhibida
  * @return array
@@ -246,7 +263,6 @@ function leerPalabraCincoLetras($coleccionPalabras)
 */
 
 //Inicialización de variables: 
-$selectora = true;
 $nombreJugador = "";
 $partidasJugadas = [];
 $listaPalabrasUsadas = [];
@@ -289,7 +305,15 @@ do {
                 " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
             break;
         case 5:
-            //-----------------------
+            $partidasJugadas = cargarPartidas();
+            foreach ($partidasJugadas as $indicePartidas => $partidaElemento) {
+                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                    "Partida WORDIX " . $indicePartidas . ": palabra " . $partidaElemento["palabraWordix"] . "\n" .
+                    "Jugador: " . $partidaElemento["jugador"] . "\n" .
+                    "Puntaje: " . $partidaElemento["puntaje"] . "\n" .
+                    "Intentos: " . $partidaElemento["intentos"] . "\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n". "\n";
+            }
             break;
         case 6:
             // La funcion uasort sirve para ordenar un arreglo de tipo asociativo respetando su indice
