@@ -313,14 +313,21 @@ do {
             break;
 
         case 4:
-            $jugador = $partidaActual["jugador"];
+            echo "Ingrese el nombre del jugador que desea buscar: ";
+            $jugador = trim(fgets(STDIN));
+            //$jugador = $partidaActual["jugador"];
             $i = primeraPartidaGanada($jugador, $partidasJugadas);
+            if($i != -1){
             echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
                 "Partida WORDIX " . $i + 1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
                 "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
                 "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
-                "Intentos: " . $partidasJugadas[$i]["intentos"] . "\n" .
-                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                "Adivino la palabra en " . $partidasJugadas[$i]["intentos"] . " intento/s\n" .
+                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n"; 
+            } else {
+                echo" ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" . 
+                        "\n       Aun no hay partidas ganadas\n\n".
+                      " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n"  ;}
             break;
         case 5:
             $partidasJugadas = cargarPartidas();
