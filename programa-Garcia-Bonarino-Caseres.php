@@ -59,27 +59,23 @@ function cargarColeccionPalabras()
 
             }*/
 
-            function primeraPartidaGanada($jugador,$partidasJugadas)
-            {
-                            //int $gano
-                            //string $datosPrimeraPartida
-                                $i=0;
-                                $gano = -1;
-                                while($i < count($partidasJugadas) && $gano == -1 )
-                                {
-                                    
-                                    
-                                    if($partidasJugadas[$i]["jugador"]==$jugador && $partidasJugadas[$i]["puntaje"]>=1){
-                                        $gano= $i;
-                                       
-                                    }
-                                    
-                                    $i++;
-                                
-                                }
-                                return $gano;
-            
-                        }
+function primeraPartidaGanada($jugador, $partidasJugadas)
+{
+    //int $gano
+    //string $datosPrimeraPartida
+    $i = 0;
+    $gano = -1;
+    while ($i < count($partidasJugadas) && $gano == -1) {
+
+
+        if ($partidasJugadas[$i]["jugador"] == $jugador && $partidasJugadas[$i]["puntaje"] >= 1) {
+            $gano = $i;
+        }
+
+        $i++;
+    }
+    return $gano;
+}
 
 /**
  * Una funcion que solicita el nombre al jugador y comprueba que no comience con un numero
@@ -101,7 +97,7 @@ function solicitarJugador()
 }
 
 /**
-* Una función que muestra un menu de opciones con la que el usuario puede interactuar
+ * Una función que muestra un menu de opciones con la que el usuario puede interactuar
  * @param string $jugadorActual
  * @return int
  */
@@ -134,25 +130,21 @@ function seleccionarOpcion($jugadorActual)
  * @param array $palabraProhibida
  * @return array
  */
-function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
+function elegirPalabra($listaPalabrasElegir, $palabraProhibida){
 // int $indicePalabraElegida
-{
     do {
-        echo "hay ". count($listaPalabrasElegir)." palabras \n"."Escriba el numero de la palabra que quiere usar en su partida: ";
+        echo "Puedes seleccionar entre: " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
         $indicePalabraElegida = trim(fgets(STDIN));
-        /* Validamos que el dato ingresado sea un numero y que no sea mayor o menor a la longitud del arreglo
-         is_numeric(dato a comprobar) es una funcion que comprueba que el dato sea un numero, devuelve true si encuentra un numero*/
-        if (!is_numeric($indicePalabraElegida) || $indicePalabraElegida < 1 || $indicePalabraElegida > count($listaPalabrasElegir)) {
+        if ( !ctype_digit($indicePalabraElegida) || $indicePalabraElegida < 1 || $indicePalabraElegida > count($listaPalabrasElegir) ) {
             echo "Numero elegido incorrecto, ingrese uno valido \n";
             $indicePalabraElegida = -1;
-            /* in_array es una funcion que nos permite buscar un elemento dentro de un array, devuelve true si encuentra una coincidencia
-             En este caso es utilizada para determinar si el jugador volvio a elegir una palabra de la lista de palabras prohibidas */
-        } elseif (in_array($listaPalabrasElegir[$indicePalabraElegida-1], $palabraProhibida)) {
+        }
+        elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
             echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
             $indicePalabraElegida = -1;
         }
     } while ($indicePalabraElegida == -1);
-    return $listaPalabrasElegir[$indicePalabraElegida-1];
+    return $listaPalabrasElegir[$indicePalabraElegida - 1];
 }
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra alazar
@@ -172,66 +164,57 @@ function palabraAlazar($listaPalabras)
  * @param array $coleccionPalabras
  * @return STRING 
  */
-function leerPalabraCincoLetras($coleccionPalabras){
+function leerPalabraCincoLetras($coleccionPalabras)
+{
     // STRING $palabraNueva BOLEANO $palabraValida . $encontrado ENTERO $posicion
-    do{
+    do {
         echo "ingrese una palabra de 5 letras: ";
         $palabraNueva = trim(fgets(STDIN));
         $posicion = 0;
-        $palabraValida=false;
-        if(strlen($palabraNueva) == 5) {
+        $palabraValida = false;
+        if (strlen($palabraNueva) == 5) {
             $palabraValida = true;
             $palabraNueva = strtoupper($palabraNueva);
         }
-        while($palabraValida && $posicion < 5) {
-            if($palabraNueva[$posicion]>='A' && $palabraNueva[$posicion]<='Z') {  //orden lexico
-                $posicion++; 
+        while ($palabraValida && $posicion < 5) {
+            if ($palabraNueva[$posicion] >= 'A' && $palabraNueva[$posicion] <= 'Z') {  //orden lexico
+                $posicion++;
             } else {
                 $palabraValida = false;
             }
         }
-        if($palabraValida) {
+        if ($palabraValida) {
             $posicion = 0;
             $encontrado = false;
-            while(!$encontrado && $posicion<count($coleccionPalabras)) {
-                if($coleccionPalabras[$posicion] == $palabraNueva) {
+            while (!$encontrado && $posicion < count($coleccionPalabras)) {
+                if ($coleccionPalabras[$posicion] == $palabraNueva) {
                     $encontrado = true;
                 } else {
                     $posicion++;
                 }
             }
-            if($encontrado) {
+            if ($encontrado) {
                 $palabraValida = false;
                 echo "esta palabra ya se encuentra en la lista de palabras disponibles \n";
-            } 
+            }
         }
-    }while($palabraValida==false); 
+    } while ($palabraValida == false);
     return $palabraNueva;
 }
 
 /**
- * Esta funcion muestra la lista de partidas jugadas ordenadas alfabéticamente por nombre o por palabra en ese orden de prioridad
- * Contiene dos parámetros de entrada, a pesar de que su parámetro actual es uno solo ya que su parámetro actual es un arreglo multidimensional
- * Donde indicamos que vamos a usar dos elementos de este, en este caso los elementos son los arreglos asociativos que contienen la información.
+ * Esta funcion compara dos elementos tipo string de un arreglo
  * @param array $primerJugador
  * @param array $segundoJugador
  * @return int
  */
-function ordenarLista($primerPalabra, $segundaPalabra)
-{
-    /*La funcion strcmp() sirve para comparar dos cadenas de caracteres
-        Si el primero es mayor al segundo, la funcion devuelve <0
-        En caso inverso devuelve >0
-        Y si los string que se estan comprando son iguales devuelve 0
-        https://www.php.net/manual/es/function.strcmp.php
-    */
-    $compararPalabra = strcmp($primerPalabra["jugador"], $segundaPalabra["jugador"]);
-    if ($compararPalabra == 0)
-    // Caso donde el usuario es el mismo y debemos ordenar por la palabra
+function ordenarLista($primerPartida, $segundaPartida){
+    //La funcion strcmp() sirve para comparar dos cadenas de caracteres
+    $compararPalabra = strcmp($primerPartida["jugador"], $segundaPartida["jugador"]);
+    if ($compararPalabra == 0) // Caso donde el usuario es el mismo y debemos ordenar por la palabra
     {
-        strcmp($primerPalabra["palabraWordix"], $segundaPalabra["palabraWordix"]);
+        $compararPalabra = strcmp($primerPartida["palabraWordix"], $segundaPartida["palabraWordix"]);
     }
-
     return $compararPalabra;
 }
 
@@ -240,34 +223,34 @@ function ordenarLista($primerPalabra, $segundaPalabra)
  * @param array $partidasJugadas
  * @return array
  */
-function mostrarUnaPartida($partidasJugadas){
+function mostrarUnaPartida($partidasJugadas)
+{
     //ENTERO $indice
-    $maximo=count($partidasJugadas);
-    $minimo=1;
-    if($maximo==0){
+    $maximo = count($partidasJugadas);
+    $minimo = 1;
+    if ($maximo == 0) {
         echo "no hay partidas jugadas";
-    }else{
-        echo "tiene ". $maximo ." partidas \n"."que partida quiere ver? \n";
-        $indice=solicitarNumeroEntre($minimo,$maximo)-1;
-        if($partidasJugadas[$indice]["puntaje"]==0){
+    } else {
+        echo "tiene " . $maximo . " partidas \n" . "que partida quiere ver? \n";
+        $indice = solicitarNumeroEntre($minimo, $maximo) - 1;
+        if ($partidasJugadas[$indice]["puntaje"] == 0) {
             echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-            "Partida WORDIX " . $indice+1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
-            "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
-            "Puntaje: " . "0" . "\n" .
-            "Intentos: " . "6" . "\n" .
-            "PARTIDA PERDIDA". "\n".
-            " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
-        }else{
+                "Partida WORDIX " . $indice + 1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
+                "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
+                "Puntaje: " . "0" . "\n" .
+                "Intentos: " . "6" . "\n" .
+                "PARTIDA PERDIDA" . "\n" .
+                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+        } else {
             echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-            "Partida WORDIX " . $indice+1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
-            "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
-            "Puntaje: " . $partidasJugadas[$indice]["puntaje"] . "\n" .
-            "Intentos: " . $partidasJugadas[$indice]["intentos"] . "\n" .
-            " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                "Partida WORDIX " . $indice + 1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
+                "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
+                "Puntaje: " . $partidasJugadas[$indice]["puntaje"] . "\n" .
+                "Intentos: " . $partidasJugadas[$indice]["intentos"] . "\n" .
+                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
         }
-        }
-
     }
+}
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
@@ -279,14 +262,14 @@ function mostrarUnaPartida($partidasJugadas){
 */
 
 //Inicialización de variables: 
-$selectora=true;
+$selectora = true;
 $nombreJugador = "";
 $partidasJugadas = [];
 $listaPalabrasUsadas = [];
 $palabraElegida = "";
 //Proceso:
 $nombreJugador = solicitarJugador();
-$coleccionModificable=cargarColeccionPalabras();
+$coleccionModificable = cargarColeccionPalabras();
 do {
     $opcion = seleccionarOpcion($nombreJugador);
     switch ($opcion) {
@@ -298,13 +281,13 @@ do {
             $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
             // $partidasJugadas es un arreglo indexado, este a su vez esta guardando $partidaActual que contiene un arreglo asociativo
             $partidasJugadas[] = $partidaActual;
-           
+
             break;
         case 2:
             $palabraAleat = palabraAlazar($coleccionModificable);
             $partidaActual = jugarWordix($palabraAleat, $nombreJugador);
             $partidasJugadas[] = $partidaActual;
-           
+
             break;
         case 3:
             echo mostrarUnaPartida($partidasJugadas);
@@ -312,30 +295,26 @@ do {
             break;
 
         case 4:
-                $jugador = $partidaActual["jugador"];
-             $i = primeraPartidaGanada($jugador,$partidasJugadas);
+            $jugador = $partidaActual["jugador"];
+            $i = primeraPartidaGanada($jugador, $partidasJugadas);
             echo  " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-             "Partida WORDIX " . $i+1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
-             "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
-             "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
-             "Intentos: " . $partidasJugadas[$i]["intentos"] . "\n" .
-             " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                "Partida WORDIX " . $i + 1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
+                "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
+                "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
+                "Intentos: " . $partidasJugadas[$i]["intentos"] . "\n" .
+                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
             break;
         case 5:
             //-----------------------
             break;
         case 6:
-            /* La funcion uasort sirve para ordenar un arreglo de tipo asociativo
-            Donde el programador puede usar una funcion personalizada para indicar el orden que desea en este caso ordenarLista
-            Se podria decir que su syntaxis es uasort($arrayAsociativo , "$funcion de comparacion")
-            https://www.php.net/manual/es/function.uasort.php
-            */
+            // La funcion uasort sirve para ordenar un arreglo de tipo asociativo respetando su indice
             uasort($partidasJugadas, "ordenarLista");
             // print_r(Arreglo) imprime por pantalla el contenido de un arreglo
             print_r($partidasJugadas);
             break;
         case 7:
-            $coleccionModificable[]= leerPalabraCincoLetras($coleccionModificable);
+            $coleccionModificable[] = leerPalabraCincoLetras($coleccionModificable);
             break;
         case 8:
             $nombreJugador = solicitarJugador();
@@ -346,7 +325,4 @@ do {
         default: //Esta opcion en el switch se ejecuta cuando ninguno de los case resulta verdadero
             echo "Has ingresado una opción invalida";
     }
-    
-
 } while ($opcion != 9);
-
