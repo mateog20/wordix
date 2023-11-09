@@ -18,85 +18,6 @@ include_once("wordix.php");
 /**************************************/
 
 /**
- * Obtiene una colección de palabras
- * @return array
- */
-function cargarColeccionPalabras()
-{
-    $coleccionPalabras = [
-        "MUJER", "QUESO", "FUEGO", "PERRO", "RASGO",
-        "ERROR", "PODER", "HUEVO", "TINTO", "CAMPO",
-        "VERDE", "MELON", "BUSCA", "PIANO", "HIELO",
-        "INDIA", "ACTOR", "NADAR", "DADOS", "BARCO"
-    ];
-
-    return ($coleccionPalabras);
-}
-/**
- * Guarda los datos de la primera partida que se gano
- * @param array $partidaActual
- * @param boolean $selectora
- * @return string
- */
-/*function primeraPartidaGanada($partidaActual,$partidasJugadas)
-{
-                //int $gano
-                //string $datosPrimeraPartida
-                    $i=0;
-                    $gano = -1;
-                    while($i < count($partidasJugadas) )
-                    {
-                        $puntaje = $partidaActual["puntaje"];
-              
-                        if( $puntaje > $gano )
-                        {
-                            $gano = 7; }
-                        $i++;
-
-                        
-                    }
-                    return $i;
-
-            }*/
-
-function primeraPartidaGanada($jugador, $partidasJugadas)
-{
-    //int $gano
-    //string $datosPrimeraPartida
-    $i = 0;
-    $gano = -1;
-    while ($i < count($partidasJugadas) && $gano == -1) {
-
-
-        if ($partidasJugadas[$i]["jugador"] == $jugador && $partidasJugadas[$i]["puntaje"] >= 1) {
-            $gano = $i;
-        }
-
-        $i++;
-    }
-    return $gano;
-}
-
-/**
- * Una funcion que solicita el nombre al jugador y comprueba que no comience con un numero
- * @return string
- */
-function solicitarJugador()
-{
-    $NoContieneNumero = true;
-    do {
-        echo "Ingrese su nombre: ";
-        $nombre = trim(fgets(STDIN));
-        if (ctype_alpha($nombre[0])) {
-            $NoContieneNumero = false;
-        } else {
-            echo "El nombre debe comenzar en una letra";
-        }
-    } while ($NoContieneNumero);
-    return strtolower($nombre);
-}
-
-/**
  * Una función que muestra un menu de opciones con la que el usuario puede interactuar
  * @param string $jugadorActual
  * @return int
@@ -124,28 +45,65 @@ function seleccionarOpcion($jugadorActual)
 }
 
 /**
+ * Una funcion que solicita el nombre al jugador y comprueba que no comience con un numero
+ * @return string
+ */
+function solicitarJugador()
+{
+    $NoContieneNumero = true;
+    do {
+        echo "Ingrese su nombre: ";
+        $nombre = trim(fgets(STDIN));
+        if (ctype_alpha($nombre[0])) {
+            $NoContieneNumero = false;
+        } else {
+            echo "El nombre debe comenzar en una letra";
+        }
+    } while ($NoContieneNumero);
+    return strtolower($nombre);
+}
+
+/**
+ * Obtiene una colección de palabras
+ * @return array
+ */
+function cargarColeccionPalabras()
+{
+    $coleccionPalabras = [
+        "MUJER", "QUESO", "FUEGO", "PERRO", "RASGO",
+        "ERROR", "PODER", "HUEVO", "TINTO", "CAMPO",
+        "VERDE", "MELON", "BUSCA", "PIANO", "HIELO",
+        "INDIA", "ACTOR", "NADAR", "DADOS", "BARCO"
+    ];
+
+    return ($coleccionPalabras);
+}
+
+/**
  * Una funcion que ejecuta una partida de wordix con la palabra elegida
  * Recibe como parametro formal una lista de palabras y otra lista de las palabras que ya fueron usadas
  * @param array $jugarConPalabra
  * @param array $palabraProhibida
  * @return array
  */
-function elegirPalabra($listaPalabrasElegir, $palabraProhibida){
-// int $indicePalabraElegida
+function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
+{
+    // int $indicePalabraElegida
     do {
         echo "Puedes seleccionar entre: " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
         $indicePalabraElegida = trim(fgets(STDIN));
-        if ( !ctype_digit($indicePalabraElegida) || $indicePalabraElegida < 1 || $indicePalabraElegida > count($listaPalabrasElegir) ) {
+        if (!ctype_digit($indicePalabraElegida) || $indicePalabraElegida < 1 || $indicePalabraElegida > count($listaPalabrasElegir)) {
+            //ctype_digit comprueba caracteres numéricos
             echo "Numero elegido incorrecto, ingrese uno valido \n";
             $indicePalabraElegida = -1;
-        }
-        elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
+        } elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
             echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
             $indicePalabraElegida = -1;
         }
     } while ($indicePalabraElegida == -1);
     return $listaPalabrasElegir[$indicePalabraElegida - 1];
 }
+
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra alazar
  * @param array $listaPalabras
@@ -159,6 +117,80 @@ function palabraAlazar($listaPalabras)
     $varPalabraAlazar = $listaPalabras[$numAleatoreo];
     return $varPalabraAlazar;
 }
+
+/**
+ * muestra una partida
+ * @param array $partidasJugadas
+ * @return array
+ */
+function mostrarUnaPartida($partidasJugadas)
+{
+    //ENTERO $indice
+    $maximo = count($partidasJugadas);
+    $minimo = 1;
+    if ($maximo == 0) {
+        echo "no hay partidas jugadas";
+    } else {
+        echo "tiene " . $maximo . " partidas \n" . "que partida quiere ver? \n";
+        $indice = solicitarNumeroEntre($minimo, $maximo) - 1;
+        if ($partidasJugadas[$indice]["puntaje"] == 0) {
+            echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                "Partida WORDIX " . $indice + 1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
+                "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
+                "Puntaje: " . "0" . "\n" .
+                "Intentos: " . "6" . "\n" .
+                "PARTIDA PERDIDA" . "\n" .
+                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+        } else {
+            echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                "Partida WORDIX " . $indice + 1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
+                "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
+                "Puntaje: " . $partidasJugadas[$indice]["puntaje"] . "\n" .
+                "Intentos: " . $partidasJugadas[$indice]["intentos"] . "\n" .
+                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+        }
+    }
+}
+
+function primeraPartidaGanada($jugador, $partidasJugadas)
+{
+    //int $gano
+    //string $datosPrimeraPartida
+    $i = 0;
+    $gano = -1;
+    while ($i < count($partidasJugadas) && $gano == -1) {
+
+
+        if ($partidasJugadas[$i]["jugador"] == $jugador && $partidasJugadas[$i]["puntaje"] >= 1) {
+            $gano = $i;
+        }
+
+        $i++;
+    }
+    return $gano;
+}
+
+function resumenJugador()
+{
+}
+
+/**
+ * Esta funcion compara dos elementos tipo string de un arreglo
+ * @param array $primerJugador
+ * @param array $segundoJugador
+ * @return int
+ */
+function ordenarLista($primerPartida, $segundaPartida)
+{
+    //La funcion strcmp() sirve para comparar dos cadenas de caracteres
+    $compararPalabra = strcmp($primerPartida["jugador"], $segundaPartida["jugador"]);
+    if ($compararPalabra == 0) // Caso donde el usuario es el mismo y debemos ordenar por la palabra
+    {
+        $compararPalabra = strcmp($primerPartida["palabraWordix"], $segundaPartida["palabraWordix"]);
+    }
+    return $compararPalabra;
+}
+
 /**
  *  solicita al usuario una palabra de 5 letras
  * @param array $coleccionPalabras
@@ -202,55 +234,7 @@ function leerPalabraCincoLetras($coleccionPalabras)
     return $palabraNueva;
 }
 
-/**
- * Esta funcion compara dos elementos tipo string de un arreglo
- * @param array $primerJugador
- * @param array $segundoJugador
- * @return int
- */
-function ordenarLista($primerPartida, $segundaPartida){
-    //La funcion strcmp() sirve para comparar dos cadenas de caracteres
-    $compararPalabra = strcmp($primerPartida["jugador"], $segundaPartida["jugador"]);
-    if ($compararPalabra == 0) // Caso donde el usuario es el mismo y debemos ordenar por la palabra
-    {
-        $compararPalabra = strcmp($primerPartida["palabraWordix"], $segundaPartida["palabraWordix"]);
-    }
-    return $compararPalabra;
-}
 
-/**
- * muestra una partida
- * @param array $partidasJugadas
- * @return array
- */
-function mostrarUnaPartida($partidasJugadas)
-{
-    //ENTERO $indice
-    $maximo = count($partidasJugadas);
-    $minimo = 1;
-    if ($maximo == 0) {
-        echo "no hay partidas jugadas";
-    } else {
-        echo "tiene " . $maximo . " partidas \n" . "que partida quiere ver? \n";
-        $indice = solicitarNumeroEntre($minimo, $maximo) - 1;
-        if ($partidasJugadas[$indice]["puntaje"] == 0) {
-            echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                "Partida WORDIX " . $indice + 1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
-                "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
-                "Puntaje: " . "0" . "\n" .
-                "Intentos: " . "6" . "\n" .
-                "PARTIDA PERDIDA" . "\n" .
-                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
-        } else {
-            echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                "Partida WORDIX " . $indice + 1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
-                "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
-                "Puntaje: " . $partidasJugadas[$indice]["puntaje"] . "\n" .
-                "Intentos: " . $partidasJugadas[$indice]["intentos"] . "\n" .
-                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
-        }
-    }
-}
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
