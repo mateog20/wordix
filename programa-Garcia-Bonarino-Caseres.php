@@ -103,19 +103,18 @@ function cargarColeccionPalabras()
  * @param array $palabraProhibida
  * @return array
  */
-function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
+function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
 {
     // int $indicePalabraElegida
 
     do {
         echo "Puedes seleccionar entre: " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
         $indicePalabraElegida = trim(fgets(STDIN));
-
         if ($indicePalabraElegida < 1 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
             //ctype_digit comprueba caracteres numéricos
             echo "Numero elegido incorrecto, ingrese uno valido \n";
             $indicePalabraElegida = -1;
-        } elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
+        } elseif (comprobarPalabra($PalabrasUsadas, $listaPalabrasElegir[$indicePalabraElegida])) {
             echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
             $indicePalabraElegida = -1;
         }
@@ -135,6 +134,27 @@ function palabraAlazar($listaPalabras)
     $numAleatoreo = random_int(0, count($listaPalabras) - 1);
     $varPalabraAlazar = $listaPalabras[$numAleatoreo];
     return $varPalabraAlazar;
+}
+/**
+ * Esta funcion comprueba si una palabra ya fue usada en una partida pasada
+ * Complementa las funciones: elegirPalabra, palabraAzar
+ * @param array $listaUsadas
+ * @param string $palabra
+ * @return boolean
+ */
+
+function comprobarPalabra($listaUsadas, $palabra)
+{
+    $seUso = false;
+    foreach ($listaUsadas as $palabraUsada) {
+        if ($palabraUsada == $palabra) {
+            $seUso = true;
+        } else {
+            $seUso = false;
+        }
+    }
+
+    return $seUso;
 }
 
 /**
@@ -206,7 +226,6 @@ function resumenJugador($listaResumen, $nombreResumen)
             if ($listaResumen[$i]["puntaje"] != 0) {
                 $victorias++;
             }
-
         }
     }
     if ($partidaJugo > 0) {
@@ -290,8 +309,8 @@ array $partidaActual, $jugarWordix, $listaPalabrasUsadas, $partidasJugadas
 
 //Inicialización de variables:
 $nombreJugador = "";
-$partidasJugadas = [];
-$listaPalabrasUsadas = [];
+$partidasJugadas = []; //  es un arreglo multidimensional, contendra las partidas.
+$listaPalabrasUsadas = []; //es el arreglo que almacena las palabras que ya fueron jugadas.
 $palabraElegida = "";
 //Proceso:
 $nombreJugador = solicitarJugador();
@@ -300,12 +319,9 @@ do {
     $opcion = seleccionarOpcion($nombreJugador);
     switch ($opcion) {
         case 1:
-            //$listaPalabrasUsadas es el arreglo que almacena las palabras que ya fueron jugadas
-            $listaPalabrasUsadas[] = $palabraElegida;
             $palabraElegida = elegirPalabra($coleccionModificable, $listaPalabrasUsadas);
-            // $partidaActual es una variable que almacena el array asociativo jugarWordix
+            $listaPalabrasUsadas[] = $palabraElegida;
             $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
-            // $partidasJugadas es un arreglo indexado, este a su vez esta guardando $partidaActual que contiene un arreglo asociativo
             $partidasJugadas[] = $partidaActual;
 
             break;
@@ -335,28 +351,29 @@ do {
             } else {
                 echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
                     "\n       Aun no hay partidas ganadas\n\n" .
-                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";}
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+            }
             break;
         case 5:
-            do{
-            $partidasJugadas = cargarPartidas();
-            echo "¿ De que jugador quiere el resumen ? , ";
-            $nombreResumen = solicitarJugador();
-            $resumenSolicitado = resumenJugador($partidasJugadas, $nombreResumen);
-            if(empty($resumenSolicitado)){
-                echo "El nombre del jugador no existe, ingrese uno valido"."\n";
-            }
-            }while(empty($resumenSolicitado));
-           
-                echo
-                    " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n" .
-                    "Jugador: " . $nombreResumen . "\n" .
-                    "Partidas: " . $resumenSolicitado["partidas"] . "\n" .
-                    "Puntaje Total: " . $resumenSolicitado["puntajeTotal"] . "\n" .
-                    "Victorias: " . $resumenSolicitado["victorias"] . "\n" .
-                    "Porcentaje victorias: " . $resumenSolicitado["porcentaje"] . "%" . "\n" .
-                    " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n";
-            
+            do {
+                $partidasJugadas = cargarPartidas();
+                echo "¿ De que jugador quiere el resumen ? , ";
+                $nombreResumen = solicitarJugador();
+                $resumenSolicitado = resumenJugador($partidasJugadas, $nombreResumen);
+                if (empty($resumenSolicitado)) {
+                    echo "El nombre del jugador no existe, ingrese uno valido" . "\n";
+                }
+            } while (empty($resumenSolicitado));
+
+            echo
+                " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n" .
+                "Jugador: " . $nombreResumen . "\n" .
+                "Partidas: " . $resumenSolicitado["partidas"] . "\n" .
+                "Puntaje Total: " . $resumenSolicitado["puntajeTotal"] . "\n" .
+                "Victorias: " . $resumenSolicitado["victorias"] . "\n" .
+                "Porcentaje victorias: " . $resumenSolicitado["porcentaje"] . "%" . "\n" .
+                " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n";
+
             break;
         case 6:
             // La funcion uasort sirve para ordenar un arreglo de tipo asociativo respetando su indice
