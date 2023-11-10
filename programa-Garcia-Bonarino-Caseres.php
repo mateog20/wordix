@@ -46,7 +46,7 @@ function seleccionarOpcion($jugadorActual)
     do {
         echo "\n" . "            🔺 Jugador actual: " . $jugadorActual . " 🔺";
         echo
-        '
+            '
         1) Jugar wordix con una palabra elegida
         2) Jugar wordix con una palabra aleatoria
         3) Mostrar una partida
@@ -106,7 +106,7 @@ function cargarColeccionPalabras()
 function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
 {
     // int $indicePalabraElegida
-  
+
     do {
         echo "Puedes seleccionar entre: " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
         $indicePalabraElegida = trim(fgets(STDIN));
@@ -115,11 +115,11 @@ function elegirPalabra($listaPalabrasElegir, $palabraProhibida)
             //ctype_digit comprueba caracteres numéricos
             echo "Numero elegido incorrecto, ingrese uno valido \n";
             $indicePalabraElegida = -1;
-         } elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
-             echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
-             $indicePalabraElegida = -1;
+        } elseif (in_array($listaPalabrasElegir[$indicePalabraElegida], $palabraProhibida)) {
+            echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
+            $indicePalabraElegida = -1;
         }
-    } while ($indicePalabraElegida  == -1);
+    } while ($indicePalabraElegida == -1);
     return $listaPalabrasElegir[$indicePalabraElegida];
 }
 
@@ -191,6 +191,7 @@ function primeraPartidaGanada($jugador, $partidasJugadas)
  * Genera un resumen del jugador solicitado
  * @param array $listaResunen
  * @param string $nombreResumen
+ * @return array
  */
 function resumenJugador($listaResumen, $nombreResumen)
 {
@@ -201,14 +202,19 @@ function resumenJugador($listaResumen, $nombreResumen)
         $buscarNombre = strtolower($listaResumen[$i]["jugador"]);
         if ($buscarNombre == $nombreResumen) {
             $partidaJugo++;
-            $puntajeTotal +=  $listaResumen[$i]["puntaje"];
-            if ($listaResumen[$i]["puntaje"] <> 0) {
+            $puntajeTotal += $listaResumen[$i]["puntaje"];
+            if ($listaResumen[$i]["puntaje"] != 0) {
                 $victorias++;
             }
+
         }
     }
-    $porcentajeVictorias = ($victorias / $partidaJugo) * 100;
-    $listaResumen = ["partidas" => $partidaJugo, "puntajeTotal" => $puntajeTotal, "victorias" => $victorias, "porcentaje" => $porcentajeVictorias];
+    if ($partidaJugo > 0) {
+        $porcentajeVictorias = ($victorias / $partidaJugo) * 100;
+        $listaResumen = ["partidas" => $partidaJugo, "puntajeTotal" => $puntajeTotal, "victorias" => $victorias, "porcentaje" => $porcentajeVictorias];
+    } else {
+        $listaResumen = [];
+    }
     return $listaResumen;
 }
 
@@ -319,31 +325,38 @@ do {
             $jugador = trim(fgets(STDIN));
             //$jugador = $partidaActual["jugador"];
             $i = primeraPartidaGanada($jugador, $partidasJugadas);
-            if($i != -1){
-            echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                "Partida WORDIX " . $i + 1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
-                "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
-                "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
-                "Adivino la palabra en " . $partidasJugadas[$i]["intentos"] . " intento/s\n" .
-                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n"; 
+            if ($i != -1) {
+                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                    "Partida WORDIX " . $i + 1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
+                    "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
+                    "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
+                    "Adivino la palabra en " . $partidasJugadas[$i]["intentos"] . " intento/s\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
             } else {
-                echo" ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" . 
-                        "\n       Aun no hay partidas ganadas\n\n".
-                      " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n"  ;}
+                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                    "\n       Aun no hay partidas ganadas\n\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";}
             break;
         case 5:
+            do{
             $partidasJugadas = cargarPartidas();
-            echo "De que jugador quiere el resumen, ";
+            echo "¿ De que jugador quiere el resumen ? , ";
             $nombreResumen = solicitarJugador();
             $resumenSolicitado = resumenJugador($partidasJugadas, $nombreResumen);
-            echo
-            " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n" .
-                "Jugador: " . $nombreResumen . "\n" .
-                "Partidas: " .  $resumenSolicitado["partidas"] . "\n" .
-                "Puntaje Total: " . $resumenSolicitado["puntajeTotal"] . "\n" .
-                "Victorias: " .  $resumenSolicitado["victorias"] . "\n" .
-                "Porcentaje victorias: " .  $resumenSolicitado["porcentaje"] . "%" . "\n" .
-                " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n";
+            if(empty($resumenSolicitado)){
+                echo "El nombre del jugador no existe, ingrese uno valido"."\n";
+            }
+            }while(empty($resumenSolicitado));
+           
+                echo
+                    " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n" .
+                    "Jugador: " . $nombreResumen . "\n" .
+                    "Partidas: " . $resumenSolicitado["partidas"] . "\n" .
+                    "Puntaje Total: " . $resumenSolicitado["puntajeTotal"] . "\n" .
+                    "Victorias: " . $resumenSolicitado["victorias"] . "\n" .
+                    "Porcentaje victorias: " . $resumenSolicitado["porcentaje"] . "%" . "\n" .
+                    " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n";
+            
             break;
         case 6:
             // La funcion uasort sirve para ordenar un arreglo de tipo asociativo respetando su indice
