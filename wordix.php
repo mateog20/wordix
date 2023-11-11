@@ -4,7 +4,7 @@
 La librería JugarWordix posee la definición de constantes y funciones necesarias
 para jugar al Wordix.
 Puede ser utilizada por cualquier programador para incluir en sus programas.
-*/
+ */
 
 /**************************************/
 /***** DEFINICION DE CONSTANTES *******/
@@ -12,11 +12,11 @@ Puede ser utilizada por cualquier programador para incluir en sus programas.
 const CANT_INTENTOS = 6;
 
 /*
-    disponible: letra que aún no fue utilizada para adivinar la palabra
-    encontrada: letra descubierta en el lugar que corresponde
-    pertenece: letra descubierta, pero corresponde a otro lugar
-    descartada: letra descartada, no pertence a la palabra
-*/
+disponible: letra que aún no fue utilizada para adivinar la palabra
+encontrada: letra descubierta en el lugar que corresponde
+pertenece: letra descubierta, pero corresponde a otro lugar
+descartada: letra descartada, no pertence a la palabra
+ */
 const ESTADO_LETRA_DISPONIBLE = "disponible";
 const ESTADO_LETRA_ENCONTRADA = "encontrada";
 const ESTADO_LETRA_DESCARTADA = "descartada";
@@ -35,17 +35,17 @@ const ESTADO_LETRA_PERTENECE = "pertenece";
 function solicitarNumeroEntre($min, $max)
 {
     //int $numero
-    echo"Ingrese el numero: ";
+    echo "Ingrese el numero: ";
     $numero = trim(fgets(STDIN));
 
     if (is_numeric($numero)) { //determina si un string es un número. puede ser float como entero.
-        $numero  = $numero * 1; //con esta operación convierto el string en número.
+        $numero = $numero * 1; //con esta operación convierto el string en número.
     }
-    while (!(is_numeric($numero) && (($numero == (int)$numero) && ($numero >= $min && $numero <= $max)))) {
+    while (!(is_numeric($numero) && (($numero == (int) $numero) && ($numero >= $min && $numero <= $max)))) {
         echo "Debe ingresar un número entre " . $min . " y " . $max . ": ";
         $numero = trim(fgets(STDIN));
         if (is_numeric($numero)) {
-            $numero  = $numero * 1;
+            $numero = $numero * 1;
         }
     }
     return $numero;
@@ -127,14 +127,13 @@ function escribirSegunEstado($texto, $estado)
  * @param string $usuario
  */
 function escribirMensajeBienvenida($usuario)
-{    
+{
     echo "〰️〰️〰️〰️〰️〰️〰️〰️〰️👋〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️\n";
     echo "** Hola ";
     escribirAmarillo($usuario);
     echo " Juguemos una PARTIDA de WORDIX! **\n";
     echo "〰️〰️〰️〰️〰️〰️〰️〰️〰️👋〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️\n";
 }
-
 
 /**
  * Una funcion que se encarga de determinar si una cadena de caracteres contiene numeros
@@ -148,7 +147,7 @@ function esPalabra($cadena)
     $esLetra = true;
     $i = 0;
     while ($esLetra && $i < $cantCaracteres) {
-        $esLetra =  ctype_alpha($cadena[$i]);
+        $esLetra = ctype_alpha($cadena[$i]);
         $i++;
     }
     return $esLetra;
@@ -163,7 +162,7 @@ function leerPalabra5Letras()
     //string $palabra
     echo "Ingrese una palabra de 5 letras: ";
     $palabra = trim(fgets(STDIN));
-    $palabra  = strtoupper($palabra);
+    $palabra = strtoupper($palabra);
 
     while ((strlen($palabra) != 5) || !esPalabra($palabra)) {
         echo "Debe ingresar una palabra de 5 letras:";
@@ -171,7 +170,6 @@ function leerPalabra5Letras()
     }
     return $palabra;
 }
-
 
 /**
  * Inicia una estructura de datos Teclado. La estructura es de tipo: asociativo
@@ -186,7 +184,7 @@ function iniciarTeclado()
         "K" => ESTADO_LETRA_DISPONIBLE, "L" => ESTADO_LETRA_DISPONIBLE, "M" => ESTADO_LETRA_DISPONIBLE, "N" => ESTADO_LETRA_DISPONIBLE, "Ñ" => ESTADO_LETRA_DISPONIBLE,
         "O" => ESTADO_LETRA_DISPONIBLE, "P" => ESTADO_LETRA_DISPONIBLE, "Q" => ESTADO_LETRA_DISPONIBLE, "R" => ESTADO_LETRA_DISPONIBLE, "S" => ESTADO_LETRA_DISPONIBLE,
         "T" => ESTADO_LETRA_DISPONIBLE, "U" => ESTADO_LETRA_DISPONIBLE, "V" => ESTADO_LETRA_DISPONIBLE, "W" => ESTADO_LETRA_DISPONIBLE, "X" => ESTADO_LETRA_DISPONIBLE,
-        "Y" => ESTADO_LETRA_DISPONIBLE, "Z" => ESTADO_LETRA_DISPONIBLE
+        "Y" => ESTADO_LETRA_DISPONIBLE, "Z" => ESTADO_LETRA_DISPONIBLE,
     ];
     return $teclado;
 }
@@ -203,7 +201,7 @@ function escribirTeclado($teclado)
         "salto",
         "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "salto",
         "A", "S", "D", "F", "G", "H", "J", "K", "L", "salto",
-        "Z", "X", "C", "V", "B", "N", "M", "salto"
+        "Z", "X", "C", "V", "B", "N", "M", "salto",
     ];
 
     foreach ($ordenTeclado as $letra) {
@@ -219,7 +217,6 @@ function escribirTeclado($teclado)
     }
     echo "\n";
 };
-
 
 /**
  * Escribe en pantalla los intentos de Wordix para adivinar la palabra
@@ -250,7 +247,7 @@ function imprimirIntentosWordix($estructuraIntentosWordix)
 }
 
 /**
- * Dada la palabra wordix a adivinar, la estructura para almacenar la información del intento 
+ * Dada la palabra wordix a adivinar, la estructura para almacenar la información del intento
  * y la palabra que intenta adivinar la palabra wordix.
  * devuelve la estructura de intentos Wordix modificada con el intento.
  * @param string $palabraWordix
@@ -260,6 +257,7 @@ function imprimirIntentosWordix($estructuraIntentosWordix)
  */
 function analizarPalabraIntento($palabraWordix, $estruturaIntentosWordix, $palabraIntento)
 {
+    $adivino = 0;
     $cantCaracteres = strlen($palabraIntento);
     $estructuraPalabraIntento = []; /*almacena cada letra de la palabra intento con su estado */
     for ($i = 0; $i < $cantCaracteres; $i++) {
@@ -270,11 +268,12 @@ function analizarPalabraIntento($palabraWordix, $estruturaIntentosWordix, $palab
         } else {
             if ($letraIntento == $palabraWordix[$i]) {
                 $estado = ESTADO_LETRA_ENCONTRADA;
+                $adivino++;
             } else {
                 $estado = ESTADO_LETRA_PERTENECE;
             }
         }
-        array_push($estructuraPalabraIntento, ["letra" => $letraIntento, "estado" => $estado]);
+        array_push($estructuraPalabraIntento, ["letra" => $letraIntento, "estado" => $estado, "adivino" => $adivino]);
     }
 
     array_push($estruturaIntentosWordix, $estructuraPalabraIntento);
@@ -282,10 +281,10 @@ function analizarPalabraIntento($palabraWordix, $estruturaIntentosWordix, $palab
 }
 
 /**
- * Actualiza el estado de las letras del teclado. 
+ * Actualiza el estado de las letras del teclado.
  * Teniendo en cuenta que una letra sólo puede pasar:
- * de ESTADO_LETRA_DISPONIBLE a ESTADO_LETRA_ENCONTRADA, 
- * de ESTADO_LETRA_DISPONIBLE a ESTADO_LETRA_DESCARTADA, 
+ * de ESTADO_LETRA_DISPONIBLE a ESTADO_LETRA_ENCONTRADA,
+ * de ESTADO_LETRA_DISPONIBLE a ESTADO_LETRA_DESCARTADA,
  * de ESTADO_LETRA_DISPONIBLE a ESTADO_LETRA_PERTENECE
  * de ESTADO_LETRA_PERTENECE a ESTADO_LETRA_ENCONTRADA
  * @param array $teclado
@@ -338,29 +337,29 @@ function esIntentoGanado($estructuraPalabraIntento)
  * ****COMPLETAR***** documentación de la intefaz
  * @param int $intentos
  */
-function obtenerPuntajeWordix($intentos)  /* ****COMPLETAR***** parámetros formales necesarios */
+function obtenerPuntajeWordix($intentos) /* ****COMPLETAR***** parámetros formales necesarios */
 {
     //int $puntos
-switch($intentos){
-    case 1:
-        $puntos=6;
-        break;
-    case 2:
-        $puntos=5;
-        break;
-    case 3:
-        $puntos=4;
-        break;
-    case 4:
-        $puntos=3;
-        break;
-    case 5:
-        $puntos=2;
-        break;
-    case 6:
-        $puntos=1;
-        break;
-}
+    switch ($intentos) {
+        case 1:
+            $puntos = 6;
+            break;
+        case 2:
+            $puntos = 5;
+            break;
+        case 3:
+            $puntos = 4;
+            break;
+        case 4:
+            $puntos = 3;
+            break;
+        case 5:
+            $puntos = 2;
+            break;
+        case 6:
+            $puntos = 1;
+            break;
+    }
     /* ****COMPLETAR***** cuerpo de la función*/
     return $puntos;
 }
@@ -378,6 +377,7 @@ function jugarWordix($palabraWordix, $nombreUsuario)
     $teclado = iniciarTeclado();
     escribirMensajeBienvenida($nombreUsuario);
     $nroIntento = 1;
+    $letrasCorrectas = 0;
     do {
 
         echo "Comenzar con el Intento " . $nroIntento . ":\n";
@@ -389,11 +389,19 @@ function jugarWordix($palabraWordix, $nombreUsuario)
         imprimirIntentosWordix($arregloDeIntentosWordix);
         escribirTeclado($teclado);
         /*Determinar si la plabra intento ganó e incrementar la cantidad de intentos */
-
         $ganoElIntento = esIntentoGanado($arregloDeIntentosWordix[$indiceIntento]);
         $nroIntento++;
+        // Agregado por grupo, busca las letras adivinadas.
+        if (!$ganoElIntento) {
+            foreach ($arregloDeIntentosWordix as $intentos) {
+                foreach ($intentos as $letraIntento) {
+                    if ($letraIntento["estado"] === ESTADO_LETRA_ENCONTRADA) {
+                        $letrasCorrectas++;
+                    }
+                }
+            }
+        }
     } while ($nroIntento <= CANT_INTENTOS && !$ganoElIntento);
-
 
     if ($ganoElIntento) {
         $nroIntento--;
@@ -410,6 +418,7 @@ function jugarWordix($palabraWordix, $nombreUsuario)
         "jugador" => $nombreUsuario,
         "intentos" => $nroIntento,
         "puntaje" => $puntaje
+        , "letra" => $letrasCorrectas,
     ];
 
     return $partida;

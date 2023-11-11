@@ -213,30 +213,36 @@ function primeraPartidaGanada($jugador, $partidasJugadas)
  * @param string $nombreResumen
  * @return array
  */
-function resumenJugador($listaResumen, $nombreResumen)
+function resumenJugador($partidaJugada, $nombreResumen)
 {
     $puntajeTotal = 0;
-    $partidaJugo = 0;
+    $jugaste = 0;
     $victorias = 0;
-    for ($i = 0; $i < count($listaResumen); $i++) {
-        $buscarNombre = strtolower($listaResumen[$i]["jugador"]);
-        if ($buscarNombre == $nombreResumen) {
-            $partidaJugo++;
-            $puntajeTotal += $listaResumen[$i]["puntaje"];
-            if ($listaResumen[$i]["puntaje"] != 0) {
+    $resumen = [];
+    foreach ($partidaJugada as $partida) {
+        $buscarNombre = strtolower($partida["jugador"]);
+        if (strtolower($nombreResumen) == $buscarNombre) {
+            $jugaste++;
+            $puntajeTotal += $partida["puntaje"];
+            $letraCorrecta = $partida["letra"];
+            if ($partida["puntaje"] != 0) {
                 $victorias++;
             }
         }
     }
-    if ($partidaJugo > 0) {
-        $porcentajeVictorias = ($victorias / $partidaJugo) * 100;
-        $listaResumen = ["partidas" => $partidaJugo, "puntajeTotal" => $puntajeTotal, "victorias" => $victorias, "porcentaje" => $porcentajeVictorias];
-    } else {
-        $listaResumen = [];
-    }
-    return $listaResumen;
-}
 
+    if ($jugaste > 0) {
+        $porcentajeVictorias = ($victorias / $jugaste) * 100;
+        $resumen = [
+            "partidas" => $jugaste,
+            "puntajeTotal" => $puntajeTotal,
+            "victorias" => $victorias,
+            "porcentaje" => $porcentajeVictorias,
+            "letraAdivino" => $letraCorrecta,
+        ];
+    }
+    return $resumen;
+}
 /**
  * Esta funcion compara dos elementos tipo string de un arreglo
  * @param array $primerJugador
@@ -323,6 +329,7 @@ do {
             $listaPalabrasUsadas[] = $palabraElegida;
             $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
             $partidasJugadas[] = $partidaActual;
+            print_r($partidasJugadas);
 
             break;
         case 2:
@@ -356,7 +363,7 @@ do {
             break;
         case 5:
             do {
-                $partidasJugadas = cargarPartidas();
+                //$partidasJugadas = cargarPartidas();
                 echo "¿ De que jugador quiere el resumen ? , ";
                 $nombreResumen = solicitarJugador();
                 $resumenSolicitado = resumenJugador($partidasJugadas, $nombreResumen);
@@ -371,8 +378,13 @@ do {
                 "Partidas: " . $resumenSolicitado["partidas"] . "\n" .
                 "Puntaje Total: " . $resumenSolicitado["puntajeTotal"] . "\n" .
                 "Victorias: " . $resumenSolicitado["victorias"] . "\n" .
-                "Porcentaje victorias: " . $resumenSolicitado["porcentaje"] . "%" . "\n" .
-                " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n";
+                "Porcentaje victorias: " . $resumenSolicitado["porcentaje"] . "%" . "\n";
+            for ($i = 0; $i < $resumenSolicitado["partidas"]; $i++) {
+                echo "Adivinadas: " . "\n" .
+                str_repeat(" ", 5) . //repite un string
+                "Intento " . ($i + 1) . ": " . $resumenSolicitado["letraAdivino"] . " , letra adivinada/s" . "\n";
+            }
+            echo " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n";
 
             break;
         case 6:
