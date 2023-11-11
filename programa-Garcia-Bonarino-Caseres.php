@@ -75,7 +75,7 @@ function solicitarJugador()
         if (ctype_alpha($nombre[0])) {
             $NoContieneNumero = false;
         } else {
-            echo "El nombre debe comenzar en una letra";
+            echo "El nombre debe comenzar con una letra"."\n";
         }
     } while ($NoContieneNumero);
     return strtolower($nombre);
@@ -219,6 +219,7 @@ function resumenJugador($partidaJugada, $nombreResumen)
     $jugaste = 0;
     $victorias = 0;
     $resumen = [];
+    $letrasAdivinadas = [];
     foreach ($partidaJugada as $partida) {
         $buscarNombre = strtolower($partida["jugador"]);
         if (strtolower($nombreResumen) == $buscarNombre) {
@@ -228,6 +229,7 @@ function resumenJugador($partidaJugada, $nombreResumen)
             if ($partida["puntaje"] != 0) {
                 $victorias++;
             }
+            $letrasAdivinadas[] = $letraCorrecta;
         }
     }
 
@@ -238,7 +240,7 @@ function resumenJugador($partidaJugada, $nombreResumen)
             "puntajeTotal" => $puntajeTotal,
             "victorias" => $victorias,
             "porcentaje" => $porcentajeVictorias,
-            "letraAdivino" => $letraCorrecta,
+            "letraAdivino" => $letrasAdivinadas,
         ];
     }
     return $resumen;
@@ -382,7 +384,7 @@ do {
             for ($i = 0; $i < $resumenSolicitado["partidas"]; $i++) {
                 echo "Adivinadas: " . "\n" .
                 str_repeat(" ", 5) . //repite un string
-                "Intento " . ($i + 1) . ": " . $resumenSolicitado["letraAdivino"] . " , letra adivinada/s" . "\n";
+                "Intento " . ($i + 1) . ": " . $resumenSolicitado["letraAdivino"][$i] . "  letra adivinada/s" . "\n";
             }
             echo " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n";
 
