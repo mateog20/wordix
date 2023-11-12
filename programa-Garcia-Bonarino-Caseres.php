@@ -36,17 +36,13 @@ function cargarPartidas()
     return $partidasCargadas;
 }
 /**
- * Una función que muestra un menu de opciones con la que el usuario puede interactuar
- * @param string $jugadorActual
- * @return int
+ * Una función que muestra un menu
  */
-function seleccionarOpcion($jugadorActual)
+function mostrarMenu()
 {
     // int $seleccion
-    do {
-        echo "\n" . "            🔺 Jugador actual: " . $jugadorActual . " 🔺";
-        echo
-            '
+   
+          echo  '
         1) Jugar wordix con una palabra elegida
         2) Jugar wordix con una palabra aleatoria
         3) Mostrar una partida
@@ -56,10 +52,48 @@ function seleccionarOpcion($jugadorActual)
         7) Agregar una palabra de 5 letras a wordix
         8) Cambiar de jugador
         9) Salir
-        Escriba el numero de la opción: ';
-        $seleccion = trim(fgets(STDIN));
-    } while ($seleccion < 1 || $seleccion > 9);
-    return $seleccion;
+      ';
+}
+/**
+* Devuelve la opción seleccionada por el jugador
+* @return int
+*/
+function obtenerOpcion(){
+echo "Seleccione una de las opciones: ";
+$opcion = trim(fgets(STDIN));
+return $opcion;
+}
+/**
+ * Valida una opción.
+ * @param int $opcion 
+ * @return boolean 
+ */
+function validarOpcion($opcion)
+{
+    if(is_numeric($opcion)){
+        $esValida = true;
+    }
+    if($opcion > 0 && $opcion < 10){
+        $esValida = true;
+    }else{
+        $esValida = false;
+    }
+
+return $esValida;
+} 
+/**
+ * Obtiene una opción mostrando un menú y la valida.
+ * @return int 
+ */
+function seleccionarOpcion(){
+    mostrarMenu();
+    $seleccion=obtenerOpcion();
+    while(!validarOpcion($seleccion)){
+        echo "Opcion no valida, por favor ingrese una opcion valida"."\n";
+        $seleccion=obtenerOpcion();
+    }
+    
+return $seleccion;
 }
 
 /**
@@ -324,7 +358,7 @@ $palabraElegida = "";
 $nombreJugador = solicitarJugador();
 $coleccionModificable = cargarColeccionPalabras();
 do {
-    $opcion = seleccionarOpcion($nombreJugador);
+    $opcion = seleccionarOpcion();
     switch ($opcion) {
         case 1:
             $palabraElegida = elegirPalabra($coleccionModificable, $listaPalabrasUsadas);
