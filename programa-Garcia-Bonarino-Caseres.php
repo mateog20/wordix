@@ -41,8 +41,8 @@ function cargarPartidas()
 function mostrarMenu()
 {
     // int $seleccion
-   
-          echo  '
+
+    echo '
         1) Jugar wordix con una palabra elegida
         2) Jugar wordix con una palabra aleatoria
         3) Mostrar una partida
@@ -55,45 +55,47 @@ function mostrarMenu()
       ';
 }
 /**
-* Devuelve la opción seleccionada por el jugador
-* @return int
-*/
-function obtenerOpcion(){
-echo "Seleccione una de las opciones: ";
-$opcion = trim(fgets(STDIN));
-return $opcion;
+ * Devuelve la opción seleccionada por el jugador
+ * @return int
+ */
+function obtenerOpcion()
+{
+    echo "Seleccione una de las opciones: ";
+    $opcion = trim(fgets(STDIN));
+    return $opcion;
 }
 /**
  * Valida una opción.
- * @param int $opcion 
- * @return boolean 
+ * @param int $opcion
+ * @return boolean
  */
 function validarOpcion($opcion)
 {
-    if(is_numeric($opcion)){
+    if (is_numeric($opcion)) {
         $esValida = true;
     }
-    if($opcion > 0 && $opcion < 10){
+    if ($opcion > 0 && $opcion < 10) {
         $esValida = true;
-    }else{
+    } else {
         $esValida = false;
     }
 
-return $esValida;
-} 
+    return $esValida;
+}
 /**
  * Obtiene una opción mostrando un menú y la valida.
- * @return int 
+ * @return int
  */
-function seleccionarOpcion(){
+function seleccionarOpcion()
+{
     mostrarMenu();
-    $seleccion=obtenerOpcion();
-    while(!validarOpcion($seleccion)){
-        echo "Opcion no valida, por favor ingrese una opcion valida"."\n";
-        $seleccion=obtenerOpcion();
+    $seleccion = obtenerOpcion();
+    while (!validarOpcion($seleccion)) {
+        echo "Opcion no valida, por favor ingrese una opcion valida" . "\n";
+        $seleccion = obtenerOpcion();
     }
-    
-return $seleccion;
+
+    return $seleccion;
 }
 
 /**
@@ -109,7 +111,7 @@ function solicitarJugador()
         if (ctype_alpha($nombre[0])) {
             $NoContieneNumero = false;
         } else {
-            echo "El nombre debe comenzar con una letra"."\n";
+            echo "El nombre debe comenzar con una letra" . "\n";
         }
     } while ($NoContieneNumero);
     return strtolower($nombre);
@@ -163,11 +165,27 @@ function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
  */
 function palabraAlazar($listaPalabras)
 {
-    // int $numAleatoreo
-    // string $varPalabraAlazar
-    $numAleatoreo = random_int(0, count($listaPalabras) - 1);
-    $varPalabraAlazar = $listaPalabras[$numAleatoreo];
-    return $varPalabraAlazar;
+    // int $numAleatoreoIndiceAleatorio
+    $numIndiceAleatorio = random_int(0, count($listaPalabras) - 1);
+    return $listaPalabras[$numIndiceAleatorio];
+}
+/**
+ * Elimina todos los elementos que se encuentren en un arreglo
+ * @param array  $coleccionPalabrasActuales
+ * @param string $palabraEliminar
+ * @return array
+ */
+function eliminarElemento($coleccionPalabrasActuales, $palabraEliminar)
+{
+    // array $listaPalabrasActualizada
+    $listaPalabrasActualizada = [];
+    foreach ($coleccionPalabrasActuales as $palabra) {
+        if ($palabra != $palabraEliminar) {
+            $listaPalabrasActualizada[] = $palabra;
+        }
+    }
+
+    return $listaPalabrasActualizada;
 }
 /**
  * Esta funcion comprueba si una palabra ya fue usada en una partida pasada
@@ -365,14 +383,12 @@ do {
             $listaPalabrasUsadas[] = $palabraElegida;
             $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
             $partidasJugadas[] = $partidaActual;
-            print_r($partidasJugadas);
-
             break;
         case 2:
-            $palabraAleat = palabraAlazar($coleccionModificable);
-            $partidaActual = jugarWordix($palabraAleat, $nombreJugador);
+            $palabraAleatoria = palabraAlazar($coleccionModificable);
+            $partidaActual = jugarWordix($palabraAleatoria, $nombreJugador);
             $partidasJugadas[] = $partidaActual;
-
+            $coleccionModificable = eliminarElemento($coleccionModificable, $palabraAleatoria);
             break;
         case 3:
             echo mostrarUnaPartida($partidasJugadas);
