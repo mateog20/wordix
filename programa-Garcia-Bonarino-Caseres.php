@@ -350,7 +350,7 @@ function leerPalabraCincoLetras($coleccionPalabras)
             }
             if ($encontrado) {
                 $palabraValida = false;
-                echo "esta palabra ya se encuentra en la listaResuemn de palabras disponibles \n";
+                echo "esta palabra ya se encuentra en la lista de palabras disponibles \n";
             }
         }
     } while ($palabraValida == false);
