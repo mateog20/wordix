@@ -11,3 +11,7 @@
     - Felipe Caceres Rapetti - Legajo: 4225 - email: felipe.caceres@est.fi.uncoma.edu.ar - Github: feli2636
     - Ignacio Bonorino - legajo: 4863 - email: ignacio.bonorino@est.fi.uncoma.edu.ar - Github: BonorinoIgnacio
 # Profesores/as
+    - Maria Jose Rotter
+    - Claudia Carrasco
+    - Facundo Muñoz
+    - Albany Petit

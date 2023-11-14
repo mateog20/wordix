@@ -377,7 +377,7 @@ function jugarWordix($palabraWordix, $nombreUsuario)
     $teclado = iniciarTeclado();
     escribirMensajeBienvenida($nombreUsuario);
     $nroIntento = 1;
-    $letrasCorrectas = 0;
+    $letraAdivino = 0;
     do {
 
         echo "Comenzar con el Intento " . $nroIntento . ":\n";
@@ -396,9 +396,11 @@ function jugarWordix($palabraWordix, $nombreUsuario)
             foreach ($arregloDeIntentosWordix as $intentos) {
                 foreach ($intentos as $letraIntento) {
                     if ($letraIntento["estado"] === ESTADO_LETRA_ENCONTRADA) {
-                        $letrasCorrectas++;
+                        $letraAdivino++;
+                        
                     }
                 }
+                $letrasCorrectas[]= $letraAdivino;
             }
         }
     } while ($nroIntento <= CANT_INTENTOS && !$ganoElIntento);
@@ -407,6 +409,8 @@ function jugarWordix($palabraWordix, $nombreUsuario)
         $nroIntento--;
         $puntaje = obtenerPuntajeWordix($nroIntento);
         echo "Adivinó la palabra Wordix en el intento " . $nroIntento . "!: " . $palabraIntento . " Obtuvo $puntaje puntos!";
+        $letraAdivino = 0;
+        $letrasCorrectas[]=$letraAdivino;
     } else {
         $nroIntento = 0; //reset intento
         $puntaje = 0;

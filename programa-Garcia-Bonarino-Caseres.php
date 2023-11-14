@@ -12,6 +12,9 @@ Bonorino Ignacio - legajo: 4863 - Tecnicatura en Desarrollo Web - email: ignacio
 
  */
 
+
+
+
 /**************************************/
 /***** DEFINICION DE FUNCIONES ********/
 /**************************************/
@@ -53,17 +56,11 @@ function mostrarMenu()
         8) Cambiar de jugador
         9) Salir
       ';
-}
-/**
- * Devuelve la opción seleccionada por el jugador
- * @return int
- */
-function obtenerOpcion()
-{
     echo "Seleccione una de las opciones: ";
     $opcion = trim(fgets(STDIN));
     return $opcion;
 }
+
 /**
  * Valida una opción.
  * @param int $opcion
@@ -88,11 +85,10 @@ function validarOpcion($opcion)
  */
 function seleccionarOpcion()
 {
-    mostrarMenu();
-    $seleccion = obtenerOpcion();
+    $seleccion = mostrarMenu();
     while (!validarOpcion($seleccion)) {
         echo "Opcion no valida, por favor ingrese una opcion valida" . "\n";
-        $seleccion = obtenerOpcion();
+        $seleccion = mostrarMenu();
     }
 
     return $seleccion;
@@ -142,11 +138,10 @@ function cargarColeccionPalabras()
 function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
 {
     // int $indicePalabraElegida
-
     do {
-        echo "Puedes seleccionar entre: " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
+        echo "Puedes seleccionar entre: 0 y " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
         $indicePalabraElegida = trim(fgets(STDIN));
-        if ($indicePalabraElegida < 1 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
+        if ($indicePalabraElegida < 0 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
             //ctype_digit comprueba caracteres numéricos
             echo "Numero elegido incorrecto, ingrese uno valido \n";
             $indicePalabraElegida = -1;
@@ -167,6 +162,7 @@ function palabraAlazar($listaPalabras)
 {
     // int $numAleatoreoIndiceAleatorio
     $numIndiceAleatorio = random_int(0, count($listaPalabras) - 1);
+    echo $listaPalabras[$numIndiceAleatorio];
     return $listaPalabras[$numIndiceAleatorio];
 }
 /**
@@ -197,6 +193,7 @@ function eliminarElemento($coleccionPalabrasActuales, $palabraEliminar)
 
 function comprobarPalabra($listaUsadas, $palabra)
 {
+    // BOOLEANO $seUso
     $seUso = false;
     foreach ($listaUsadas as $palabraUsada) {
         if ($palabraUsada == $palabra) {
@@ -216,7 +213,7 @@ function comprobarPalabra($listaUsadas, $palabra)
  */
 function mostrarUnaPartida($partidasJugadas)
 {
-    //ENTERO $indice
+    //ENTERO $indice $maximo $minimo
     $maximo = count($partidasJugadas);
     $minimo = 1;
     if ($maximo == 0) {
@@ -265,34 +262,40 @@ function primeraPartidaGanada($jugador, $partidasJugadas)
  * @param string $nombreResumen
  * @return array
  */
-function resumenJugador($partidaJugada, $nombreResumen)
+function resumenJugador($partidasJugadas, $nombreJugador)
 {
+    /* 
+    array $resumen $letrasAdivinadas 
+    ENTERO $puntajeTotal, $jugaste, $victoriase   
+    */
     $puntajeTotal = 0;
-    $jugaste = 0;
+    $partidas = 0;
     $victorias = 0;
     $resumen = [];
     $letrasAdivinadas = [];
-    foreach ($partidaJugada as $partida) {
-        $buscarNombre = strtolower($partida["jugador"]);
-        if (strtolower($nombreResumen) == $buscarNombre) {
-            $jugaste++;
+    foreach ($partidasJugadas as $partida) {
+        if ($partida["jugador"] == $nombreJugador) {
+            $partidas++;
             $puntajeTotal += $partida["puntaje"];
-            $letraCorrecta = $partida["letra"];
-            if ($partida["puntaje"] != 0) {
+
+            if ($partida["puntaje"] > 0) {
                 $victorias++;
             }
-            $letrasAdivinadas[] = $letraCorrecta;
+
+            foreach ($partida["letra"] as $letra) {
+                $letrasAdivinadas[] = $letra;
+            }
         }
     }
 
-    if ($jugaste > 0) {
-        $porcentajeVictorias = ($victorias / $jugaste) * 100;
+    if ($partidas > 0) {
+        $porcentajeVictorias = ($victorias / $partidas) * 100;
         $resumen = [
-            "partidas" => $jugaste,
+            "partidas" => $partidas,
             "puntajeTotal" => $puntajeTotal,
             "victorias" => $victorias,
             "porcentaje" => $porcentajeVictorias,
-            "letraAdivino" => $letrasAdivinadas,
+            "letras" => $letrasAdivinadas,
         ];
     }
     return $resumen;
@@ -305,6 +308,7 @@ function resumenJugador($partidaJugada, $nombreResumen)
  */
 function ordenarLista($primerPartida, $segundaPartida)
 {
+    // ENTERO $compararPalabra
     //La funcion strcmp() sirve para comparar dos cadenas de caracteres
     $compararPalabra = strcmp($primerPartida["jugador"], $segundaPartida["jugador"]);
     if ($compararPalabra == 0) // Caso donde el usuario es el mismo y debemos ordenar por la palabra
@@ -323,7 +327,7 @@ function leerPalabraCincoLetras($coleccionPalabras)
 {
     // STRING $palabraNueva BOLEANO $palabraValida . $encontrado ENTERO $posicion
     do {
-        echo "ingrese una palabra de 5 letras: ";
+        echo "Ingrese una palabra de 5 letras: ";
         $palabraNueva = trim(fgets(STDIN));
         $posicion = 0;
         $palabraValida = false;
@@ -350,7 +354,7 @@ function leerPalabraCincoLetras($coleccionPalabras)
             }
             if ($encontrado) {
                 $palabraValida = false;
-                echo "esta palabra ya se encuentra en la listaResuemn de palabras disponibles \n";
+                echo "Esta palabra ya se encuentra en la lista de palabras disponibles \n";
             }
         }
     } while ($palabraValida == false);
@@ -372,17 +376,19 @@ $nombreJugador = "";
 $partidasJugadas = []; //  es un arreglo multidimensional, contendra las partidas.
 $listaPalabrasUsadas = []; //es el arreglo que almacena las palabras que ya fueron jugadas.
 $palabraElegida = "";
+$letras = [];
 //Proceso:
 $nombreJugador = solicitarJugador();
 $coleccionModificable = cargarColeccionPalabras();
 do {
-    $opcion = seleccionarOpcion();
-    switch ($opcion) {
+    $opcionElegida = seleccionarOpcion();
+    switch ($opcionElegida) {
         case 1:
             $palabraElegida = elegirPalabra($coleccionModificable, $listaPalabrasUsadas);
             $listaPalabrasUsadas[] = $palabraElegida;
             $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
             $partidasJugadas[] = $partidaActual;
+
             break;
         case 2:
             $palabraAleatoria = palabraAlazar($coleccionModificable);
@@ -419,25 +425,27 @@ do {
                 echo "¿ De que jugador quiere el resumen ? , ";
                 $nombreResumen = solicitarJugador();
                 $resumenSolicitado = resumenJugador($partidasJugadas, $nombreResumen);
-                if (empty($resumenSolicitado)) {
-                    echo "El nombre del jugador no existe, ingrese uno valido" . "\n";
+                if (empty($resumenSolicitado) && $nombreResumen <> "s") {
+                    echo "El nombre del jugador no existe, ingrese uno valido o escriba (s) para salir" . "\n";
                 }
-            } while (empty($resumenSolicitado));
+            } while (empty($resumenSolicitado) && $nombreResumen <> "s");
 
-            echo
+            if (!empty($resumenSolicitado)) {
+                echo
                 " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n" .
-                "Jugador: " . $nombreResumen . "\n" .
-                "Partidas: " . $resumenSolicitado["partidas"] . "\n" .
-                "Puntaje Total: " . $resumenSolicitado["puntajeTotal"] . "\n" .
-                "Victorias: " . $resumenSolicitado["victorias"] . "\n" .
-                "Porcentaje victorias: " . $resumenSolicitado["porcentaje"] . "%" . "\n";
-            for ($i = 0; $i < $resumenSolicitado["partidas"]; $i++) {
-                echo "Adivinadas: " . "\n" .
-                str_repeat(" ", 5) . //repite un string
-                "Intento " . ($i + 1) . ": " . $resumenSolicitado["letraAdivino"][$i] . "  letra adivinada/s" . "\n";
+                    "Jugador: " . $nombreResumen . "\n" .
+                    "Partidas: " . $resumenSolicitado["partidas"] . "\n" .
+                    "Puntaje Total: " . $resumenSolicitado["puntajeTotal"] . "\n" .
+                    "Victorias: " . $resumenSolicitado["victorias"] . "\n" .
+                    "Porcentaje victorias: " . $resumenSolicitado["porcentaje"] . "%" . "\n";
+                echo "Adivinadas: " . "\n";
+                for ($i = 0; $i < $partidasJugadas[0]["intentos"]; $i++) {
+                    echo str_repeat(" ", 5) . "Intento " . ($i + 1) . ": " . $resumenSolicitado["letras"][$i] . "\n";
+                    //str_repeat permite repetir una cadena de caracteres
+                }
+                echo
+                " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️";
             }
-            echo " 〰️〰️〰️〰️〰️〰️〰️〰️📜〰️〰️〰️〰️〰️〰️〰️〰️" . "\n";
-
             break;
         case 6:
             // La funcion uasort sirve para ordenar un arreglo de tipo asociativo respetando su indice
@@ -457,4 +465,4 @@ do {
         default: //Esta opcion en el switch se ejecuta cuando ninguno de los case resulta verdadero
             echo "Has ingresado una opción invalida";
     }
-} while ($opcion != 9);
+} while ($opcionElegida != 9);
