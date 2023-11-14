@@ -166,7 +166,7 @@ function palabraAlazar($listaPalabras)
     return $listaPalabras[$numIndiceAleatorio];
 }
 /**
- * Elimina todos los elementos que se encuentren en un arreglo
+ * Elimina todos los elementos que coincidan con la palabra pasada
  * @param array  $coleccionPalabrasActuales
  * @param string $palabraEliminar
  * @return array
@@ -239,7 +239,12 @@ function mostrarUnaPartida($partidasJugadas)
         }
     }
 }
-
+/**
+ * A partir de un jugador dado, determina cual fue su primer partida ganada
+ * @param string $jugador
+ * @param array $partidasJugadas
+ * @return int
+ */
 function primeraPartidaGanada($jugador, $partidasJugadas)
 {
     //int $gano
@@ -257,7 +262,7 @@ function primeraPartidaGanada($jugador, $partidasJugadas)
     return $gano;
 }
 /**
- * Genera un resumen del jugador solicitado
+ * Generar un resumen de un jugador en un juego.
  * @param array $listaResunen
  * @param string $nombreResumen
  * @return array
