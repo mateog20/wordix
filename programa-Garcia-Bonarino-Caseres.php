@@ -146,14 +146,20 @@ function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
     do {
         echo "Puedes seleccionar entre: " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
         $indicePalabraElegida = trim(fgets(STDIN));
-        if ($indicePalabraElegida < 1 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
-            //ctype_digit comprueba caracteres numéricos
-            echo "Numero elegido incorrecto, ingrese uno valido \n";
-            $indicePalabraElegida = -1;
-        } elseif (comprobarPalabra($PalabrasUsadas, $listaPalabrasElegir[$indicePalabraElegida])) {
-            echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
+        if(is_numeric($indicePalabraElegida)) {
+            $indicePalabraElegida=$indicePalabraElegida-1;
+            if ($indicePalabraElegida < 0 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
+                //ctype_digit comprueba caracteres numéricos
+                echo "Numero elegido incorrecto, ingrese uno valido \n";
+                $indicePalabraElegida = -1;
+            } elseif (comprobarPalabra($PalabrasUsadas, $listaPalabrasElegir[$indicePalabraElegida])) {
+                echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
+                $indicePalabraElegida = -1;
+            }
+        } else {
             $indicePalabraElegida = -1;
         }
+        
     } while ($indicePalabraElegida == -1);
     return $listaPalabrasElegir[$indicePalabraElegida];
 }
@@ -313,6 +319,25 @@ function ordenarLista($primerPartida, $segundaPartida)
     }
     return $compararPalabra;
 }
+/**
+ * verifica si la palabra ya se encuentra en la coleccion de palabras
+ * @param STRING $palabraNueva
+ * @param array $coleccionMpdificable
+ * @return BOLEANO
+ */
+function yaSeEncuentra($palabraNueva , $coleccionModificable){
+    //BOLEANO $seEncuentra ENTERO $posicion
+    $posicion=0;
+    $seEncuentra=false;
+    while (!$seEncuentra && $posicion < count($coleccionModificable)) {
+        if ($coleccionModificable[$posicion] == $palabraNueva) {
+            $seEncuentra = true;
+        } else {
+            $posicion++;
+        }
+}
+return $seEncuentra;
+}
 
 /**
  *  solicita al usuario una palabra de 5 letras
@@ -356,7 +381,23 @@ function leerPalabraCincoLetras($coleccionPalabras)
     } while ($palabraValida == false);
     return $palabraNueva;
 }
-
+/**
+ * muestra una lista de los jugadores
+ * @param array $partidasJugadas
+ * @return
+ */
+function listaJugadores($partidasJugadas){
+     //ENTERO $jugador
+     $jugadores = array_unique(array_column($partidasJugadas, "jugador"));//array_column() te permite extraer los valores de una columna específica en un array y array_unique() elimina los elementos duplicados
+    if(count($jugadores)== 0){
+        echo "no hay partidas jugadas \n";
+    }else{
+        echo "LISTA DE JUGADORES: \n";
+        foreach ($jugadores as $jugador) {
+           echo $jugador . "\n";
+           }
+    } 
+    }
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
@@ -396,7 +437,8 @@ do {
             break;
 
         case 4:
-            echo "Ingrese el nombre del jugador que desea buscar: ";
+            listaJugadores($partidasJugadas);
+            echo "Ingrese el nombre del jugador que desea ver: ";
             $jugador = trim(fgets(STDIN));
             //$jugador = $partidaActual["jugador"];
             $i = primeraPartidaGanada($jugador, $partidasJugadas);
@@ -416,6 +458,7 @@ do {
         case 5:
             do {
                 //$partidasJugadas = cargarPartidas();
+                listaJugadores($partidasJugadas);
                 echo "¿ De que jugador quiere el resumen ? , ";
                 $nombreResumen = solicitarJugador();
                 $resumenSolicitado = resumenJugador($partidasJugadas, $nombreResumen);
@@ -446,7 +489,14 @@ do {
             print_r($partidasJugadas);
             break;
         case 7:
-            $coleccionModificable[] = leerPalabraCincoLetras($coleccionModificable);
+           //$coleccionModificable[] = leerPalabraCincoLetras($coleccionModificable);
+           do{
+            $palabraNueva=leerPalabra5Letras();
+            if(yaSeEncuentra($palabraNueva , $coleccionModificable)){
+             echo "esta palabra ya se encuentra en la coleccion \n";
+            }
+           }while(yaSeEncuentra($palabraNueva , $coleccionModificable));
+           $coleccionModificable[]= $palabraNueva;
             break;
         case 8:
             $nombreJugador = solicitarJugador();
