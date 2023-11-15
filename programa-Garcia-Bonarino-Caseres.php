@@ -20,26 +20,29 @@ Bonorino Ignacio - legajo: 4863 - Tecnicatura en Desarrollo Web - email: ignacio
 /**************************************/
 
 /**
- * Una funcion que carga 10 partidas
+ * Una funcion que carga 10 resumenes de partidas
+ * @return array
  */
 function cargarPartidas()
 {
+    //array $partidasCargadas
     $partidasCargadas = [
         ["jugador" => "Juan", "palabraWordix" => "PODER", "intentos" => "5", "puntaje" => "2"],
         ["jugador" => "Ana", "palabraWordix" => "PERRO", "intentos" => "1", "puntaje" => "6"],
         ["jugador" => "Mateo", "palabraWordix" => "TINTO", "intentos" => "2", "puntaje" => "5"],
         ["jugador" => "Nacho", "palabraWordix" => "CAMPO", "intentos" => "3", "puntaje" => "4"],
-        ["jugador" => "Felipe", "palabraWordix" => "MUJER", "intentos" => "3", "puntaje" => "0"],
+        ["jugador" => "Felipe", "palabraWordix" => "MUJER", "intentos" => "3", "puntaje" => "4"],
         ["jugador" => "Ariel", "palabraWordix" => "ERROR", "intentos" => "4", "puntaje" => "3"],
-        ["jugador" => "Pedro", "palabraWordix" => "BUSCA", "intentos" => "0", "puntaje" => "0"],
+        ["jugador" => "Pedro", "palabraWordix" => "BUSCA", "intentos" => "6", "puntaje" => "0"],
         ["jugador" => "Ana", "palabraWordix" => "BARCO", "intentos" => "2", "puntaje" => "5"],
-        ["jugador" => "Juan", "palabraWordix" => "HIELO", "intentos" => "0", "puntaje" => "0"],
+        ["jugador" => "Juan", "palabraWordix" => "HIELO", "intentos" => "5", "puntaje" => "2"],
         ["jugador" => "Maria", "palabraWordix" => "FUEGO", "intentos" => "6", "puntaje" => "1"],
     ];
     return $partidasCargadas;
 }
 /**
  * Una función que muestra un menu
+ * @return int
  */
 function mostrarMenu()
 {
@@ -68,6 +71,8 @@ function mostrarMenu()
  */
 function validarOpcion($opcion)
 {
+    // boolean $esValida
+
     if (is_numeric($opcion)) {
         $esValida = true;
     }
@@ -85,6 +90,7 @@ function validarOpcion($opcion)
  */
 function seleccionarOpcion()
 {
+    // int $seleccion
     $seleccion = mostrarMenu();
     while (!validarOpcion($seleccion)) {
         echo "Opcion no valida, por favor ingrese una opcion valida" . "\n";
@@ -100,6 +106,8 @@ function seleccionarOpcion()
  */
 function solicitarJugador()
 {
+    // BOOLEAN $NoContieneNumero
+    // STRING $nombre
     $NoContieneNumero = true;
     do {
         echo "Ingrese su nombre: ";
@@ -119,6 +127,7 @@ function solicitarJugador()
  */
 function cargarColeccionPalabras()
 {
+    // array $coleccionPalabras
     $coleccionPalabras = [
         "MUJER", "QUESO", "FUEGO", "PERRO", "RASGO",
         "ERROR", "PODER", "HUEVO", "TINTO", "CAMPO",
@@ -131,8 +140,8 @@ function cargarColeccionPalabras()
 
 /**
  * Una funcion que permite elegir un numero dentro de los indices de un arreglo
- * @param array $jugarConPalabra
- * @param array $palabraProhibida
+ * @param array $listaPalabrasElegir
+ * @param array $PalabrasUsadas
  * @return array
  */
 function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
@@ -193,7 +202,7 @@ function eliminarElemento($coleccionPalabrasActuales, $palabraEliminar)
 
 function comprobarPalabra($listaUsadas, $palabra)
 {
-    // BOOLEANO $seUso
+    //boolean $seUso
     $seUso = false;
     foreach ($listaUsadas as $palabraUsada) {
         if ($palabraUsada == $palabra) {
@@ -209,11 +218,10 @@ function comprobarPalabra($listaUsadas, $palabra)
 /**
  * muestra una partida
  * @param array $partidasJugadas
- * @return array
  */
 function mostrarUnaPartida($partidasJugadas)
 {
-    //ENTERO $indice $maximo $minimo
+    //int $indice $maximo $minimo
     $maximo = count($partidasJugadas);
     $minimo = 1;
     if ($maximo == 0) {
@@ -247,7 +255,7 @@ function mostrarUnaPartida($partidasJugadas)
  */
 function primeraPartidaGanada($jugador, $partidasJugadas)
 {
-    //int $gano
+    //int $gano . $i
     //string $datosPrimeraPartida
     $i = 0;
     $gano = -1;
@@ -263,15 +271,15 @@ function primeraPartidaGanada($jugador, $partidasJugadas)
 }
 /**
  * Generar un resumen de un jugador en un juego.
- * @param array $listaResunen
- * @param string $nombreResumen
+ * @param array $partidasJugadas
+ * @param string $nombreJugador
  * @return array
  */
 function resumenJugador($partidasJugadas, $nombreJugador)
 {
     /* 
     array $resumen $letrasAdivinadas 
-    ENTERO $puntajeTotal, $jugaste, $victoriase   
+    int $puntajeTotal, $jugaste, $victorias
     */
     $puntajeTotal = 0;
     $partidas = 0;
@@ -307,13 +315,14 @@ function resumenJugador($partidasJugadas, $nombreJugador)
 }
 /**
  * Esta funcion compara dos elementos tipo string de un arreglo
- * @param array $primerJugador
- * @param array $segundoJugador
+ * @param array $primerPartida
+ * @param array $segundaPartida
  * @return int
  */
 function ordenarLista($primerPartida, $segundaPartida)
 {
-    // ENTERO $compararPalabra
+    //int $compararPalabra
+
     //La funcion strcmp() sirve para comparar dos cadenas de caracteres
     $compararPalabra = strcmp($primerPartida["jugador"], $segundaPartida["jugador"]);
     if ($compararPalabra == 0) // Caso donde el usuario es el mismo y debemos ordenar por la palabra
@@ -324,13 +333,15 @@ function ordenarLista($primerPartida, $segundaPartida)
 }
 
 /**
- *  solicita al usuario una palabra de 5 letras
+ * Solicita al usuario una palabra de 5 letras para incluir a la lista
  * @param array $coleccionPalabras
- * @return STRING
+ * @return string
  */
 function leerPalabraCincoLetras($coleccionPalabras)
 {
-    // STRING $palabraNueva BOLEANO $palabraValida . $encontrado ENTERO $posicion
+    //string $palabraNueva
+    //boolean $palabraValida . $encontrado
+    //int $posicion
     do {
         echo "Ingrese una palabra de 5 letras: ";
         $palabraNueva = trim(fgets(STDIN));
@@ -366,9 +377,9 @@ function leerPalabraCincoLetras($coleccionPalabras)
     return $palabraNueva;
 }
 
-/**************************************/
-/*********** PROGRAMA PRINCIPAL *******/
-/**************************************/
+                                        /**************************************/
+                                        /********* PROGRAMA PRINCIPAL *********/
+                                        /**************************************/
 
 /*Declaración de variables:
 int $opcion
@@ -409,8 +420,7 @@ do {
         case 4:
             echo "Ingrese el nombre del jugador que desea buscar: ";
             $jugador = trim(fgets(STDIN));
-            //$jugador = $partidaActual["jugador"];
-            $i = primeraPartidaGanada($jugador, $partidasJugadas);
+            $i = primeraPartidaGanada($jugador, $partidasJugadas); // indice del arreglo donde guarda la primera partida ganada de X jugador
             if ($i != -1) {
                 echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
                     "Partida WORDIX " . $i + 1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
@@ -462,6 +472,7 @@ do {
             $coleccionModificable[] = leerPalabraCincoLetras($coleccionModificable);
             break;
         case 8:
+            //Opcion agregada para cambiar de jugador
             $nombreJugador = solicitarJugador();
             break;
         case 9:
