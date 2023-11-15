@@ -137,24 +137,30 @@ function cargarColeccionPalabras()
 
 /**
  * Una funcion que permite elegir un numero dentro de los indices de un arreglo
- * @param array $listaPalabrasElegir
- * @param array $PalabrasUsadas
+ * @param array $jugarConPalabra
+ * @param array $palabraProhibida
  * @return array
  */
-function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
-{
+function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas){
     // int $indicePalabraElegida
+
     do {
-        echo "Puedes seleccionar entre: 0 y " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
+        echo "Puedes seleccionar entre: " . count($listaPalabrasElegir) . " palabras \n" . "Escriba el numero de la palabra que quiere usar en su partida: ";
         $indicePalabraElegida = trim(fgets(STDIN));
-        if ($indicePalabraElegida < 0 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
-            //ctype_digit comprueba caracteres numéricos
-            echo "Numero elegido incorrecto, ingrese uno valido \n";
-            $indicePalabraElegida = -1;
-        } elseif (comprobarPalabra($PalabrasUsadas, $listaPalabrasElegir[$indicePalabraElegida])) {
-            echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
+        if(is_numeric($indicePalabraElegida)) {
+            $indicePalabraElegida=$indicePalabraElegida-1;
+            if ($indicePalabraElegida < 0 || $indicePalabraElegida >= count($listaPalabrasElegir)) {
+                //ctype_digit comprueba caracteres numéricos
+                echo "Numero elegido incorrecto, ingrese uno valido \n";
+                $indicePalabraElegida = -1;
+            } elseif (comprobarPalabra($PalabrasUsadas, $listaPalabrasElegir[$indicePalabraElegida])) {
+                echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
+                $indicePalabraElegida = -1;
+            }
+        } else {
             $indicePalabraElegida = -1;
         }
+        
     } while ($indicePalabraElegida == -1);
     return $listaPalabrasElegir[$indicePalabraElegida];
 }
@@ -368,50 +374,22 @@ function ordenarLista($primerPartida, $segundaPartida)
     }
     return $compararPalabra;
 }
-
 /**
- * Solicita al usuario una palabra de 5 letras para incluir a la lista
- * @param array $coleccionPalabras
- * @return string
+ * funcion que muestra una lista de los jugadores que tienen partidas jugadas
+ * @param array $partidasJugadas
  */
-function leerPalabraCincoLetras($coleccionPalabras)
-{
-    //string $palabraNueva
-    //boolean $palabraValida . $encontrado
-    //int $posicion
-    do {
-        echo "Ingrese una palabra de 5 letras: ";
-        $palabraNueva = trim(fgets(STDIN));
-        $posicion = 0;
-        $palabraValida = false;
-        if (strlen($palabraNueva) == 5) {
-            $palabraValida = true;
-            $palabraNueva = strtoupper($palabraNueva);
-        }
-        while ($palabraValida && $posicion < 5) {
-            if ($palabraNueva[$posicion] >= 'A' && $palabraNueva[$posicion] <= 'Z') { //orden lexico
-                $posicion++;
-            } else {
-                $palabraValida = false;
-            }
-        }
-        if ($palabraValida) {
-            $posicion = 0;
-            $encontrado = false;
-            while (!$encontrado && $posicion < count($coleccionPalabras)) {
-                if ($coleccionPalabras[$posicion] == $palabraNueva) {
-                    $encontrado = true;
-                } else {
-                    $posicion++;
-                }
-            }
-            if ($encontrado) {
-                $palabraValida = false;
-                echo "Esta palabra ya se encuentra en la lista de palabras disponibles \n";
-            }
-        }
-    } while ($palabraValida == false);
-    return $palabraNueva;
+function listaJugadores($partidasJugadas){
+    //array $jugadores
+    $jugadores = array_unique(array_column($partidasJugadas, "jugador")); //array_column te permite extraer los valores de una columna específica en un array y array_unique elimina los elementos duplicados
+    if(count($jugadores)==0){
+        echo "no hay jugadores con partidas jugadas \n";
+    }else{
+        echo "Lista de jugadores: \n";
+        foreach ($jugadores as $elemento) {
+            echo $elemento . "\n";
+    }
+
+}
 }
 
 /**************************************/
@@ -430,6 +408,7 @@ $partidasJugadas = []; //  es un arreglo multidimensional, contendra las partida
 $listaPalabrasUsadas = []; //es el arreglo que almacena las palabras que ya fueron jugadas.
 $palabraElegida = "";
 $letras = [];
+$palabraNueva="";
 //Proceso:
 $nombreJugador = solicitarJugador();
 $coleccionModificable = cargarColeccionPalabras();
@@ -455,7 +434,8 @@ do {
             break;
 
         case 4:
-            echo "Ingrese el nombre del jugador que desea buscar: ";
+            listaJugadores($partidasJugadas);
+            echo "Ingrese el nombre del jugador que desea ver: ";
             $jugador = trim(fgets(STDIN));
             $i = primeraPartidaGanada($jugador, $partidasJugadas); // indice del arreglo donde guarda la primera partida ganada de X jugador
             if ($i != -1) {
@@ -474,6 +454,7 @@ do {
         case 5:
             do {
                 //$partidasJugadas = cargarPartidas();
+                listaJugadores($partidasJugadas);
                 echo "¿ De que jugador quiere el resumen ? , ";
                 $nombreResumen = solicitarJugador();
                 $resumenSolicitado = resumenJugador($partidasJugadas, $nombreResumen);
@@ -498,7 +479,13 @@ do {
             print_r($partidasJugadas);
             break;
         case 7:
-            $coleccionModificable[] = leerPalabraCincoLetras($coleccionModificable);
+            do{
+                $palabraNueva=leerPalabra5Letras();
+                if(comprobarPalabra($coleccionModificable,$palabraNueva)){
+                    echo "esta palabra ya se encuentra en la colección \n";
+                }
+            }while(comprobarPalabra($coleccionModificable,$palabraNueva));
+            $coleccionModificable[]=$palabraNueva;
             break;
         case 8:
             //Opcion agregada para cambiar de jugador
