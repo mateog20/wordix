@@ -490,6 +490,10 @@ do {
         case 6:
             // La funcion uasort sirve para ordenar un arreglo de tipo asociativo respetando su indice
             uasort($partidasJugadas, "ordenarLista");
+            // Recorro el arreglo para eliminar todos los elementos del sub-arreglo "letra"
+            foreach ($partidasJugadas as $indice => $partida) {
+                unset($partidasJugadas[$indice]["letra"]); //unset elimina un elemento de un arreglo
+            }
             // print_r(Arreglo) imprime por pantalla el contenido de un arreglo
             print_r($partidasJugadas);
             break;
