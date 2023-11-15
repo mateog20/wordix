@@ -393,14 +393,15 @@ function jugarWordix($palabraWordix, $nombreUsuario)
         $nroIntento++;
         // Agregado por grupo, busca las letras adivinadas.
         if (!$ganoElIntento) {
+            $letrasCorrectas = [];
             foreach ($arregloDeIntentosWordix as $intentos) {
                 foreach ($intentos as $letraIntento) {
                     if ($letraIntento["estado"] === ESTADO_LETRA_ENCONTRADA) {
                         $letraAdivino++;
-                        
+
                     }
                 }
-                $letrasCorrectas[]= $letraAdivino;
+                $letrasCorrectas[] = $letraAdivino; //array agregado por el grupo para llevar la cuenta de las letras adivinadas
             }
         }
     } while ($nroIntento <= CANT_INTENTOS && !$ganoElIntento);
@@ -409,8 +410,8 @@ function jugarWordix($palabraWordix, $nombreUsuario)
         $nroIntento--;
         $puntaje = obtenerPuntajeWordix($nroIntento);
         echo "Adivinó la palabra Wordix en el intento " . $nroIntento . "!: " . $palabraIntento . " Obtuvo $puntaje puntos!";
-        $letraAdivino = 0;
-        $letrasCorrectas[]=$letraAdivino;
+        $letraAdivino = 5; // indica cuando gano
+        $letrasCorrectas[] = $letraAdivino;
     } else {
         $nroIntento = 0; //reset intento
         $puntaje = 0;
@@ -421,8 +422,8 @@ function jugarWordix($palabraWordix, $nombreUsuario)
         "palabraWordix" => $palabraWordix,
         "jugador" => $nombreUsuario,
         "intentos" => $nroIntento,
-        "puntaje" => $puntaje
-        , "letra" => $letrasCorrectas,
+        "puntaje" => $puntaje,
+        "letra" => $letrasCorrectas,
     ];
 
     return $partida;
