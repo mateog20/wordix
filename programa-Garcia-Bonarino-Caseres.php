@@ -24,16 +24,16 @@ function cargarPartidas()
 {
     //array $partidasCargadas
     $partidasCargadas = [
-        ["jugador" => "Juan", "palabraWordix" => "PODER", "intentos" => "5", "puntaje" => "2"],
-        ["jugador" => "Ana", "palabraWordix" => "PERRO", "intentos" => "1", "puntaje" => "6"],
-        ["jugador" => "Mateo", "palabraWordix" => "TINTO", "intentos" => "2", "puntaje" => "5"],
-        ["jugador" => "Nacho", "palabraWordix" => "CAMPO", "intentos" => "3", "puntaje" => "4"],
-        ["jugador" => "Felipe", "palabraWordix" => "MUJER", "intentos" => "3", "puntaje" => "4"],
-        ["jugador" => "Ariel", "palabraWordix" => "ERROR", "intentos" => "4", "puntaje" => "3"],
-        ["jugador" => "Pedro", "palabraWordix" => "BUSCA", "intentos" => "6", "puntaje" => "0"],
-        ["jugador" => "Ana", "palabraWordix" => "BARCO", "intentos" => "2", "puntaje" => "5"],
-        ["jugador" => "Juan", "palabraWordix" => "HIELO", "intentos" => "5", "puntaje" => "2"],
-        ["jugador" => "Maria", "palabraWordix" => "FUEGO", "intentos" => "6", "puntaje" => "1"],
+        ["jugador" => "Juan", "palabraWordix" => "PODER", "intentos" => "5", "puntaje" => "2", "letra" => ["3", "1", "2", "1", "5"]],
+        ["jugador" => "Ana", "palabraWordix" => "PERRO", "intentos" => "1", "puntaje" => "6" ,"letra" => ["5"]],
+        ["jugador" => "Mateo", "palabraWordix" => "TINTO", "intentos" => "2", "puntaje" => "5", "letra" => ["2","5"]],
+        ["jugador" => "Nacho", "palabraWordix" => "CAMPO", "intentos" => "3", "puntaje" => "4", "letra" => ["3", "1", "5"]],
+        ["jugador" => "Felipe", "palabraWordix" => "MUJER", "intentos" => "3", "puntaje" => "4", "letra" => ["1", "1", "5"]],
+        ["jugador" => "Ariel", "palabraWordix" => "ERROR", "intentos" => "4", "puntaje" => "3", "letra" => ["3", "4", "1", "5"]],
+        ["jugador" => "Pedro", "palabraWordix" => "BUSCA", "intentos" => "6", "puntaje" => "0" , "letra" => ["1", "2", "1", "1", "5"]],
+        ["jugador" => "Ana", "palabraWordix" => "BARCO", "intentos" => "2", "puntaje" => "5", "letra" => ["3", "5"]],
+        ["jugador" => "Juan", "palabraWordix" => "HIELO", "intentos" => "5", "puntaje" => "2", "letra" => ["1", "2", "2", "1", "5"]],
+        ["jugador" => "Maria", "palabraWordix" => "FUEGO", "intentos" => "4", "puntaje" => "1", "letra" => ["3", "1", "2", "5"]]
     ];
     return $partidasCargadas;
 }
@@ -278,7 +278,7 @@ function primeraPartidaGanada($jugador, $partidasJugadas)
  * @param string $nombreJugador
  * @return array
  */
-function resumenJugador($historialPartidas, $nombreJugador)
+function resumenJugador($historialPartidas, $nombreEncontrar)
 {
     /*
     array $resumen $letrasAdivinadas
@@ -292,7 +292,7 @@ function resumenJugador($historialPartidas, $nombreJugador)
     $intentosRealizados = 0;
     $letrasAdivinadas = [];
     foreach ($historialPartidas as $partida) {
-        if ($partida["jugador"] == $nombreJugador) {
+        if (strtolower($partida["jugador"]) == $nombreEncontrar) {
             $partidas++;
             $puntajeTotal += $partida["puntaje"];
 
@@ -409,6 +409,7 @@ $listaPalabrasUsadas = []; //es el arreglo que almacena las palabras que ya fuer
 $palabraElegida = "";
 $letras = [];
 $palabraNueva="";
+//$partidasJugadas = cargarPartidas(); //carga una coleccion de partidas
 //Proceso:
 $nombreJugador = solicitarJugador();
 $coleccionModificable = cargarColeccionPalabras();
@@ -453,10 +454,9 @@ do {
             break;
         case 5:
             do {
-                //$partidasJugadas = cargarPartidas();
                 listaJugadores($partidasJugadas);
-                echo "¿ De que jugador quiere el resumen ? , ";
-                $nombreResumen = solicitarJugador();
+                echo "¿ De que jugador quiere el resumen ? , ingrese su nombre o escriba (s) para salir" . "\n";
+                $nombreResumen= solicitarJugador();
                 $resumenSolicitado = resumenJugador($partidasJugadas, $nombreResumen);
                 if (empty($resumenSolicitado) && $nombreResumen != "s") {
                     echo "El nombre del jugador no existe, ingrese uno valido o escriba (s) para salir" . "\n";
@@ -464,7 +464,7 @@ do {
             } while (empty($resumenSolicitado) && $nombreResumen != "s");
 
             if (!empty($resumenSolicitado)) {
-                echo " 〰️〰️〰️〰️〰️Resumen del jugador: " . $nombreResumen . "〰️〰️〰️〰️〰️" . "\n";
+                echo "〰️〰️〰️〰️〰️ Resumen del jugador: " . $nombreResumen . "〰️〰️〰️〰️〰️" . "\n";
                 mostrarPartidasJugador($partidasJugadas, $resumenSolicitado);
             }
             break;
