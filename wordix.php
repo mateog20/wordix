@@ -334,10 +334,10 @@ function esIntentoGanado($estructuraPalabraIntento)
 }
 
 /**
- * ****COMPLETAR***** documentación de la intefaz
+ *retorna el puntaje segun los intentos
  * @param int $intentos
  */
-function obtenerPuntajeWordix($intentos) /* ****COMPLETAR***** parámetros formales necesarios */
+function obtenerPuntajeWordix($intentos) 
 {
     //int $puntos
     switch ($intentos) {
@@ -360,7 +360,6 @@ function obtenerPuntajeWordix($intentos) /* ****COMPLETAR***** parámetros forma
             $puntos = 1;
             break;
     }
-    /* ****COMPLETAR***** cuerpo de la función*/
     return $puntos;
 }
 
