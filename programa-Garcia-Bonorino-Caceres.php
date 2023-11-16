@@ -410,6 +410,22 @@ function listaJugadores($partidasJugadas){
 
 }
 }
+/**
+ * Función para ordenar la lista de partidas y  que muestra el arreglo con los índices ordenados
+ * @param array $partidasOrdenar
+ * @return array
+ */
+function ordenar($partidasOrdenar){
+    uasort($partidasOrdenar, "ordenarLista");
+
+    // Crear un nuevo array con índices numéricos
+    $partidasOrdenadas = [];
+    foreach ($partidasOrdenar as $partida) {
+        $partidasOrdenadas[] = $partida;
+    }
+
+    return $partidasOrdenadas;
+}
 
 /**************************************/
 /********* PROGRAMA PRINCIPAL *********/
@@ -428,7 +444,7 @@ $listaPalabrasUsadas = []; //es el arreglo que almacena las palabras que ya fuer
 $palabraElegida = "";
 $letras = [];
 $palabraNueva="";
-//$partidasJugadas = cargarPartidas(); //carga una coleccion de partidas
+$partidasJugadas = cargarPartidas(); //carga una coleccion de partidas
 //Proceso:
 $nombreJugador = solicitarJugador();
 $coleccionModificable = cargarColeccionPalabras();
@@ -488,14 +504,7 @@ do {
             }
             break;
         case 6:
-            // La funcion uasort sirve para ordenar un arreglo de tipo asociativo respetando su indice
-            uasort($partidasJugadas, "ordenarLista");
-            // Recorro el arreglo para eliminar todos los elementos del sub-arreglo "letra"
-            foreach ($partidasJugadas as $indice => $partida) {
-                unset($partidasJugadas[$indice]["letra"]); //unset elimina un elemento de un arreglo
-            }
-            // print_r(Arreglo) imprime por pantalla el contenido de un arreglo
-            print_r($partidasJugadas);
+            print_r (ordenar($partidasJugadas));
             break;
         case 7:
             do{
@@ -517,7 +526,7 @@ do {
             echo "Has ingresado una opción invalida";
     }
 } while ($opcionElegida != 9);
-/*en uasort crear una funcion explicacion inciso 11
+/*
 opcion 4, indicar que no existe el jugador 
 strtohigher en la palabra agregada
 no eliminar las palabras de la coleccion

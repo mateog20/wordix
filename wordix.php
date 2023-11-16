@@ -421,8 +421,8 @@ function jugarWordix($palabraWordix, $nombreUsuario)
         "palabraWordix" => $palabraWordix,
         "jugador" => $nombreUsuario,
         "intentos" => $nroIntento,
-        "puntaje" => $puntaje,
-        "letra" => $letrasCorrectas,
+        "puntaje" => $puntaje
+        
     ];
 
     return $partida;
