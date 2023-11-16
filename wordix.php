@@ -337,7 +337,7 @@ function esIntentoGanado($estructuraPalabraIntento)
  *retorna el puntaje segun los intentos
  * @param int $intentos
  */
-function  obtenerPuntajeWordix($intentos) 
+function obtenerPuntajeWordix($intentos)
 {
     //int $puntos
     //$intentos -= 1;
@@ -360,10 +360,10 @@ function  obtenerPuntajeWordix($intentos)
         case 6:
             $puntos = 1;
             break;
-            default:
+        default:
             $puntos = 0;
     }
-    
+
     return $puntos;
 }
 /**
@@ -374,18 +374,33 @@ function  obtenerPuntajeWordix($intentos)
 function asignarPuntajeLetra($letra)
 {
     $letra = strtoupper($letra);
-    $puntoLetra=0;
+    $puntoLetra = 0;
     // Es vocal
     if ($letra === 'A' || $letra === 'E' || $letra === 'I' || $letra === 'O' || $letra === 'U') {
-        $puntoLetra= 1;
+        $puntoLetra = 1;
     }
 
     // consonante anterior a "M"
     else if (($letra >= 'A' && $letra <= 'M')) {
-        $puntoLetra= 2;
+        $puntoLetra = 2;
     }
 
     return $puntoLetra;
+}
+/**
+ * Calcula el puntaje total de una palabra dada.
+ * @param string
+ * @return int El puntaje total de la palabra.
+ */
+function calcularPuntajePalabra($palabra)
+{
+    $puntajeTotal = 0;
+
+    for ($i = 0; $i < strlen($palabra); $i++) {
+        $puntajeTotal += asignarPuntajeLetra($palabra[$i]);
+    }
+
+    return $puntajeTotal;
 }
 /**
  * Dada una palabra para adivinar, juega una partida de wordix intentando que el usuario adivine la palabra.
@@ -395,50 +410,49 @@ function asignarPuntajeLetra($letra)
  */
 function jugarWordix($palabraWordix, $nombreUsuario)
 {
-  /*Inicialización*/
-  $arregloDeIntentosWordix = [];
-  $teclado = iniciarTeclado();
-  escribirMensajeBienvenida($nombreUsuario);
-  $nroIntento = 1;
-  $puntajeTotal = 0;
-  $puntajeLetra=0;
-  
-  do {
+    /*Inicialización*/
+    $arregloDeIntentosWordix = [];
+    $teclado = iniciarTeclado();
+    escribirMensajeBienvenida($nombreUsuario);
+    $nroIntento = 1;
+    $puntajeLetra = 0;
 
-      echo "Comenzar con el Intento " . $nroIntento . ":\n";
-      $palabraIntento = leerPalabra5Letras();
-      $indiceIntento = $nroIntento - 1;
-      $arregloDeIntentosWordix = analizarPalabraIntento($palabraWordix, $arregloDeIntentosWordix, $palabraIntento);
-      $teclado = actualizarTeclado($teclado, $arregloDeIntentosWordix[$indiceIntento]);
-      /*Mostrar los resultados del análisis: */
-      imprimirIntentosWordix($arregloDeIntentosWordix);
-      escribirTeclado($teclado);
-      /*Determinar si la plabra intento ganó e incrementar la cantidad de intentos */
-      $ganoElIntento = esIntentoGanado($arregloDeIntentosWordix[$indiceIntento]);
-      $nroIntento++;
-      $puntajeLetra += asignarPuntajeLetra($palabraIntento); // suma el puntaje por letra
-  } while ($nroIntento <= CANT_INTENTOS && !$ganoElIntento);
+    do {
 
+        echo "Comenzar con el Intento " . $nroIntento . ":\n";
+        $palabraIntento = leerPalabra5Letras();
+        $puntajeLetra += asignarPuntajeLetra($palabraIntento); // suma el puntaje por letra
+        $puntajePalabraAdivinada = calcularPuntajePalabra($palabraIntento); // puntaje de la palabra adivinada
+        $indiceIntento = $nroIntento - 1;
+        $arregloDeIntentosWordix = analizarPalabraIntento($palabraWordix, $arregloDeIntentosWordix, $palabraIntento);
+        $teclado = actualizarTeclado($teclado, $arregloDeIntentosWordix[$indiceIntento]);
+        /*Mostrar los resultados del análisis: */
+        imprimirIntentosWordix($arregloDeIntentosWordix);
+        escribirTeclado($teclado);
+        /*Determinar si la plabra intento ganó e incrementar la cantidad de intentos */
+        $ganoElIntento = esIntentoGanado($arregloDeIntentosWordix[$indiceIntento]);
+        $nroIntento++;
 
+    } while ($nroIntento <= CANT_INTENTOS && !$ganoElIntento);
 
-  if ($ganoElIntento) {
-      $nroIntento--;
-      $puntaje = obtenerPuntajeWordix($nroIntento );
-      $puntaje += $puntajeLetra;
-      echo "Adivinó la palabra Wordix en el intento " . $nroIntento . "!: " . $palabraIntento . " Obtuvo $puntaje puntos!";
-  } else {
-      $nroIntento = 0; //reset intento
-      $puntaje = 0;
-      echo "Seguí Jugando Wordix, la próxima será! ";
-  }
+    if ($ganoElIntento) {
+        $nroIntento--;
+        $puntaje = obtenerPuntajeWordix($nroIntento); //obtiene el puntaje de la palabra que adivino
+        $puntaje += $puntajePalabraAdivinada + $puntajeLetra; //obtiene el puntaje del resto de palabras
+        echo "Adivinó la palabra Wordix en el intento " . $nroIntento . "!: " . $palabraIntento . " Obtuvo $puntaje puntos!";
+    } else {
+        $nroIntento = 0; //reset intento
+        $puntaje = 0;
+        echo "Seguí Jugando Wordix, la próxima será! ";
+    }
 
-  $partida = [
-      "palabraWordix" => $palabraWordix,
-      "jugador" => $nombreUsuario,
-      "intentos" => $nroIntento,
-      "puntaje" => $puntaje
-      
-  ];
+    $partida = [
+        "palabraWordix" => $palabraWordix,
+        "jugador" => $nombreUsuario,
+        "intentos" => $nroIntento,
+        "puntaje" => $puntaje,
 
-  return $partida;
+    ];
+
+    return $partida;
 }
