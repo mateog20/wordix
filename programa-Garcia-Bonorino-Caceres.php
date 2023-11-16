@@ -357,27 +357,25 @@ return $resumen;
 function mostrarPartidasJugador($partidasJugadas,$resumen,$nick){
 // string $separador, int $j, $i, $array $partida
 
-    
+
             echo
                 "Partidas : " . $resumen["partidas"] . "\n" .
                 "Puntaje total: " . $resumen["puntajeTotal"] . "\n" .
                 "Victorias: " . $resumen["victorias"] . "\n" .
                 "Porcentaje de Victorias: " . $resumen["porcentaje"] . " %" . "\n";
                 
-                for($i = 0; $i < count($partidasJugadas); $i++){
-                    if($partidasJugadas[$i]["puntaje"] >0){
-                        $palabraBuscar = $partidasJugadas[$i]["palabraWordix"];
-                        echo "Intento ".$i+1 ." :". contarPalabrasAdivinadas($partidasJugadas, $nick, $palabraBuscar). "\n";
-                    }else{
-                        echo "Intento ".$i+1 ." :". "0". "\n";
+                foreach ($partidasJugadas as $partida) {
+                    echo "*************************************\n";
+            
+                    for ($intentos = 1; $intentos <= 6; $intentos++) {
+                        echo "* Intento " . $intentos . ": " . contarPalabrasAdivinadas($partidasJugadas, $nick, $partida["palabraWordix"], $intentos) . "\n";
                     }
-                    
-
-                    
+            
+                    echo "*                      *\n";
                 }
-        
+            
+                echo "*************************************\n";
             }
-    
 /**
  * 
  */
