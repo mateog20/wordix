@@ -257,6 +257,27 @@ function mostrarUnaPartida($partidasJugadas)
         }
     }
 }
+
+/**
+ * retorna si existe o no un jugador
+ * @param string $jugador
+ * @param array $partidasJugadas
+ * @return boolean
+ */
+function encontrarJugador ($jugador, $partidasJugadas){
+    //int $i
+    //boolean $seEncontro
+    $i = 0;
+    $seEncontro = false;
+    while($i < count($partidasJugadas) && $seEncontro == false){
+        if ($partidasJugadas[$i]["jugador"] == $jugador){
+            $seEncontro = true;
+        }
+        $i++;
+    }
+    return $seEncontro;
+}
+
 /**
  * A partir de un jugador dado, determina cual fue su primer partida ganada
  * @param string $jugador
@@ -266,7 +287,6 @@ function mostrarUnaPartida($partidasJugadas)
 function primeraPartidaGanada($jugador, $partidasJugadas)
 {
     //int $gano . $i
-    //string $datosPrimeraPartida
     $i = 0;
     $gano = -1;
     while ($i < count($partidasJugadas) && $gano == -1) {
@@ -464,14 +484,12 @@ do {
     $opcionElegida = seleccionarOpcion();
     switch ($opcionElegida) {
         case 1:
-            do{
+            
                 $palabraElegida = elegirPalabra($coleccionModificable, $listaPalabrasUsadas);
                 $listaPalabrasUsadas[] = $palabraElegida;
                 $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
                 $partidasJugadas[] = $partidaActual;  
-                "quiere salir (s/n)";
-                $nombreResumen = trim(fgets(STDIN));
-            }while($nombreResumen != "s");  
+                
             break;
         case 2:
             $palabraAleatoria = palabraAlazar($coleccionModificable);
@@ -486,20 +504,30 @@ do {
 
         case 4:
             listaJugadores($partidasJugadas);
+            
             echo "Ingrese el nombre del jugador que desea ver: ";
             $jugador = trim(fgets(STDIN));
-            $i = primeraPartidaGanada($jugador, $partidasJugadas); // indice del arreglo donde guarda la primera partida ganada de X jugador
-            if ($i != -1) {
+            $existe=encontrarJugador($jugador,$partidasJugadas);
+           
+            if($existe==true){
+                 $i = primeraPartidaGanada($jugador, $partidasJugadas); // indice del arreglo donde guarda la primera partida ganada de X jugador
+                if ($i != -1) {
+                    echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                        "Partida WORDIX " . $i + 1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
+                        "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
+                        "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
+                        "Adivino la palabra en " . $partidasJugadas[$i]["intentos"] . " intento/s\n" .
+                        " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                } else {
+                    echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                        "\n       Aun no hay partidas ganadas\n\n" .
+                        " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                } 
+            }
+            else{
                 echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                    "Partida WORDIX " . $i + 1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
-                    "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
-                    "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
-                    "Adivino la palabra en " . $partidasJugadas[$i]["intentos"] . " intento/s\n" .
-                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
-            } else {
-                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                    "\n       Aun no hay partidas ganadas\n\n" .
-                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                "\n             El Jugador no existe\n\n" .
+                " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
             }
             break;
         case 5:

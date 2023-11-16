@@ -424,8 +424,7 @@ function jugarWordix($palabraWordix, $nombreUsuario)
   foreach ($arregloDeIntentosWordix[$indiceIntento] as $letraIntento) {
       $puntajeLetra += asignarPuntajeLetra($letraIntento["letra"]);
   }
-  $puntajeTotal += $puntajeLetra;
-
+  $puntajeTotal= obtenerPuntajeWordix($nroIntento);
   
   if ($ganoElIntento) {
       $nroIntento--;
