@@ -23,19 +23,38 @@ Bonorino Ignacio - legajo: 4863 - Tecnicatura en Desarrollo Web - email: ignacio
 function cargarPartidas()
 {
     //array $partidasCargadas
-    $partidasCargadas = [
-        ["jugador" => "Juan", "palabraWordix" => "PODER", "intentos" => "5", "puntaje" => "2", "letra" => ["3", "1", "2", "1", "5"]],
-        ["jugador" => "Ana", "palabraWordix" => "PERRO", "intentos" => "1", "puntaje" => "6" ,"letra" => ["5"]],
-        ["jugador" => "Mateo", "palabraWordix" => "TINTO", "intentos" => "2", "puntaje" => "5", "letra" => ["2","5"]],
-        ["jugador" => "Nacho", "palabraWordix" => "CAMPO", "intentos" => "3", "puntaje" => "4", "letra" => ["3", "1", "5"]],
-        ["jugador" => "Felipe", "palabraWordix" => "MUJER", "intentos" => "3", "puntaje" => "4", "letra" => ["1", "1", "5"]],
-        ["jugador" => "Ariel", "palabraWordix" => "ERROR", "intentos" => "4", "puntaje" => "3", "letra" => ["3", "4", "1", "5"]],
-        ["jugador" => "Pedro", "palabraWordix" => "BUSCA", "intentos" => "6", "puntaje" => "0" , "letra" => ["1", "2", "1", "1", "5"]],
-        ["jugador" => "Ana", "palabraWordix" => "BARCO", "intentos" => "2", "puntaje" => "5", "letra" => ["3", "5"]],
-        ["jugador" => "Juan", "palabraWordix" => "HIELO", "intentos" => "5", "puntaje" => "2", "letra" => ["1", "2", "2", "1", "5"]],
-        ["jugador" => "Maria", "palabraWordix" => "FUEGO", "intentos" => "4", "puntaje" => "1", "letra" => ["3", "1", "2", "5"]]
-    ];
-    return $partidasCargadas;
+    // $partidasCargadas = [
+    //     ["jugador" => "Juan", "palabraWordix" => "PODER", "intentos" => "5", "puntaje" => "2", "letra" => ["3", "1", "2", "1", "5"]],
+    //     ["jugador" => "Ana", "palabraWordix" => "PERRO", "intentos" => "1", "puntaje" => "6" ,"letra" => ["5"]],
+    //     ["jugador" => "Mateo", "palabraWordix" => "TINTO", "intentos" => "2", "puntaje" => "5", "letra" => ["2","5"]],
+    //     ["jugador" => "Nacho", "palabraWordix" => "CAMPO", "intentos" => "3", "puntaje" => "4", "letra" => ["3", "1", "5"]],
+    //     ["jugador" => "Felipe", "palabraWordix" => "MUJER", "intentos" => "3", "puntaje" => "4", "letra" => ["1", "1", "5"]],
+    //     ["jugador" => "Ariel", "palabraWordix" => "ERROR", "intentos" => "4", "puntaje" => "3", "letra" => ["3", "4", "1", "5"]],
+    //     ["jugador" => "Pedro", "palabraWordix" => "BUSCA", "intentos" => "6", "puntaje" => "0" , "letra" => ["1", "2", "1", "1", "5"]],
+    //     ["jugador" => "Ana", "palabraWordix" => "BARCO", "intentos" => "2", "puntaje" => "5", "letra" => ["3", "5"]],
+    //     ["jugador" => "Juan", "palabraWordix" => "HIELO", "intentos" => "5", "puntaje" => "2", "letra" => ["1", "2", "2", "1", "5"]],
+    //     ["jugador" => "Maria", "palabraWordix" => "FUEGO", "intentos" => "4", "puntaje" => "1", "letra" => ["3", "1", "2", "5"]]
+    // ];
+    
+        $coleccion = [];
+        $pa1 = ["palabraWordix" => "SUECO", "jugador" => "kleiton", "intentos" => 0, "puntaje" => 0];
+        $pa2 = ["palabraWordix" => "YUYOS", "jugador" => "briba", "intentos" => 0, "puntaje" => 0];
+        $pa3 = ["palabraWordix" => "HUEVO", "jugador" => "zrack", "intentos" => 3, "puntaje" => 9];
+        $pa4 = ["palabraWordix" => "TINTO", "jugador" => "cabrito", "intentos" => 4, "puntaje" => 8];
+        $pa5 = ["palabraWordix" => "RASGO", "jugador" => "briba", "intentos" => 0, "puntaje" => 0];
+        $pa6 = ["palabraWordix" => "VERDE", "jugador" => "cabrito", "intentos" => 5, "puntaje" => 7];
+        $pa7 = ["palabraWordix" => "CASAS", "jugador" => "kleiton", "intentos" => 5, "puntaje" => 7];
+        $pa8 = ["palabraWordix" => "GOTAS", "jugador" => "kleiton", "intentos" => 0, "puntaje" => 0];
+        $pa9 = ["palabraWordix" => "ZORRO", "jugador" => "zrack", "intentos" => 4, "puntaje" => 8];
+        $pa10 = ["palabraWordix" => "GOTAS", "jugador" => "cabrito", "intentos" => 0, "puntaje" => 0];
+        $pa11 = ["palabraWordix" => "FUEGO", "jugador" => "cabrito", "intentos" => 2, "puntaje" => 10];
+        $pa12 = ["palabraWordix" => "TINTO", "jugador" => "briba", "intentos" => 0, "puntaje" => 0];
+        
+        array_push($coleccion, $pa1, $pa2, $pa3, $pa4, $pa5, $pa6, $pa7, $pa8, $pa9, $pa10, $pa11, $pa12);
+        
+    
+    return $coleccion;
+
 }
 /**
  * Una función que muestra un menu
@@ -498,3 +517,10 @@ do {
             echo "Has ingresado una opción invalida";
     }
 } while ($opcionElegida != 9);
+/*en uasort crear una funcion explicacion inciso 11
+opcion 4, indicar que no existe el jugador 
+strtohigher en la palabra agregada
+no eliminar las palabras de la coleccion
+ELIMINAR TODO LO QUE HICIMOS LOS ULTIMOS 2 DIAS
+eliminarElemento implementar recorrdio parcial y que no elimine la palabra
+*/
