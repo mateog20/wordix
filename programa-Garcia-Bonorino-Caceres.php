@@ -592,14 +592,17 @@ do {
             }
        
         $tablaInentos=ganoEnIntento($partidasJugadas,$nombreJugador);
-            echo "\nAdivinadas:
-            \n   Intento 1: ".$tablaInentos[0].
-            "\n   Intento 2: ". $tablaInentos[1].
-            "\n   Intento 3: ". $tablaInentos[2]. 
-            "\n   Intento 4: ". $tablaInentos[3].
-            "\n   Intento 5: ". $tablaInentos[4].
-            "\n   Intento 6: ". $tablaInentos[5]."\n";
-    break;
+        echo "\nAdivinadas:";
+        for ($i=0;$i<6;$i++){
+           echo " \n   Intento ". $i+1 . ": " . $tablaInentos[$i];
+        }
+            
+            // "\n   Intento 2: ". $tablaInentos[1].
+            // "\n   Intento 3: ". $tablaInentos[2]. 
+            // "\n   Intento 4: ". $tablaInentos[3].
+            // "\n   Intento 5: ". $tablaInentos[4].
+            // "\n   Intento 6: ". $tablaInentos[5]."\n";
+   
   
             break;
         case 6:
