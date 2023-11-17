@@ -364,7 +364,7 @@ function mostrarPartidasJugador($partidasJugadas,$resumen,$nick){
                 "Victorias: " . $resumen["victorias"] . "\n" .
                 "Porcentaje de Victorias: " . $resumen["porcentaje"] . " %" . "\n";
                 
-                foreach ($partidasJugadas as $partida) {
+              /*  foreach ($partidasJugadas as $partida) {
                     echo "*************************************\n";
             
                     for ($intentos = 1; $intentos <= 6; $intentos++) {
@@ -374,12 +374,60 @@ function mostrarPartidasJugador($partidasJugadas,$resumen,$nick){
                     echo "*                      *\n";
                 }
             
-                echo "*************************************\n";
+                echo "*************************************\n";*/
             }
 /**
- * 
+ * muestra en que intento se ganu una partida 
+ * @param array $partidasJugadas
+ * @return array
  */
+function ganoEnIntento ($partidasJugadas,$jugador){
+    $numIntento=" ";
+    $cont1 = 0;
+    $cont2 = 0;
+    $cont3 = 0;
+    $cont4 = 0;
+    $cont5 = 0;
+    $cont6 = 0;
+    $arrayIntentos=[];
+
+
+for($i=0; $i < count($partidasJugadas); $i++){
   
+    if($partidasJugadas[$i]["jugador"]==$jugador)
+    $numIntento=$partidasJugadas[$i]["intentos"];
+    switch($numIntento){
+        case 1: 
+            $cont1 +=1;
+        break;
+        case 2:
+            $cont2 +=1;
+        break;
+        case 3:
+            $cont3 +=1;
+        break;
+        case 4:
+            $cont4 +=1;
+        break;
+        case 5:
+            $cont5 +=1;
+        break;
+        case 6:
+            $cont6 +=1;
+        break;
+    }
+}
+$arrayIntentos[0]=$cont1;
+$arrayIntentos[1]=$cont2;
+$arrayIntentos[2]=$cont3;
+$arrayIntentos[3]=$cont4;
+$arrayIntentos[4]=$cont5;
+$arrayIntentos[5]=$cont6;
+//[$cont1.$cont2.$cont3.$cont4.$cont5.$cont6];
+return($arrayIntentos);
+}
+
+
 
 /**
  * Esta funcion compara dos elementos tipo string de un arreglo
@@ -529,20 +577,30 @@ do {
             }
             break;
         case 5:
-            do{
+            
             listaJugadores($partidasJugadas);
-            echo "¿De qué jugador quiere el resumen? Ingrese su nombre o escriba (s) para salir" . "\n";
+            echo "¿De qué jugador quiere el resumen? Ingrese su nombre\n";
             $nombreResumen = solicitarJugador();
             $partidasDelJugador = buscarPartidasPorJugador($partidasJugadas, $nombreResumen);
         
             if (!empty($partidasDelJugador)) {
                 $resumenSolicitado = resumenJugador($partidasDelJugador, $nombreResumen);
                 echo "〰️〰️〰️〰️〰️ Resumen del jugador: " . $nombreResumen . " 〰️〰️〰️〰️〰️" . "\n";
-                mostrarPartidasJugador($partidasDelJugador, $resumenSolicitado,$nombreResumen);
+               mostrarPartidasJugador($partidasDelJugador, $resumenSolicitado,$nombreResumen);
             } else {
                 echo "El jugador no tiene partidas registradas o el nombre ingresado es incorrecto. Intente nuevamente.\n";
             }
-        } while ($nombreResumen != "s");
+       
+        $tablaInentos=ganoEnIntento($partidasJugadas,$nombreJugador);
+            echo "\nAdivinadas:
+            \n   Intento 1: ".$tablaInentos[0].
+            "\n   Intento 2: ". $tablaInentos[1].
+            "\n   Intento 3: ". $tablaInentos[2]. 
+            "\n   Intento 4: ". $tablaInentos[3].
+            "\n   Intento 5: ". $tablaInentos[4].
+            "\n   Intento 6: ". $tablaInentos[5]."\n";
+    break;
+  
             break;
         case 6:
             print_r (ordenar($partidasJugadas));
