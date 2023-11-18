@@ -267,17 +267,20 @@ function encontrarJugador($jugador, $partidasJugadas)
 {
     //int $i
     //boolean $seEncontro
-    $i = 0;
-    $seEncontro = false;
-    while ($i < count($partidasJugadas) && $seEncontro == false) {
-        if ($partidasJugadas[$i]["jugador"] == $jugador) {
-            $seEncontro = true;
-        }
-        $i++;
-    }
-    return $seEncontro;
-}
+    $jugadorEncontrado =  false;
+    $numPartidas = count($partidasJugadas);
 
+    for ($i = 0; $i < $numPartidas; $i++) {
+        if ($partidasJugadas[$i]['jugador'] == $jugador) {
+            $jugadorEncontrado = true;
+        }
+    }
+    if(empty($partidasJugadas)) {
+        $jugadorEncontrado=false;
+    }
+
+    return $jugadorEncontrado;
+}
 /**
  * A partir de un jugador dado, determina cual fue su primer partida ganada
  * @param string $jugador
@@ -483,13 +486,16 @@ function buscarPartidasPorJugador($partidasJugadas, $nombreJugador)
     $partidasJugador = [];
 
     foreach ($partidasJugadas as $partida) {
-        if (strtolower($partida["jugador"]) == strtolower($nombreJugador)) {
+        if (strtolower($partida["jugador"]) == strtolower($nombreJugador) && count($partida) > 1) {
+            
             $partidasJugador[] = $partida;
         }
     }
+   
 
     return $partidasJugador;
 }
+
 /**************************************/
 /********* PROGRAMA PRINCIPAL *********/
 /**************************************/
@@ -507,9 +513,10 @@ $listaPalabrasUsadas = []; //es el arreglo que almacena las palabras que ya fuer
 $palabraElegida = "";
 $palabraNueva = "";
 $partidasJugadas = cargarPartidas(); //carga una coleccion de partidas
+
 //Proceso:
 $nombreJugador = solicitarJugador();
-
+$partidasJugadas[] = ["jugador" => $nombreJugador];
 $coleccionModificable = cargarColeccionPalabras();
 do {
     $opcionElegida = seleccionarOpcion();
@@ -558,23 +565,23 @@ do {
             }
             break;
         case 5:
-
+            
             listaJugadores($partidasJugadas);
             echo "¿De qué jugador quiere el resumen? Ingrese su nombre\n";
             $nombreJugadorResumen = solicitarJugador();
-            $jugadorExiste = encontrarJugador($nombreJugadorResumen, $partidasJugadas);
-
-            if (!$jugadorExiste) {
-                echo "El jugador no está registrado \n";
-            } else {
-                $partidasDelJugador = buscarPartidasPorJugador($partidasJugadas, $nombreJugadorResumen);
+            $jugadorRegistrado = encontrarJugador($nombreJugadorResumen, $partidasJugadas);
+            $partidasDelJugador = buscarPartidasPorJugador($partidasJugadas, $nombreJugadorResumen);
+            
+            if ($jugadorRegistrado <> false) {
                 if (!empty($partidasDelJugador)) {
                     echo "〰️〰️〰️〰️〰️ Resumen del jugador: " . $nombreJugadorResumen . " 〰️〰️〰️〰️〰️" . "\n";
                     mostrarPartidasJugador($partidasDelJugador, $nombreJugadorResumen);
                     echo "\n〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️";
                 } else {
-                    echo "El jugador no ha jugado ninguna partida.\n";
+                    echo "El jugador aún no ha jugado ninguna partida.\n";
                 }
+            } else {
+                echo "El jugador no está registrado.\n";
             }
 
             break;
@@ -608,4 +615,5 @@ no eliminar las palabras de la coleccion
 ELIMINAR TODO LO QUE HICIMOS LOS ULTIMOS 2 DIAS
 eliminarElemento implementar recorrdio parcial y que no elimine la palabra
 NECESITAMOS VER LA FORMA DE MOSTRAR JUGADORES QUE NO HAYAN JUGADO NINGUNA PARTIDA PERO QUE ESTEN REGISTRADOS /(crear un arreglo con los nombres ?)
+GRAFICAR ARREGLO QUE CUENTA LOS INTENTOS
 */
