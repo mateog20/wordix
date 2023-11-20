@@ -145,9 +145,10 @@ function cargarColeccionPalabras()
  * Una funcion que permite elegir un numero dentro de los indices de un arreglo
  * @param array $jugarConPalabra
  * @param array $palabraProhibida
+ * @param array $partidasJugadas
  * @return array
  */
-function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
+function elegirPalabra($listaPalabrasElegir, $partidasJugadas, $nombreJugador)
 {
     // int $indicePalabraElegida
 
@@ -160,7 +161,7 @@ function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
                 //ctype_digit comprueba caracteres numéricos
                 echo "Numero elegido incorrecto, ingrese uno valido \n";
                 $indicePalabraElegida = -1;
-            } elseif (comprobarPalabra($PalabrasUsadas, $listaPalabrasElegir[$indicePalabraElegida])) {
+            } elseif (jugoLaPalabra($partidasJugadas , $nombreJugador ,$listaPalabrasElegir[$indicePalabraElegida])) {
                 echo "La palabra que elegiste ya fue jugada, ingrese otra \n";
                 $indicePalabraElegida = -1;
             }
@@ -176,11 +177,17 @@ function elegirPalabra($listaPalabrasElegir, $PalabrasUsadas)
  * @param array $listaPalabras
  * @return array
  */
-function palabraAlazar($listaPalabras)
+function palabraAlazar($listaPalabras, $partidasJugadas ,$nombreJugador)
 {
-    // int $numAleatoreoIndiceAleatorio
-    $numIndiceAleatorio = random_int(0, count($listaPalabras) - 1);
-    echo $listaPalabras[$numIndiceAleatorio];
+    // int $numAleatoreoIndiceAleatorio boolean $repetir
+    $repetir=false;
+    do{
+        $numIndiceAleatorio = random_int(0, count($listaPalabras) - 1);
+        if(jugoLaPalabra($partidasJugadas , $nombreJugador , $listaPalabras[$numIndiceAleatorio])){
+            $repetir=true;
+        }
+    }while($repetir);
+    //echo $listaPalabras[$numIndiceAleatorio];
     return $listaPalabras[$numIndiceAleatorio];
 }
 /**
@@ -209,7 +216,7 @@ function eliminarElemento($coleccionPalabrasActuales, $palabraEliminar)
  * @return boolean
  */
 
-function comprobarPalabra($listaUsadas, $palabra)
+/*function comprobarPalabra($listaUsadas, $palabra)
 {
     //boolean $seUso
     $seUso = false;
@@ -222,6 +229,69 @@ function comprobarPalabra($listaUsadas, $palabra)
     }
 
     return $seUso;
+}*/
+/**
+ * comprueba si una palabra ya se encuentra en una lista
+ * @param array $lista
+ * @param string $palabra
+ * @return boolean
+ */
+function comprobarPalabra($lista,$palabra){
+    //boolean $seEncuentra int $i
+    $seEncuentra=false;
+    $i=0;
+    do{
+        if($lista[$i]==$palabra){
+            $seEncuentra=true;
+        }else{
+            $i++;
+        }
+    }while($seEncuentra==false && $i<count($lista));
+    return $seEncuentra;
+}
+/**
+ * revisa si el jugador ya jugo una palabra
+ * @param array $partidasJugadas
+ * @param string $nombreJugador
+ * @param array $palabraElegida
+ * @return boolean
+ */
+function jugoLaPalabra($partidasJugadas , $nombreJugador , $palabraElegida){
+    //boolean $palabraJugada, $mismaPalabra, $mismoNombre int $i 
+    $palabraJugada=false;
+    $i=0;
+    do{
+        if($partidasJugadas[$i]["palabraWordix"]==$palabraElegida && $partidasJugadas[$i]["jugador"]==$nombreJugador ){
+            $palabraJugada=true;
+        }else{
+            $i++;
+        }
+    }while($palabraJugada==false && $i<count($partidasJugadas));
+    return $palabraJugada;
+}
+/**
+ * verifica que el jugador haya jugado todas las partidas
+ * @param array $partidasJugadas
+ * @param string $nombreJugador
+ * @param array $listaPalabras
+ * @return boolean
+ */
+function todasJugadas($partidasJugadas,$nombreJugador, $listaPalabras){
+    //boolean $jugoTodas int $i , $cantPartidas , $cantPalabras
+    $jugoTodas=false;
+    $i=0;
+    $cantPartidas=0;
+    $cantPalabras=count($listaPalabras);
+    do{
+        if($partidasJugadas[$i]["jugador"]==$nombreJugador){
+            $cantPartidas=$cantPartidas+1;
+        }
+        $i++;
+    }while($i<count($partidasJugadas));
+    if($cantPartidas==$cantPalabras){
+        $jugoTodas=true;
+    }
+    return $jugoTodas;
 }
 
 /**
@@ -263,7 +333,7 @@ function mostrarUnaPartida($partidasJugadas)
  * @param array $partidasJugadas
  * @return boolean
  */
-function encontrarJugador($jugador, $partidasJugadas)
+/*function encontrarJugador($jugador, $partidasJugadas)
 {
     //int $i
     //boolean $seEncontro
@@ -280,6 +350,26 @@ function encontrarJugador($jugador, $partidasJugadas)
     }
 
     return $jugadorEncontrado;
+}*/
+/**
+ * retorna si existe o no un jugador
+ * @param string $jugador
+ * @param array $jugadores
+ * @return boolean
+ */
+function encontrarJugador($jugador, $jugadores){
+//boolean $jugadorEncontrado int $i
+$jugadorEncontrado=false;
+$i=0;
+do{
+    if($jugadores[$i]==$jugador){
+        $jugadorEncontrado=true;
+    }else{
+        $i++;
+    }
+}while(!$jugadorEncontrado && $i<count($jugadores));
+return $jugadorEncontrado;
+
 }
 /**
  * A partir de un jugador dado, determina cual fue su primer partida ganada
@@ -438,15 +528,15 @@ function ordenarLista($primerPartida, $segundaPartida)
  * funcion que muestra una lista de los jugadores que tienen partidas jugadas
  * @param array $partidasJugadas
  */
-function listaJugadores($partidasJugadas)
+function listaJugadores($jugadores)
 {
-    //array $jugadores
-    $jugadores = array_unique(array_column($partidasJugadas, "jugador")); //array_column te permite extraer los valores de una columna específica en un array y array_unique elimina los elementos duplicados
+    //array $jugadoresLista
+    $jugadoresLista = array_unique($jugadores); //array_column te permite extraer los valores de una columna específica en un array y array_unique elimina los elementos duplicados
     if (count($jugadores) == 0) {
-        echo "no hay jugadores con partidas jugadas \n";
+        echo "no hay jugadores \n";
     } else {
         echo "Lista de jugadores: \n";
-        foreach ($jugadores as $elemento) {
+        foreach ($jugadoresLista as $elemento) {
             echo $elemento . "\n";
         }
     }
@@ -513,27 +603,35 @@ $listaPalabrasUsadas = []; //es el arreglo que almacena las palabras que ya fuer
 $palabraElegida = "";
 $palabraNueva = "";
 $partidasJugadas = cargarPartidas(); //carga una coleccion de partidas
-
+$jugadores=array_unique(array_column($partidasJugadas, "jugador"));
 //Proceso:
 $nombreJugador = solicitarJugador();
-$partidasJugadas[] = ["jugador" => $nombreJugador];
+$jugadores[]=$nombreJugador;
+//$partidasJugadas[] = ["jugador" => $nombreJugador];
 $coleccionModificable = cargarColeccionPalabras();
 do {
     $opcionElegida = seleccionarOpcion();
     switch ($opcionElegida) {
         case 1:
 
-            $palabraElegida = elegirPalabra($coleccionModificable, $listaPalabrasUsadas);
-            $listaPalabrasUsadas[] = $palabraElegida;
-            $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
-            $partidasJugadas[] = $partidaActual;
-
+            if(todasJugadas($partidasJugadas,$nombreJugador, $coleccionModificable)){
+                echo "\n hola ". $nombreJugador. ", ya jugaste todas las palabras \n";
+            }else{
+                $palabraElegida = elegirPalabra($coleccionModificable, $partidasJugadas, $nombreJugador);
+                $listaPalabrasUsadas[] = $palabraElegida;
+                $partidaActual = jugarWordix($palabraElegida, $nombreJugador);
+                $partidasJugadas[] = $partidaActual;
+            }
             break;
         case 2:
-            $palabraAleatoria = palabraAlazar($coleccionModificable);
-            $partidaActual = jugarWordix($palabraAleatoria, $nombreJugador);
-            $partidasJugadas[] = $partidaActual;
-            $coleccionModificable = eliminarElemento($coleccionModificable, $palabraAleatoria);
+            if(todasJugadas($partidasJugadas,$nombreJugador, $coleccionModificable)){
+                echo "\n hola ". $nombreJugador. ", ya jugaste todas las palabras \n";
+            }else{
+                $palabraAleatoria = palabraAlazar($coleccionModificable, $partidasJugadas ,$nombreJugador);
+                $partidaActual = jugarWordix($palabraAleatoria, $nombreJugador);
+                $partidasJugadas[] = $partidaActual;
+                //$coleccionModificable = eliminarElemento($coleccionModificable, $palabraAleatoria);
+            }
             break;
         case 3:
             echo mostrarUnaPartida($partidasJugadas);
@@ -541,9 +639,9 @@ do {
             break;
 
         case 4:
-            listaJugadores($partidasJugadas);
+            listaJugadores($jugadores);
             $jugador = solicitarJugador();
-            $existe = encontrarJugador($jugador, $partidasJugadas);
+            $existe = encontrarJugador($jugador, $jugadores);
             if ($existe == true) {
                 $i = primeraPartidaGanada($jugador, $partidasJugadas); // indice del arreglo donde guarda la primera partida ganada de X jugador
                 if ($i != -1) {
@@ -566,10 +664,10 @@ do {
             break;
         case 5:
             
-            listaJugadores($partidasJugadas);
+            listaJugadores($jugadores);
             echo "¿De qué jugador quiere el resumen? Ingrese su nombre\n";
             $nombreJugadorResumen = solicitarJugador();
-            $jugadorRegistrado = encontrarJugador($nombreJugadorResumen, $partidasJugadas);
+            $jugadorRegistrado = encontrarJugador($nombreJugadorResumen, $jugadores);
             $partidasDelJugador = buscarPartidasPorJugador($partidasJugadas, $nombreJugadorResumen);
             
             if ($jugadorRegistrado <> false) {
@@ -600,6 +698,7 @@ do {
         case 8:
             //Opcion agregada para cambiar de jugador
             $nombreJugador = solicitarJugador();
+            $jugadores[]=$nombreJugador;
             break;
         case 9:
             echo "Saliendo....";
