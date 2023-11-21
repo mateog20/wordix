@@ -676,10 +676,16 @@ do {
                     mostrarPartidasJugador($partidasDelJugador, $nombreJugadorResumen);
                     echo "\n〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️";
                 } else {
-                    echo "El jugador aún no ha jugado ninguna partida.\n";
+                    echo " ➖➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖➖" . "\n" .
+                        "\n  El jugador aún no ha jugado ninguna partida\n\n" .
+                        " ➖➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖➖" . "\n";
+                
                 }
             } else {
-                echo "El jugador no está registrado.\n";
+               
+                echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
+                    "\n       El jugador no está registrado\n\n" .
+                    " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
             }
 
             break;
@@ -708,11 +714,11 @@ do {
     }
 } while ($opcionElegida != 9);
 /*
-opcion 4, indicar que no existe el jugador 
-strtohigher en la palabra agregada
-no eliminar las palabras de la coleccion
-ELIMINAR TODO LO QUE HICIMOS LOS ULTIMOS 2 DIAS
-eliminarElemento implementar recorrdio parcial y que no elimine la palabra
-NECESITAMOS VER LA FORMA DE MOSTRAR JUGADORES QUE NO HAYAN JUGADO NINGUNA PARTIDA PERO QUE ESTEN REGISTRADOS /(crear un arreglo con los nombres ?)
+LISTO-----  opcion 4, indicar que no existe el jugador 
+LISTO-----  strtohigher en la palabra agregada
+LISTO-----  no eliminar las palabras de la coleccion
+LISTO-----  ELIMINAR TODO LO QUE HICIMOS LOS ULTIMOS 2 DIAS
+LISTO-----  eliminarElemento implementar recorrdio parcial y que no elimine la palabra
+LISTO-----  NECESITAMOS VER LA FORMA DE MOSTRAR JUGADORES QUE NO HAYAN JUGADO NINGUNA PARTIDA PERO QUE ESTEN REGISTRADOS /(crear un arreglo con los nombres ?)
 GRAFICAR ARREGLO QUE CUENTA LOS INTENTOS
 */
