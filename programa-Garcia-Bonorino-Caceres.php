@@ -181,13 +181,24 @@ function palabraAlazar($listaPalabras, $partidasJugadas ,$nombreJugador)
 {
     // int $numAleatoreoIndiceAleatorio boolean $repetir
     $repetir=false;
-    do{
+    $selectora=0;
+    $usada=true;
+    $numIndiceAleatorio =0;
+    while($usada){
         $numIndiceAleatorio = random_int(0, count($listaPalabras) - 1);
-        if(jugoLaPalabra($partidasJugadas , $nombreJugador , $listaPalabras[$numIndiceAleatorio])){
+        $usada= jugoLaPalabra($partidasJugadas , $nombreJugador , $listaPalabras[$numIndiceAleatorio]);
+       
+    }
+    do{
+       
+    
+        if($usada && $numIndiceAleatorio != $selectora){
             $repetir=true;
+            $selectora=$numIndiceAleatorio;
+          
         }
     }while($repetir);
-    //echo $listaPalabras[$numIndiceAleatorio];
+    echo $listaPalabras[$numIndiceAleatorio];
     return $listaPalabras[$numIndiceAleatorio];
 }
 /**
@@ -208,28 +219,7 @@ function eliminarElemento($coleccionPalabrasActuales, $palabraEliminar)
 
     return $listaPalabrasActualizada;
 }
-/**
- * Esta funcion comprueba si una palabra ya fue usada en una partida pasada
- * Complementa las funciones: elegirPalabra, palabraAzar
- * @param array $listaUsadas
- * @param string $palabra
- * @return boolean
- */
 
-/*function comprobarPalabra($listaUsadas, $palabra)
-{
-    //boolean $seUso
-    $seUso = false;
-    foreach ($listaUsadas as $palabraUsada) {
-        if ($palabraUsada == $palabra) {
-            $seUso = true;
-        } else {
-            $seUso = false;
-        }
-    }
-
-    return $seUso;
-}*/
 /**
  * comprueba si una palabra ya se encuentra en una lista
  * @param array $lista
@@ -327,30 +317,7 @@ function mostrarUnaPartida($partidasJugadas)
     }
 }
 
-/**
- * retorna si existe o no un jugador
- * @param string $jugador
- * @param array $partidasJugadas
- * @return boolean
- */
-/*function encontrarJugador($jugador, $partidasJugadas)
-{
-    //int $i
-    //boolean $seEncontro
-    $jugadorEncontrado =  false;
-    $numPartidas = count($partidasJugadas);
 
-    for ($i = 0; $i < $numPartidas; $i++) {
-        if ($partidasJugadas[$i]['jugador'] == $jugador) {
-            $jugadorEncontrado = true;
-        }
-    }
-    if(empty($partidasJugadas)) {
-        $jugadorEncontrado=false;
-    }
-
-    return $jugadorEncontrado;
-}*/
 /**
  * retorna si existe o no un jugador
  * @param string $jugador
