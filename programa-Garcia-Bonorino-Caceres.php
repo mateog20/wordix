@@ -174,13 +174,13 @@ function elegirPalabra($listaPalabrasElegir, $partidasJugadas, $nombreJugador)
 
 /**
  * Una funcion que ejecuta una partida de wordix con la palabra alazar
+ * Debe contener almenos una palabra, la lista de palabras a analizar
  * @param array $listaPalabras
  * @return array
  */
 function palabraAlazar($listaPalabras, $partidasJugadas ,$nombreJugador)
 {
     // int $numAleatoreoIndiceAleatorio boolean $repetir
-    $repetir=false;
     $selectora=0;
     $usada=true;
     $numIndiceAleatorio =0;
@@ -189,16 +189,6 @@ function palabraAlazar($listaPalabras, $partidasJugadas ,$nombreJugador)
         $usada= jugoLaPalabra($partidasJugadas , $nombreJugador , $listaPalabras[$numIndiceAleatorio]);
        
     }
-    do{
-       
-    
-        if($usada && $numIndiceAleatorio != $selectora){
-            $repetir=true;
-            $selectora=$numIndiceAleatorio;
-          
-        }
-    }while($repetir);
-    echo $listaPalabras[$numIndiceAleatorio];
     return $listaPalabras[$numIndiceAleatorio];
 }
 /**
@@ -256,7 +246,7 @@ function jugoLaPalabra($partidasJugadas , $nombreJugador , $palabraElegida){
         }else{
             $i++;
         }
-    }while($palabraJugada==false && $i<count($partidasJugadas));
+    }while(!$palabraJugada && $i<count($partidasJugadas));
     return $palabraJugada;
 }
 /**
@@ -601,7 +591,7 @@ do {
             }
             break;
         case 3:
-            echo mostrarUnaPartida($partidasJugadas);
+            mostrarUnaPartida($partidasJugadas);
 
             break;
 
@@ -609,7 +599,7 @@ do {
             listaJugadores($jugadores);
             $jugador = solicitarJugador();
             $existe = encontrarJugador($jugador, $jugadores);
-            if ($existe == true) {
+            if ($existe) {
                 $i = primeraPartidaGanada($jugador, $partidasJugadas); // indice del arreglo donde guarda la primera partida ganada de X jugador
                 if ($i != -1) {
                     echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
@@ -688,4 +678,5 @@ LISTO-----  ELIMINAR TODO LO QUE HICIMOS LOS ULTIMOS 2 DIAS
 LISTO-----  eliminarElemento implementar recorrdio parcial y que no elimine la palabra
 LISTO-----  NECESITAMOS VER LA FORMA DE MOSTRAR JUGADORES QUE NO HAYAN JUGADO NINGUNA PARTIDA PERO QUE ESTEN REGISTRADOS /(crear un arreglo con los nombres ?)
 GRAFICAR ARREGLO QUE CUENTA LOS INTENTOS
+cREAR UNA FUNCION QUE SOLOMUESTRE PARTIDA
 */
