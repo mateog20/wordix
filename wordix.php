@@ -334,7 +334,7 @@ function esIntentoGanado($estructuraPalabraIntento)
 }
 
 /**
- *retorna el puntaje segun los intentos
+ * Obtiene una cantidad de puntos dependiendo de la cantidad de intentos que le tomo adivinar la palabra wordix.
  * @param int $intentos
  */
 function obtenerPuntajeWordix($intentos)
@@ -367,21 +367,21 @@ function obtenerPuntajeWordix($intentos)
     return $puntos;
 }
 /**
- * Asigna puntajes según el rango de letras , sino se encuentra en los rango asigna 0
+ * Asigna puntajes según la cantidad de letras que adivino de la palabra wordix , sino se encuentra en los rango asigna 0
  * @param string $letra
  * @return int
  */
-function asignarPuntajeLetra($letra)
+function asignarPuntajeLetra($letraObtenerPuntaje)
 {
-    $letra = strtoupper($letra);
+    $letraComprobarPuntos = strtoupper($letraObtenerPuntaje);
     $puntoLetra = 0;
     // Es vocal
-    if ($letra === 'A' || $letra === 'E' || $letra === 'I' || $letra === 'O' || $letra === 'U') {
+    if ( $letraComprobarPuntos === 'A' ||  $letraComprobarPuntos === 'E' ||  $letraComprobarPuntos === 'I' ||  $letraComprobarPuntos === 'O' ||  $letraComprobarPuntos === 'U') {
         $puntoLetra = 1;
     }
 
     // consonante anterior a "M"
-    else if (($letra >= 'A' && $letra <= 'M')) {
+    else if (( $letraComprobarPuntos >= 'A' &&  $letraComprobarPuntos <= 'M')) {
         $puntoLetra = 2;
     } else {
         $puntoLetra = 3;
