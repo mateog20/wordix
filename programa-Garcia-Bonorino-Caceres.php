@@ -278,16 +278,9 @@ function todasJugadas($partidasJugadas,$nombreJugador, $listaPalabras){
  * muestra una partida
  * @param array $partidasJugadas
  */
-function mostrarUnaPartida($partidasJugadas)
+function mostrarUnaPartida($partidasJugadas , $indice)
 {
-    //int $indice $maximo $minimo
-    $maximo = count($partidasJugadas);
-    $minimo = 1;
-    if ($maximo == 0) {
-        echo "no hay partidas jugadas";
-    } else {
-        echo "tiene " . $maximo . " partidas \n" . "que partida quiere ver? \n";
-        $indice = solicitarNumeroEntre($minimo, $maximo) - 1;
+
         if ($partidasJugadas[$indice]["puntaje"] == 0) {
             echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
                 "Partida WORDIX " . $indice + 1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
@@ -301,10 +294,10 @@ function mostrarUnaPartida($partidasJugadas)
                 "Partida WORDIX " . $indice + 1 . ": palabra " . $partidasJugadas[$indice]["palabraWordix"] . "\n" .
                 "Jugador: " . $partidasJugadas[$indice]["jugador"] . "\n" .
                 "Puntaje: " . $partidasJugadas[$indice]["puntaje"] . "\n" .
-                "Intentos: " . $partidasJugadas[$indice]["intentos"] . "\n" .
+                "Adivino la palabra en " . $partidasJugadas[$indice]["intentos"] . " intento/s\n" .
                 " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
         }
-    }
+    
 }
 
 
@@ -591,8 +584,16 @@ do {
             }
             break;
         case 3:
-            mostrarUnaPartida($partidasJugadas);
-
+                //int $indice $maximo $minimo
+    $maximo = count($partidasJugadas);
+    $minimo = 1;
+    if ($maximo == 0) {
+        echo "no hay partidas jugadas";
+    } else {
+        echo "tiene " . $maximo . " partidas \n" . "que partida quiere ver? \n";
+        $indice = solicitarNumeroEntre($minimo, $maximo) - 1;
+            mostrarUnaPartida($partidasJugadas , $indice);
+    }
             break;
 
         case 4:
@@ -602,12 +603,8 @@ do {
             if ($existe) {
                 $i = primeraPartidaGanada($jugador, $partidasJugadas); // indice del arreglo donde guarda la primera partida ganada de X jugador
                 if ($i != -1) {
-                    echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
-                        "Partida WORDIX " . $i + 1 . ": palabra " . $partidasJugadas[$i]["palabraWordix"] . "\n" .
-                        "Jugador: " . $partidasJugadas[$i]["jugador"] . "\n" .
-                        "Puntaje: " . $partidasJugadas[$i]["puntaje"] . "\n" .
-                        "Adivino la palabra en " . $partidasJugadas[$i]["intentos"] . " intento/s\n" .
-                        " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n";
+                    mostrarUnaPartida($partidasJugadas , $i);
+
                 } else {
                     echo " ➖➖➖➖➖➖➖➖➖🔷🔶➖➖➖➖➖➖➖➖➖" . "\n" .
                         "\n       Aun no hay partidas ganadas\n\n" .
